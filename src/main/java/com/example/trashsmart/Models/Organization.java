@@ -5,5 +5,5 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table
-public class RecyclingPlant extends BusinessUser {
+public class Organization extends BusinessUser {
 }
