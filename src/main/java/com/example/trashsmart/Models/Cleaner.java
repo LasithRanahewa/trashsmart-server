@@ -29,7 +29,6 @@ public class Cleaner extends SystemUser {
     }
 
     // Cleaner Email Registration
-
     public Cleaner(String firstName, String lastName, String password, String contactNo, String address, Role role,
                    String email, String profileURL, LocalDateTime createdTimeStamp, LocalDate dob, String nic) {
         super(firstName, lastName, password, contactNo, address, role, email, profileURL, createdTimeStamp, dob, nic);
