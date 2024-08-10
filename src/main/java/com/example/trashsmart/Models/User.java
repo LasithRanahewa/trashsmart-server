@@ -1,6 +1,8 @@
 package com.example.trashsmart.Models;
 
 import com.example.trashsmart.Enums.Role;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
@@ -9,6 +11,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
