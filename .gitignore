@@ -17,3 +17,6 @@ buildNumber.properties
 .classpath
 .idea
 .github/workflows/.DS_Store
+
+# environment
+src/main/resources/env.properties
