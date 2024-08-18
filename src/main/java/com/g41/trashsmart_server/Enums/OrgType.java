@@ -1,6 +1,6 @@
 package com.g41.trashsmart_server.Enums;
 
-public enum Type {
+public enum OrgType {
     EDUCATION,
     HEALTH,
     SOCIAL_SERVICES,

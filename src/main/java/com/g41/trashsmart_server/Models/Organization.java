@@ -2,7 +2,7 @@ package com.g41.trashsmart_server.Models;
 
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Scale;
-import com.g41.trashsmart_server.Enums.Type;
+import com.g41.trashsmart_server.Enums.OrgType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -16,7 +16,7 @@ public class Organization extends BusinessUser {
     private Integer totalWaste = 0;
     private Integer recyclableWaste = 0;
     private Scale scale;
-    private Type type;
+    private OrgType orgType;
     private LocalDate contractStartDate = LocalDate.now();
     private LocalDate contractEndDate;
 
@@ -61,12 +61,12 @@ public class Organization extends BusinessUser {
         this.scale = scale;
     }
 
-    public Type getType() {
-        return type;
+    public OrgType getType() {
+        return orgType;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(OrgType orgType) {
+        this.orgType = orgType;
     }
 
     public LocalDate getContractStartDate() {
