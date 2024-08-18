@@ -3,12 +3,10 @@ package com.g41.trashsmart_server.Models;
 import com.g41.trashsmart_server.Enums.BinSize;
 import com.g41.trashsmart_server.Enums.BinStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @MappedSuperclass
 public abstract class SmartBin {
@@ -23,6 +21,9 @@ public abstract class SmartBin {
     private WasteType wasteType;
     private LocalDate lastCollectionDate = LocalDate.now();
     private BinSize binSize;
+    private Boolean deleted = false;
+    @OneToMany(mappedBy = "bin")
+    private List<MaintenanceRequest> maintenanceRequests;
 
     public SmartBin() {
     }
@@ -104,5 +105,21 @@ public abstract class SmartBin {
 
     public void setBinSize(BinSize binSize) {
         this.binSize = binSize;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public List<MaintenanceRequest> getMaintenanceRequests() {
+        return maintenanceRequests;
+    }
+
+    public void setMaintenanceRequests(List<MaintenanceRequest> maintenanceRequests) {
+        this.maintenanceRequests = maintenanceRequests;
     }
 }
