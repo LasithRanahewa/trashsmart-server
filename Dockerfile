@@ -3,7 +3,7 @@ FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /app
 COPY . .
-RUN ./mvnw package
+RUN chmod +x ./mvnw && ./mvnw package
 
 # Run stage
 FROM eclipse-temurin:21-jdk AS runner
