@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface HouseholdUserRepository extends JpaRepository<Long, HouseholdUser> {
+public interface HouseholdUserRepository extends JpaRepository<HouseholdUser, Long> {
     Optional<HouseholdUser> findHouseholdUserByEmail(String email);
 }
