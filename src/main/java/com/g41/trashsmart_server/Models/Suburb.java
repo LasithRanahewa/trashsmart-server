@@ -2,6 +2,8 @@ package com.g41.trashsmart_server.Models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table
 public class Suburb {
@@ -10,6 +12,8 @@ public class Suburb {
     private Long id;
     private String name;
     private String code;
+    @OneToMany(mappedBy = "suburb")
+    private List<HouseholdUser> householdUsers;
 
     public Suburb() {
     }
@@ -41,5 +45,13 @@ public class Suburb {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public List<HouseholdUser> getHouseholdUsers() {
+        return householdUsers;
+    }
+
+    public void setHouseholdUsers(List<HouseholdUser> householdUsers) {
+        this.householdUsers = householdUsers;
     }
 }
