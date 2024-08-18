@@ -1,9 +1,20 @@
+# Test stage
+FROM eclipse-temurin:21-jdk AS tester
+
+WORKDIR /app
+COPY . .
+
+RUN chmod +x ./mvnw
+RUN ./mvnw test -e -X
+
 # Build stage
 FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /app
 COPY . .
-RUN chmod +x ./mvnw && ./mvnw package
+
+RUN chmod +x ./mvnw
+RUN ./mvnw package -DskipTests -e -X
 
 # Run stage
 FROM eclipse-temurin:21-jdk AS runner
