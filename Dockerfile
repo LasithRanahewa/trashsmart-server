@@ -11,4 +11,4 @@ FROM eclipse-temurin:21-jdk AS runner
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
-CMD ["java", "-jar", "app.jar"]
+CMD ["sh", "-c", "java -jar app.jar --spring.datasource.url=$DB_URL --spring.datasource.username=$DB_USERNAME --spring.datasource.password=$DB_PASSWORD"]
