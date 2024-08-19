@@ -103,8 +103,8 @@ public class HouseholdUserController {
     // Retrieve a specific household user given the id
     @GetMapping(path = "{household_user_id}")
     @Operation(
-            description = "Retrieve all the household users",
-            summary = "All household users will be retrieved with all the details",
+            description = "Retrieve a specific household user given the id",
+            summary = "A specific household user with the given id in the path will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -120,18 +120,84 @@ public class HouseholdUserController {
         return householdUserService.getSpecificHouseholdUser(id);
     }
 
+    // Create a new household user
     @PostMapping
+    @Operation(
+            description = "Create a new household user",
+            summary = "Create a new household user when the user details are sent in the body of the POST request",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
     public void registerNewHouseholdUser(@RequestBody HouseholdUser householdUser) {
         householdUserService.addNewHouseholdUser(householdUser);
     }
 
+    // Logically delete a household user from the system
     @DeleteMapping(path = "{household_user_id}")
+    @Operation(
+            description = "Logically delete a household user from the system",
+            summary = "Household user will be logically deleted from the system",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
     public void deleteHouseholdUser(@PathVariable("household_user_id") Long id) {
         householdUserService.deleteHouseholdUser(id);
     }
 
-    @PutMapping
-    public void updateHouseholdUser(@RequestBody HouseholdUser householdUser) {
-        householdUserService.updateHouseholdUser(householdUser);
+    // Permanently delete a household user from the system (Admin Privilege)
+    @DeleteMapping(path = "delete/{household_user_id}")
+    @Operation(
+            description = "Permanently delete a household user from the system",
+            summary = "Household user will be permanently deleted from the system",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void deletePermanentHouseholdUser(@PathVariable("household_user_id") Long id) {
+        householdUserService.deletePermanentHouseholdUser(id);
+    }
+
+    // Update household user details
+    @PutMapping(path = "{household_user_id}")
+    @Operation(
+            description = "Update household user details",
+            summary = "Household user details will be updated based on the object passed",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void updateHouseholdUser(@PathVariable("household_user_id") Long id,
+                                    @RequestBody HouseholdUser householdUser) {
+        householdUserService.updateHouseholdUser(id, householdUser);
     }
 }

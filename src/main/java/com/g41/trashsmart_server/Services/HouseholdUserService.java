@@ -63,10 +63,10 @@ public class HouseholdUserService {
         return householdUserDTOMapper.apply(householdUserOptional.get());
     }
 
+    // Create a new household user
     public void addNewHouseholdUser(HouseholdUser householdUser) {
         Optional<HouseholdUser> householdUserOptional = householdUserRepository.findHouseholdUserByEmail(
-                householdUser.getEmail(),
-                false
+                householdUser.getEmail()
         );
         if(householdUserOptional.isPresent()) {
             throw new IllegalStateException("Email Taken");
@@ -74,7 +74,19 @@ public class HouseholdUserService {
         householdUserRepository.save(householdUser);
     }
 
+    // Logically delete a household user from the system
     public void deleteHouseholdUser(Long userId) {
+        Optional<HouseholdUser> householdUserOptional = householdUserRepository.findById(userId);
+        if(householdUserOptional.isEmpty()) {
+            throw new IllegalStateException("Household User with id " + userId + " does not exists");
+        }
+        HouseholdUser householdUserToDelete = householdUserOptional.get();
+        householdUserToDelete.setDeleted(true);
+        householdUserRepository.save(householdUserToDelete);
+    }
+
+    // Permanently delete a household user from the system
+    public void deletePermanentHouseholdUser(Long userId) {
         boolean exists = householdUserRepository.existsById(userId);
         if(!exists) {
             throw new IllegalStateException("Household User with id " + userId + " does not exists");
@@ -82,9 +94,10 @@ public class HouseholdUserService {
         householdUserRepository.deleteById(userId);
     }
 
-    public void updateHouseholdUser(HouseholdUser householdUser) {
-        HouseholdUser householdUserToUpdate = householdUserRepository.findById(householdUser.getId()).orElseThrow(
-                () -> new IllegalStateException("Household User with id " + householdUser.getId() + " does not exists")
+    // Update household user details
+    public void updateHouseholdUser(Long id, HouseholdUser householdUser) {
+        HouseholdUser householdUserToUpdate = householdUserRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("Household User with id " + id + " does not exists")
         );
         if (householdUser.getFirstName() != null && !householdUser.getFirstName().isEmpty() &&
                 !householdUserToUpdate.getFirstName().equals(householdUser.getFirstName())) {
