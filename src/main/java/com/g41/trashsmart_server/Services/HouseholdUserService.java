@@ -1,6 +1,7 @@
 package com.g41.trashsmart_server.Services;
 
 import com.g41.trashsmart_server.DTO.HouseholdUserDTO;
+import com.g41.trashsmart_server.DTO.HouseholdUserDTOMapper;
 import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
 import jakarta.transaction.Transactional;
@@ -10,61 +11,62 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HouseholdUserService {
     private final HouseholdUserRepository householdUserRepository;
+    private final HouseholdUserDTOMapper householdUserDTOMapper;
 
     @Autowired
-    public HouseholdUserService(HouseholdUserRepository householdUserRepository) {
+    public HouseholdUserService(HouseholdUserRepository householdUserRepository,
+                                HouseholdUserDTOMapper householdUserDTOMapper) {
         this.householdUserRepository = householdUserRepository;
+        this.householdUserDTOMapper = householdUserDTOMapper;
     }
 
+    // Retrieve all active household users
     public List<HouseholdUserDTO> getHouseholdUsers() {
-        List<HouseholdUser> householdUsers = householdUserRepository.findAll();
-        List<HouseholdUserDTO> householdUserDTOS = new ArrayList<>();
-        for(HouseholdUser householdUser: householdUsers) {
-            HouseholdUserDTO householdUserDTO = new HouseholdUserDTO();
-            householdUserDTO.setId(householdUser.getId());
-            householdUserDTO.setFirstName(householdUser.getFirstName());
-            householdUserDTO.setLastName(householdUser.getLastName());
-            householdUserDTO.setEmail(householdUser.getEmail());
-            householdUserDTO.setContactNo(householdUser.getContactNo());
-            householdUserDTO.setAddress(householdUser.getAddress());
-            householdUserDTO.setRole(householdUser.getRole());
-            householdUserDTO.setProfileURL(householdUser.getProfileURL());
-            householdUserDTO.setSuburb(householdUser.getSuburb());
-            householdUserDTOS.add(householdUserDTO);
-        }
-        return householdUserDTOS;
+        List<HouseholdUser> householdUsers = householdUserRepository.findAllHouseholdUsers(false);
+        return householdUsers.stream()
+                .map(householdUserDTOMapper)
+                .collect(Collectors.toList());
     }
 
+    // Retrieve all logically deleted household users
+    public List<HouseholdUserDTO> getDeletedHouseholdUsers() {
+        List<HouseholdUser> householdUsers = householdUserRepository.findAllHouseholdUsers(true);
+        return householdUsers.stream()
+                .map(householdUserDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    // Retrieve all registered household users
+    public List<HouseholdUserDTO> getAllHouseholdUsers() {
+        List<HouseholdUser> householdUsers = householdUserRepository.findAllHouseholdUsersUnFiltered();
+        return householdUsers.stream()
+                .map(householdUserDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    // Retrieve all the user details (Admin Privilege)
+    public List<HouseholdUser> getHouseholdUsersAdmin() {
+        return householdUserRepository.findAll();
+    }
+
+    // Retrieve a specific household user given the id
     public HouseholdUserDTO getSpecificHouseholdUser(Long id) {
         Optional<HouseholdUser> householdUserOptional = householdUserRepository.findById(id);
         if(householdUserOptional.isEmpty()) {
             throw new IllegalStateException("Household User with id " + id + " does not exists");
         }
-        HouseholdUserDTO householdUserDTO = new HouseholdUserDTO();
-        HouseholdUser householdUser = householdUserOptional.get();
-        householdUserDTO.setId(householdUser.getId());
-        householdUserDTO.setFirstName(householdUser.getFirstName());
-        householdUserDTO.setLastName(householdUser.getLastName());
-        householdUserDTO.setEmail(householdUser.getEmail());
-        householdUserDTO.setContactNo(householdUser.getContactNo());
-        householdUserDTO.setAddress(householdUser.getAddress());
-        householdUserDTO.setRole(householdUser.getRole());
-        householdUserDTO.setProfileURL(householdUser.getProfileURL());
-        householdUserDTO.setSuburb(householdUser.getSuburb());
-        return householdUserDTO;
-    }
-
-    public List<HouseholdUser> getHouseholdUsersAdmin() {
-        return householdUserRepository.findAll();
+        return householdUserDTOMapper.apply(householdUserOptional.get());
     }
 
     public void addNewHouseholdUser(HouseholdUser householdUser) {
         Optional<HouseholdUser> householdUserOptional = householdUserRepository.findHouseholdUserByEmail(
-                householdUser.getEmail()
+                householdUser.getEmail(),
+                false
         );
         if(householdUserOptional.isPresent()) {
             throw new IllegalStateException("Email Taken");
