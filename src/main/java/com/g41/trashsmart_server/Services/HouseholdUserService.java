@@ -39,6 +39,25 @@ public class HouseholdUserService {
         return householdUserDTOS;
     }
 
+    public HouseholdUserDTO getSpecificHouseholdUser(Long id) {
+        Optional<HouseholdUser> householdUserOptional = householdUserRepository.findById(id);
+        if(householdUserOptional.isEmpty()) {
+            throw new IllegalStateException("Household User with id " + id + " does not exists");
+        }
+        HouseholdUserDTO householdUserDTO = new HouseholdUserDTO();
+        HouseholdUser householdUser = householdUserOptional.get();
+        householdUserDTO.setId(householdUser.getId());
+        householdUserDTO.setFirstName(householdUser.getFirstName());
+        householdUserDTO.setLastName(householdUser.getLastName());
+        householdUserDTO.setEmail(householdUser.getEmail());
+        householdUserDTO.setContactNo(householdUser.getContactNo());
+        householdUserDTO.setAddress(householdUser.getAddress());
+        householdUserDTO.setRole(householdUser.getRole());
+        householdUserDTO.setProfileURL(householdUser.getProfileURL());
+        householdUserDTO.setSuburb(householdUser.getSuburb());
+        return householdUserDTO;
+    }
+
     public List<HouseholdUser> getHouseholdUsersAdmin() {
         return householdUserRepository.findAll();
     }
@@ -61,14 +80,47 @@ public class HouseholdUserService {
         householdUserRepository.deleteById(userId);
     }
 
-    @Transactional
     public void updateHouseholdUser(HouseholdUser householdUser) {
         HouseholdUser householdUserToUpdate = householdUserRepository.findById(householdUser.getId()).orElseThrow(
                 () -> new IllegalStateException("Household User with id " + householdUser.getId() + " does not exists")
         );
         if (householdUser.getFirstName() != null && !householdUser.getFirstName().isEmpty() &&
                 !householdUserToUpdate.getFirstName().equals(householdUser.getFirstName())) {
-            householdUser.setFirstName(householdUser.getFirstName());
+            householdUserToUpdate.setFirstName(householdUser.getFirstName());
         }
+        if (householdUser.getLastName() != null && !householdUser.getLastName().isEmpty() &&
+                !householdUserToUpdate.getLastName().equals(householdUser.getLastName())) {
+            householdUserToUpdate.setLastName(householdUser.getLastName());
+        }
+        if (householdUser.getEmail() != null && !householdUser.getEmail().isEmpty() &&
+                !householdUserToUpdate.getEmail().equals(householdUser.getEmail())) {
+            Optional<HouseholdUser> householdUserOptional = householdUserRepository.findHouseholdUserByEmail(
+                    householdUser.getEmail()
+            );
+            if(householdUserOptional.isPresent()) {
+                throw new IllegalStateException("Email Taken");
+            }
+            householdUserToUpdate.setEmail(householdUser.getEmail());
+        }
+        if (householdUser.getPassword() != null && !householdUser.getPassword().isEmpty() &&
+                !householdUserToUpdate.getPassword().equals(householdUser.getPassword())) {
+            householdUserToUpdate.setPassword(householdUser.getPassword());
+        }
+        if (householdUser.getAddress() != null && !householdUser.getAddress().isEmpty() &&
+                !householdUserToUpdate.getAddress().equals(householdUser.getAddress())) {
+            householdUserToUpdate.setAddress(householdUser.getAddress());
+        }
+        if (householdUser.getContactNo() != null && !householdUser.getContactNo().isEmpty() &&
+                !householdUserToUpdate.getContactNo().equals(householdUser.getContactNo())) {
+            householdUserToUpdate.setContactNo(householdUser.getContactNo());
+        }
+        if (householdUser.getRole() != null && !householdUserToUpdate.getRole().equals(householdUser.getRole())) {
+            householdUserToUpdate.setRole(householdUser.getRole());
+        }
+        if (householdUser.getProfileURL() != null && !householdUser.getProfileURL().isEmpty() &&
+                !householdUserToUpdate.getProfileURL().equals(householdUser.getProfileURL())) {
+            householdUserToUpdate.setProfileURL(householdUser.getProfileURL());
+        }
+        householdUserRepository.save(householdUserToUpdate);
     }
 }
