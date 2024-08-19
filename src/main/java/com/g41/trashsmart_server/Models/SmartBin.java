@@ -8,8 +8,10 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@MappedSuperclass
-public abstract class SmartBin {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "binType")
+public class SmartBin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +24,7 @@ public abstract class SmartBin {
     private LocalDate lastCollectionDate = LocalDate.now();
     private BinSize binSize;
     private Boolean deleted = false;
-    @OneToMany(mappedBy = "bin")
+    @OneToMany(mappedBy = "smartBin")
     private List<MaintenanceRequest> maintenanceRequests;
 
     public SmartBin() {

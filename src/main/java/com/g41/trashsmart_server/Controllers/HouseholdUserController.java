@@ -32,4 +32,14 @@ public class HouseholdUserController {
     public void registerNewHouseholdUser(@RequestBody HouseholdUser householdUser) {
         householdUserService.addNewHouseholdUser(householdUser);
     }
+
+    @DeleteMapping(path = "{household_user_id}")
+    public void deleteHouseholdUser(@PathVariable("household_user_id") Long id) {
+        householdUserService.deleteHouseholdUser(id);
+    }
+
+    @PutMapping
+    public void updateHouseholdUser(@RequestBody HouseholdUser householdUser) {
+        householdUserService.updateHouseholdUser(householdUser);
+    }
 }
