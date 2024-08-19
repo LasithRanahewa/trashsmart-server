@@ -19,8 +19,8 @@ public class HouseholdUser extends BusinessUser {
     }
 
     public HouseholdUser(String firstName, String lastName, String email, String password, String contactNo,
-                         String address, Role role, String profileURL, LocalDateTime createdTimeStamp) {
-        super(firstName, lastName, email, password, contactNo, address, role, profileURL, createdTimeStamp);
+                         String address, String profileURL) {
+        super(firstName, lastName, email, password, contactNo, address, Role.HOUSEHOLD_USER, profileURL, LocalDateTime.now());
     }
 
     public Suburb getSuburb() {

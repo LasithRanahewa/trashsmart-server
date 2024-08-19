@@ -14,6 +14,10 @@ public interface HouseholdUserRepository extends JpaRepository<HouseholdUser, Lo
     @Query("SELECT hu FROM HouseholdUser hu WHERE hu.email = :email AND hu.deleted = :deleted")
     Optional<HouseholdUser> findHouseholdUserByEmail(String email, Boolean deleted);
 
+    // Select a specific household user using email without deleted
+    @Query("SELECT hu FROM HouseholdUser hu WHERE hu.email = :email")
+    Optional<HouseholdUser> findHouseholdUserByEmail(String email);
+
     // Select a specific household user using id
     @Query("SELECT hu FROM HouseholdUser hu WHERE hu.id = :id AND hu.deleted = :deleted")
     Optional<HouseholdUser> findHouseholdUserById(Long id, Boolean deleted);
