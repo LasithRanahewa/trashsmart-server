@@ -22,7 +22,7 @@ public abstract class User {
     private Role role;
     private Boolean deleted = false;
     private String profileURL;
-    private LocalDateTime createdTimeStamp;
+    private LocalDateTime createdTimeStamp = LocalDateTime.now();
 
     // No Args Constructor
     public User() {
