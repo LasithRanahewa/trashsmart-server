@@ -26,6 +26,9 @@ public class SmartBin {
     private Boolean deleted = false;
     @OneToMany(mappedBy = "smartBin")
     private List<MaintenanceRequest> maintenanceRequests;
+    @ManyToOne
+    @JoinColumn(name = "suburb_id")
+    private Suburb suburb;
 
     public SmartBin() {
     }
@@ -123,5 +126,13 @@ public class SmartBin {
 
     public void setMaintenanceRequests(List<MaintenanceRequest> maintenanceRequests) {
         this.maintenanceRequests = maintenanceRequests;
+    }
+
+    public Suburb getSuburb() {
+        return suburb;
+    }
+
+    public void setSuburb(Suburb suburb) {
+        this.suburb = suburb;
     }
 }
