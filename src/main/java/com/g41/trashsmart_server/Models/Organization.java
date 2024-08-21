@@ -4,10 +4,12 @@ import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Scale;
 import com.g41.trashsmart_server.Enums.OrgType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table
@@ -19,6 +21,10 @@ public class Organization extends BusinessUser {
     private OrgType orgType;
     private LocalDate contractStartDate = LocalDate.now();
     private LocalDate contractEndDate;
+    @OneToMany(mappedBy = "organization")
+    private List<CommercialBin> commercialBins;
+    @OneToMany(mappedBy = "organization")
+    private List<WasteCollectionRequest> wasteCollectionRequests;
 
     public Organization() {
     }
@@ -83,5 +89,21 @@ public class Organization extends BusinessUser {
 
     public void setContractEndDate(LocalDate contractEndDate) {
         this.contractEndDate = contractEndDate;
+    }
+
+    public List<CommercialBin> getCommercialBins() {
+        return commercialBins;
+    }
+
+    public void setCommercialBins(List<CommercialBin> commercialBins) {
+        this.commercialBins = commercialBins;
+    }
+
+    public List<WasteCollectionRequest> getWasteCollectionRequests() {
+        return wasteCollectionRequests;
+    }
+
+    public void setWasteCollectionRequests(List<WasteCollectionRequest> wasteCollectionRequests) {
+        this.wasteCollectionRequests = wasteCollectionRequests;
     }
 }

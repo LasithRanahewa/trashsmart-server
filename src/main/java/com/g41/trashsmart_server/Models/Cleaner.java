@@ -2,11 +2,11 @@ package com.g41.trashsmart_server.Models;
 
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Status;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table
@@ -18,6 +18,13 @@ public class Cleaner extends SystemUser {
     private LocalDate lastCollectionDate;
     private Integer totalActiveDays = 0;
     private Integer numberOfHolidays = 0;
+    @ManyToMany
+    @JoinTable(
+            name = "cleaner_assigned_to_bin",
+            joinColumns = @JoinColumn(name = "cleaner_id"),
+            inverseJoinColumns = @JoinColumn(name = "bin_id")
+    )
+    private List<CommunalBin> communalBins;
 
     public Cleaner() {
     }
@@ -89,5 +96,13 @@ public class Cleaner extends SystemUser {
 
     public void setNumberOfHolidays(Integer numberOfHolidays) {
         this.numberOfHolidays = numberOfHolidays;
+    }
+
+    public List<CommunalBin> getCommunalBins() {
+        return communalBins;
+    }
+
+    public void setCommunalBins(List<CommunalBin> communalBins) {
+        this.communalBins = communalBins;
     }
 }

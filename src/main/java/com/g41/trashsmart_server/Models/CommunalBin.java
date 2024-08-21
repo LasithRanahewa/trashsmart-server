@@ -2,16 +2,17 @@ package com.g41.trashsmart_server.Models;
 
 import com.g41.trashsmart_server.Enums.BinSize;
 import com.g41.trashsmart_server.Enums.WasteType;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("COMMUNAL")
 public class CommunalBin extends SmartBin {
     private LocalDate installationDate;
+    @ManyToMany(mappedBy = "communalBins")
+    private List<Cleaner> cleaners;
 
     public CommunalBin() {
     }
@@ -28,5 +29,13 @@ public class CommunalBin extends SmartBin {
 
     public void setInstallationDate(LocalDate installationDate) {
         this.installationDate = installationDate;
+    }
+
+    public List<Cleaner> getCleaners() {
+        return cleaners;
+    }
+
+    public void setCleaners(List<Cleaner> cleaners) {
+        this.cleaners = cleaners;
     }
 }
