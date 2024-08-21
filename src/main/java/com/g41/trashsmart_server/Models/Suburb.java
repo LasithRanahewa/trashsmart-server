@@ -14,6 +14,8 @@ public class Suburb {
     private String code;
     @OneToMany(mappedBy = "suburb")
     private List<HouseholdUser> householdUsers;
+    @OneToMany(mappedBy = "suburb")
+    private List<SmartBin> smartBins;
 
     public Suburb() {
     }
@@ -53,5 +55,13 @@ public class Suburb {
 
     public void setHouseholdUsers(List<HouseholdUser> householdUsers) {
         this.householdUsers = householdUsers;
+    }
+
+    public List<SmartBin> getSmartBins() {
+        return smartBins;
+    }
+
+    public void setSmartBins(List<SmartBin> smartBins) {
+        this.smartBins = smartBins;
     }
 }
