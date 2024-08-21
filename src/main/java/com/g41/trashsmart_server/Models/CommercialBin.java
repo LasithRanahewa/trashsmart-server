@@ -2,9 +2,7 @@ package com.g41.trashsmart_server.Models;
 
 import com.g41.trashsmart_server.Enums.BinSize;
 import com.g41.trashsmart_server.Enums.WasteType;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -12,6 +10,9 @@ import java.time.LocalDate;
 @DiscriminatorValue("COMMERCIAL")
 public class CommercialBin extends SmartBin{
     private LocalDate purchaseDate = LocalDate.now();
+    @ManyToOne
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
 
     public CommercialBin() {
     }
@@ -26,5 +27,13 @@ public class CommercialBin extends SmartBin{
 
     public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 }
