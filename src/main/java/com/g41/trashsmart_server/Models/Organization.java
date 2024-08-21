@@ -23,6 +23,8 @@ public class Organization extends BusinessUser {
     private LocalDate contractEndDate;
     @OneToMany(mappedBy = "organization")
     private List<CommercialBin> commercialBins;
+    @OneToMany(mappedBy = "organization")
+    private List<WasteCollectionRequest> wasteCollectionRequests;
 
     public Organization() {
     }
@@ -95,5 +97,13 @@ public class Organization extends BusinessUser {
 
     public void setCommercialBins(List<CommercialBin> commercialBins) {
         this.commercialBins = commercialBins;
+    }
+
+    public List<WasteCollectionRequest> getWasteCollectionRequests() {
+        return wasteCollectionRequests;
+    }
+
+    public void setWasteCollectionRequests(List<WasteCollectionRequest> wasteCollectionRequests) {
+        this.wasteCollectionRequests = wasteCollectionRequests;
     }
 }
