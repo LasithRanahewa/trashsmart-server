@@ -1,9 +1,7 @@
 package com.g41.trashsmart_server.Services;
 
-import com.g41.trashsmart_server.DTO.HouseholdUserDTO;
 import com.g41.trashsmart_server.DTO.OrganizationDTO;
 import com.g41.trashsmart_server.DTO.OrganizationDTOMapper;
-import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;

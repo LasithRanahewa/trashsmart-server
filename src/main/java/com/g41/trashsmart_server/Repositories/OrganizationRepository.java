@@ -1,6 +1,5 @@
 package com.g41.trashsmart_server.Repositories;
 
-import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Organization;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
