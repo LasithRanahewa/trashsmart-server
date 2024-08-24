@@ -6,6 +6,7 @@ import com.g41.trashsmart_server.Services.HouseholdUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/household_user")
 public class HouseholdUserController {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private final HouseholdUserService householdUserService;
 
     @Autowired
@@ -121,7 +125,7 @@ public class HouseholdUserController {
     }
 
     // Create a new household user
-    @PostMapping
+    @PostMapping(path = "register")
     @Operation(
             description = "Create a new household user",
             summary = "Create a new household user when the user details are sent in the body of the POST request",
