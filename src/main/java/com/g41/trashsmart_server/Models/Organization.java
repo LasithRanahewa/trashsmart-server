@@ -30,8 +30,8 @@ public class Organization extends BusinessUser {
     }
 
     public Organization(String firstName, String lastName, String email, String password, String contactNo,
-                        String address, Role role, String profileURL, LocalDateTime createdTimeStamp) {
-        super(firstName, lastName, email, password, contactNo, address, role, profileURL, createdTimeStamp);
+                        String address, String profileURL) {
+        super(firstName, lastName, email, password, contactNo, address, Role.ORGANIZATION, profileURL, LocalDateTime.now());
     }
 
     // Getters and Setters
