@@ -76,6 +76,15 @@ public abstract class User{
         this.createdTimeStamp = createdTimeStamp;
     }
 
+    public User(String firstName, String lastName, String email, String password, Role role, LocalDateTime now) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.createdTimeStamp = now;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;
