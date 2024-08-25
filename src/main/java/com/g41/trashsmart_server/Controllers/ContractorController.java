@@ -1,34 +1,31 @@
 package com.g41.trashsmart_server.Controllers;
 
-import com.g41.trashsmart_server.DTO.HouseholdUserDTO;
-import com.g41.trashsmart_server.Models.HouseholdUser;
-import com.g41.trashsmart_server.Services.HouseholdUserService;
+import com.g41.trashsmart_server.DTO.ContractorDTO;
+import com.g41.trashsmart_server.Models.Contractor;
+import com.g41.trashsmart_server.Services.ContractorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/household_user")
-public class HouseholdUserController {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+@RequestMapping(path = "api/v1/contractor")
+public class ContractorController {
 
-    private final HouseholdUserService householdUserService;
+    private final ContractorService contractorService;
 
     @Autowired
-    public HouseholdUserController(HouseholdUserService householdUserService) {
-        this.householdUserService = householdUserService;
+    public ContractorController(ContractorService contractorService) {
+        this.contractorService = contractorService;
     }
 
-    // Retrieve all active household users
+    // Retrieve all active contractors
     @GetMapping
     @Operation(
-            description = "Retrieve all active household users",
-            summary = "All the active(deleted = false) household users will be retrieved",
+            description = "Retrieve all active contractors",
+            summary = "All the active(deleted = false) contractors will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -40,15 +37,15 @@ public class HouseholdUserController {
                     )
             }
     )
-    public List<HouseholdUserDTO> getHouseholdUsers() {
-        return householdUserService.getHouseholdUsers();
+    public List<ContractorDTO> getContractors() {
+        return contractorService.getContractors();
     }
 
-    // Retrieve all logically deleted household users
+    // Retrieve all logically deleted contractors
     @GetMapping(path = "getDeletedAll")
     @Operation(
-            description = "Retrieve all logically deleted household users",
-            summary = "All the logically deleted(deleted = true) household users will be retrieved",
+            description = "Retrieve all logically deleted contractors",
+            summary = "All the logically deleted(deleted = true) contractors will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -60,15 +57,15 @@ public class HouseholdUserController {
                     )
             }
     )
-    public List<HouseholdUserDTO> getDeletedHouseholdUsers() {
-        return householdUserService.getDeletedHouseholdUsers();
+    public List<ContractorDTO> getDeletedContractors() {
+        return contractorService.getDeletedContractors();
     }
 
-    // Retrieve all the household users
+    // Retrieve all the contractors
     @GetMapping(path = "getAll")
     @Operation(
-            description = "Retrieve all the household users",
-            summary = "All the active and logically deleted household users will be retrieved",
+            description = "Retrieve all the contractors",
+            summary = "All the active and logically deleted contractors will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -80,15 +77,15 @@ public class HouseholdUserController {
                     )
             }
     )
-    public List<HouseholdUserDTO> getAllHouseholdUsers() {
-        return householdUserService.getAllHouseholdUsers();
+    public List<ContractorDTO> getAllContractors() {
+        return contractorService.getAllContractors();
     }
 
-    // Retrieve all the user details (Admin Privilege)
+    // Retrieve all the contractor details (Admin Privilege)
     @GetMapping(path = "getAllAdmin")
     @Operation(
-            description = "Retrieve all the household users",
-            summary = "All household users will be retrieved with all the details",
+            description = "Retrieve all the contractors",
+            summary = "All contractors will be retrieved with all the details",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -100,15 +97,15 @@ public class HouseholdUserController {
                     )
             }
     )
-    public List<HouseholdUser> getHouseholdUsersAdmin() {
-        return householdUserService.getHouseholdUsersAdmin();
+    public List<Contractor> getContractorsAdmin() {
+        return contractorService.getContractorsAdmin();
     }
 
-    // Retrieve a specific household user given the id
-    @GetMapping(path = "{household_user_id}")
+    // Retrieve a specific contractor given the id
+    @GetMapping(path = "{contractor_id}")
     @Operation(
-            description = "Retrieve a specific household user given the id",
-            summary = "A specific household user with the given id in the path will be retrieved",
+            description = "Retrieve a specific contractor given the id",
+            summary = "A specific contractor with the given id in the path will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -120,15 +117,15 @@ public class HouseholdUserController {
                     )
             }
     )
-    public HouseholdUserDTO getSpecificHouseholdUser(@PathVariable("household_user_id") Long id) {
-        return householdUserService.getSpecificHouseholdUser(id);
+    public ContractorDTO getSpecificContractor(@PathVariable("contractor_id") Long id) {
+        return contractorService.getSpecificContractor(id);
     }
 
-    // Create a new household user
+    // Create a new contractor
     @PostMapping(path = "register")
     @Operation(
-            description = "Create a new household user",
-            summary = "Create a new household user when the user details are sent in the body of the POST request",
+            description = "Create a new contractor",
+            summary = "Create a new contractor when the contractor details are sent in the body of the POST request",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -140,15 +137,15 @@ public class HouseholdUserController {
                     )
             }
     )
-    public void registerNewHouseholdUser(@RequestBody HouseholdUser householdUser) {
-        householdUserService.addNewHouseholdUser(householdUser);
+    public void registerNewContractor(@RequestBody Contractor contractor) {
+        contractorService.addNewContractor(contractor);
     }
 
-    // Logically delete a household user from the system
-    @DeleteMapping(path = "{household_user_id}")
+    // Logically delete a contractor from the system
+    @DeleteMapping(path = "{contractor_id}")
     @Operation(
-            description = "Logically delete a household user from the system",
-            summary = "Household user will be logically deleted from the system",
+            description = "Logically delete a contractor from the system",
+            summary = "Contractor will be logically deleted from the system",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -160,15 +157,15 @@ public class HouseholdUserController {
                     )
             }
     )
-    public void deleteHouseholdUser(@PathVariable("household_user_id") Long id) {
-        householdUserService.deleteHouseholdUser(id);
+    public void deleteContractor(@PathVariable("contractor_id") Long id) {
+        contractorService.deleteContractor(id);
     }
 
-    // Permanently delete a household user from the system (Admin Privilege)
-    @DeleteMapping(path = "delete/{household_user_id}")
+    // Permanently delete a contractor from the system (Admin Privilege)
+    @DeleteMapping(path = "delete/{contractor_id}")
     @Operation(
-            description = "Permanently delete a household user from the system",
-            summary = "Household user will be permanently deleted from the system",
+            description = "Permanently delete a contractor from the system",
+            summary = "Contractor will be permanently deleted from the system",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -180,15 +177,15 @@ public class HouseholdUserController {
                     )
             }
     )
-    public void deletePermanentHouseholdUser(@PathVariable("household_user_id") Long id) {
-        householdUserService.deletePermanentHouseholdUser(id);
+    public void deletePermanentContractor(@PathVariable("contractor_id") Long id) {
+        contractorService.deletePermanentContractor(id);
     }
 
-    // Update household user details
-    @PutMapping(path = "{household_user_id}")
+    // Update contractor details
+    @PutMapping(path = "{contractor_id}")
     @Operation(
-            description = "Update household user details",
-            summary = "Household user details will be updated based on the object passed",
+            description = "Update contractor details",
+            summary = "Contractor details will be updated based on the object passed",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -200,8 +197,8 @@ public class HouseholdUserController {
                     )
             }
     )
-    public void updateHouseholdUser(@PathVariable("household_user_id") Long id,
-                                    @RequestBody HouseholdUser householdUser) {
-        householdUserService.updateHouseholdUser(id, householdUser);
+    public void updateContractor(@PathVariable("contractor_id") Long id,
+                                 @RequestBody Contractor contractor) {
+        contractorService.updateContractor(id, contractor);
     }
 }

@@ -5,11 +5,17 @@ import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @Configuration
 public class HouseholdUserConfig {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Bean
     CommandLineRunner householdUserCommandLineRunner(HouseholdUserRepository householdUserRepository) {
         return args -> {
@@ -17,7 +23,7 @@ public class HouseholdUserConfig {
                     "Rusara",
                     "Wimalasena",
                     "rusara.wimalasena123@gmail.com",
-                    "password@12345678",
+                    passwordEncoder.encode("password123"),
                     "0712990638",
                     "35, Reid Avenue, Colombo 07",
                     "www.google.com"
@@ -26,7 +32,7 @@ public class HouseholdUserConfig {
                     "Lasith",
                     "Ranahewa",
                     "lasith.ranahewa@gmail.com",
-                    "password@12345678",
+                    passwordEncoder.encode("password@12345678"),
                     "0712990639",
                     "50, Reid Avenue, Colombo 07",
                     "www.facebook.com"
