@@ -38,6 +38,12 @@ public abstract class SystemUser extends User {
         this.nic = nic;
     }
 
+    public SystemUser(String firstName, String lastName, String email, String password, Role role, LocalDateTime now, LocalDate dob, String nic) {
+        super(firstName, lastName, email, password, role, now);
+        this.dob = dob;
+        this.nic = nic;
+    }
+
     // Getters and Setters
     public LocalDate getDob() {
         return dob;
