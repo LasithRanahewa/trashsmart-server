@@ -12,12 +12,14 @@ public class RecyclingPlant extends BusinessUser {
     private String BRN;
 
     public RecyclingPlant() {
+        this.setRole(Role.RECYCLING_PLANT);
     }
 
     public RecyclingPlant(String firstName, String lastName, String email, String password, String contactNo,
-                          String address, Role role, String profileURL, LocalDateTime createdTimeStamp, String BRN) {
-        super(firstName, lastName, email, password, contactNo, address, role, profileURL, createdTimeStamp);
+                          String address, String profileURL, String BRN) {
+        super(firstName, lastName, email, password, contactNo, address, profileURL, LocalDateTime.now());
         this.BRN = BRN;
+        this.setRole(Role.RECYCLING_PLANT);
     }
 
     // Getters and Setters
