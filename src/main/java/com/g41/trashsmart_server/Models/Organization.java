@@ -27,11 +27,15 @@ public class Organization extends BusinessUser {
     private List<WasteCollectionRequest> wasteCollectionRequests;
 
     public Organization() {
+        this.setRole(Role.ORGANIZATION);
     }
 
     public Organization(String firstName, String lastName, String email, String password, String contactNo,
-                        String address, Role role, String profileURL, LocalDateTime createdTimeStamp) {
-        super(firstName, lastName, email, password, contactNo, address, role, profileURL, createdTimeStamp);
+                        String address, String profileURL, Scale scale, OrgType orgType) {
+        super(firstName, lastName, email, password, contactNo, address, profileURL, LocalDateTime.now());
+        this.scale = scale;
+        this.orgType = orgType;
+        this.setRole(Role.ORGANIZATION);
     }
 
     // Getters and Setters
@@ -67,11 +71,11 @@ public class Organization extends BusinessUser {
         this.scale = scale;
     }
 
-    public OrgType getType() {
+    public OrgType getOrgType() {
         return orgType;
     }
 
-    public void setType(OrgType orgType) {
+    public void setOrgType(OrgType orgType) {
         this.orgType = orgType;
     }
 
