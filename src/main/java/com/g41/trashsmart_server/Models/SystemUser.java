@@ -15,25 +15,25 @@ public abstract class SystemUser extends User {
     }
 
     // Contactor registration
-    public SystemUser(String firstName, String lastName, String email, String password, Role role,
-                      LocalDateTime createdTimeStamp, LocalDate dob, String nic) {
-        super(firstName, lastName, email, password, role, createdTimeStamp);
+    public SystemUser(String firstName, String lastName, String email, String password, LocalDateTime createdTimeStamp,
+                      LocalDate dob, String nic) {
+        super(firstName, lastName, email, password, createdTimeStamp);
         this.dob = dob;
         this.nic = nic;
     }
 
     // Driver/Cleaner ContactNo Registration no Email
-    public SystemUser(String firstName, String lastName, String password, String contactNo, String address, Role role,
+    public SystemUser(String firstName, String lastName, String password, String contactNo, String address,
                       String profileURL, LocalDateTime createdTimeStamp, LocalDate dob, String nic) {
-        super(firstName, lastName, password, contactNo, address, role, profileURL, createdTimeStamp);
+        super(firstName, lastName, password, contactNo, address, profileURL, createdTimeStamp);
         this.dob = dob;
         this.nic = nic;
     }
 
     // Driver/Cleaner Email Registration
-    public SystemUser(String firstName, String lastName, String password, String contactNo, String address, Role role,
+    public SystemUser(String firstName, String lastName, String password, String contactNo, String address,
                       String email, String profileURL, LocalDateTime createdTimeStamp, LocalDate dob, String nic) {
-        super(firstName, lastName, password, contactNo, address, role, email, profileURL, createdTimeStamp);
+        super(firstName, lastName, password, contactNo, address, email, createdTimeStamp, profileURL);
         this.dob = dob;
         this.nic = nic;
     }
