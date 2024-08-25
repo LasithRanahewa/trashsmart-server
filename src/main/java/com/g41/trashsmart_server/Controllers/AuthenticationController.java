@@ -7,11 +7,15 @@ import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Contractor;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,5 +50,16 @@ public class AuthenticationController {
 
         String jwt = jwtUtils.generateToken(userDetails.getUsername(), role.name());
         return new AuthenticationResponse(jwt);
+    }
+
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            String token = request.getHeader("Authorization").substring(7); // Remove "Bearer " prefix
+            jwtUtils.invalidateToken(token);
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 }

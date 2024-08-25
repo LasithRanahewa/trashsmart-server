@@ -10,11 +10,14 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class JwtUtils {
 
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    private Map<String, Date> invalidatedTokens = new ConcurrentHashMap<>();
 
 //    public String generateToken(String username) {
 //        return Jwts.builder()
@@ -49,5 +52,10 @@ public class JwtUtils {
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         return claims.getSubject();
+    }
+
+    public void invalidateToken(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        invalidatedTokens.put(token, claims.getExpiration());
     }
 }
