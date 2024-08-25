@@ -19,19 +19,21 @@ public class Driver extends SystemUser {
     private Integer numberOfHolidays = 0;
 
     public Driver() {
+        this.setRole(Role.DRIVER);
     }
 
     // Driver ContactNo Registration no Email
-
-    public Driver(String firstName, String lastName, String password, String contactNo, String address, Role role,
-                  String profileURL, LocalDateTime createdTimeStamp, LocalDate dob, String nic) {
-        super(firstName, lastName, password, contactNo, address, role, profileURL, createdTimeStamp, dob, nic);
+    public Driver(String firstName, String lastName, String password, String contactNo, String address, String profileURL,
+                  LocalDate dob, String nic) {
+        super(firstName, lastName, password, contactNo, address, profileURL, LocalDateTime.now(), dob, nic);
+        this.setRole(Role.DRIVER);
     }
 
     // Driver Email Registration
-    public Driver(String firstName, String lastName, String password, String contactNo, String address, Role role,
-                  String email, String profileURL, LocalDateTime createdTimeStamp, LocalDate dob, String nic) {
-        super(firstName, lastName, password, contactNo, address, role, email, profileURL, createdTimeStamp, dob, nic);
+    public Driver(String firstName, String lastName, String password, String contactNo, String address, String email,
+                  String profileURL, LocalDate dob, String nic) {
+        super(firstName, lastName, password, contactNo, address, email, profileURL, LocalDateTime.now(), dob, nic);
+        this.setRole(Role.DRIVER);
     }
 
     // Getters and Setters
