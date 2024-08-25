@@ -2,9 +2,11 @@ package com.g41.trashsmart_server.Services;
 
 import com.g41.trashsmart_server.DTO.HouseholdUserDTO;
 import com.g41.trashsmart_server.DTO.HouseholdUserDTOMapper;
+import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 public class HouseholdUserService {
     private final HouseholdUserRepository householdUserRepository;
     private final HouseholdUserDTOMapper householdUserDTOMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public HouseholdUserService(HouseholdUserRepository householdUserRepository,
@@ -63,6 +68,9 @@ public class HouseholdUserService {
 
     // Create a new household user
     public void addNewHouseholdUser(HouseholdUser householdUser) {
+        householdUser.setPassword(passwordEncoder.encode(householdUser.getPassword()));
+        householdUser.setRole(Role.HOUSEHOLD_USER);
+
         Optional<HouseholdUser> householdUserOptional = householdUserRepository.findHouseholdUserByEmail(
                 householdUser.getEmail()
         );
