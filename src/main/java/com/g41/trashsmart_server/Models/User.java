@@ -30,52 +30,47 @@ public abstract class User{
     }
 
     // For Contractor Registration
-    public User(String firstName, String lastName, String email, String password, Role role,
-                LocalDateTime createdTimeStamp) {
+    public User(String firstName, String lastName, String email, String password, LocalDateTime createdTimeStamp) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.role = role;
         this.createdTimeStamp = createdTimeStamp;
     }
 
     // For HouseholdUser/OrganizationUser/RecyclingPlant Email/ContactNo Registration
     public User(String firstName, String lastName, String email, String password, String contactNo, String address,
-                Role role, String profileURL, LocalDateTime createdTimeStamp) {
+                String profileURL, LocalDateTime createdTimeStamp) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.contactNo = contactNo;
         this.address = address;
-        this.role = role;
         this.profileURL = profileURL;
         this.createdTimeStamp = createdTimeStamp;
     }
 
     // For Driver/Cleaner ContactNo Registration (no email)
-    public User(String firstName, String lastName, String password, String contactNo, String address, Role role,
-                String profileURL, LocalDateTime createdTimeStamp) {
+    public User(String firstName, String lastName, String password, String contactNo, String address, String profileURL,
+                LocalDateTime createdTimeStamp) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.contactNo = contactNo;
         this.address = address;
-        this.role = role;
         this.profileURL = profileURL;
         this.createdTimeStamp = createdTimeStamp;
     }
 
     // For Driver/Cleaner Email Registration with ContactNo
-    public User(String firstName, String lastName, String password, String contactNo, String address, Role role,
-                String email, String profileURL, LocalDateTime createdTimeStamp) {
+    public User(String firstName, String lastName, String password, String contactNo, String address, String email,
+                LocalDateTime createdTimeStamp, String profileURL) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.contactNo = contactNo;
         this.address = address;
-        this.role = role;
         this.email = email;
         this.profileURL = profileURL;
         this.createdTimeStamp = createdTimeStamp;
