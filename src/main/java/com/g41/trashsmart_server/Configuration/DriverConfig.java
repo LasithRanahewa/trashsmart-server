@@ -2,22 +2,27 @@ package com.g41.trashsmart_server.Configuration;
 
 import com.g41.trashsmart_server.Models.Driver;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.util.List;
 
 @Configuration
 public class DriverConfig {
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Bean
     CommandLineRunner driverCommandLineRunner(DriverRepository driverRepository) {
         return args -> {
             Driver rumal = new Driver(
                     "Rumal",
                     "Gunawardana",
-                    "password@12345678",
+                    passwordEncoder.encode("password123"),
                     "0714394788",
                     "Kurunegala",
                     "www.google.com",
@@ -27,7 +32,7 @@ public class DriverConfig {
             Driver winditha = new Driver(
                     "Winditha",
                     "Gunawardana",
-                    "password@12345678",
+                    passwordEncoder.encode("password123"),
                     "0789209595",
                     "Kurunegala",
                     "rumalg123@gmail.com",
