@@ -5,11 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-public abstract class User {
+public abstract class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -73,6 +74,15 @@ public abstract class User {
         this.email = email;
         this.profileURL = profileURL;
         this.createdTimeStamp = createdTimeStamp;
+    }
+
+    public User(String firstName, String lastName, String email, String password, Role role, LocalDateTime now) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.createdTimeStamp = now;
     }
 
     // Getters and Setters
@@ -162,5 +172,9 @@ public abstract class User {
 
     public void setCreatedTimeStamp(LocalDateTime createdTimeStamp) {
         this.createdTimeStamp = createdTimeStamp;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }
