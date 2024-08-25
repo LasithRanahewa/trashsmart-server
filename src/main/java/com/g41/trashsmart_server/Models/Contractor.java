@@ -11,10 +11,11 @@ import java.time.LocalDateTime;
 @Table
 public class Contractor extends SystemUser {
     public Contractor() {
+        this.setRole(Role.CONTRACTOR);
     }
 
-    public Contractor(String firstName, String lastName, String email, String password, Role role,
-                      LocalDateTime createdTimeStamp, LocalDate dob, String nic) {
-        super(firstName, lastName, email, password, role, createdTimeStamp, dob, nic);
+    public Contractor(String firstName, String lastName, String email, String password, LocalDate dob, String nic) {
+        super(firstName, lastName, email, password, LocalDateTime.now(), dob, nic);
+        this.setRole(Role.CONTRACTOR);
     }
 }

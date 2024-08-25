@@ -16,11 +16,13 @@ public class HouseholdUser extends BusinessUser {
     private Suburb suburb;
 
     public HouseholdUser() {
+        this.setRole(Role.HOUSEHOLD_USER);
     }
 
     public HouseholdUser(String firstName, String lastName, String email, String password, String contactNo,
                          String address, String profileURL) {
-        super(firstName, lastName, email, password, contactNo, address, Role.HOUSEHOLD_USER, profileURL, LocalDateTime.now());
+        super(firstName, lastName, email, password, contactNo, address, profileURL, LocalDateTime.now());
+        this.setRole(Role.HOUSEHOLD_USER);
     }
 
     public Suburb getSuburb() {
