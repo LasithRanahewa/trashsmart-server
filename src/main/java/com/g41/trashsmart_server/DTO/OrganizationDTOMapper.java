@@ -22,7 +22,7 @@ public class OrganizationDTOMapper implements Function<Organization, Organizatio
                 organization.getTotalWaste(),
                 organization.getRecyclableWaste(),
                 organization.getScale(),
-                organization.getType(),
+                organization.getOrgType(),
                 organization.getContractStartDate(),
                 organization.getContractEndDate(),
                 organization.getCommercialBins(),

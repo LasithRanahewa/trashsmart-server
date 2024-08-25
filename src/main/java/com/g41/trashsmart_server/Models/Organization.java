@@ -30,8 +30,10 @@ public class Organization extends BusinessUser {
     }
 
     public Organization(String firstName, String lastName, String email, String password, String contactNo,
-                        String address, String profileURL) {
+                        String address, String profileURL, Scale scale, OrgType orgType) {
         super(firstName, lastName, email, password, contactNo, address, Role.ORGANIZATION, profileURL, LocalDateTime.now());
+        this.scale = scale;
+        this.orgType = orgType;
     }
 
     // Getters and Setters
@@ -67,11 +69,11 @@ public class Organization extends BusinessUser {
         this.scale = scale;
     }
 
-    public OrgType getType() {
+    public OrgType getOrgType() {
         return orgType;
     }
 
-    public void setType(OrgType orgType) {
+    public void setOrgType(OrgType orgType) {
         this.orgType = orgType;
     }
 

@@ -149,8 +149,8 @@ public class OrganizationService {
         if (organization.getScale() != null && !organizationToUpdate.getScale().equals(organization.getScale())) {
             organizationToUpdate.setScale(organization.getScale());
         }
-        if (organization.getType() != null && !organizationToUpdate.getType().equals(organization.getType())) {
-            organizationToUpdate.setType(organization.getType());
+        if (organization.getOrgType() != null && !organizationToUpdate.getOrgType().equals(organization.getOrgType())) {
+            organizationToUpdate.setOrgType(organization.getOrgType());
         }
         if (organization.getContractStartDate() != null &&
                 !organizationToUpdate.getContractStartDate().equals(organization.getContractStartDate())) {
@@ -158,7 +158,7 @@ public class OrganizationService {
         }
         if (organization.getContractEndDate() != null &&
                 !organizationToUpdate.getContractEndDate().equals(organization.getContractEndDate())) {
-            organizationToUpdate.setContractStartDate(organization.getContractEndDate());
+            organizationToUpdate.setContractEndDate(organization.getContractEndDate());
         }
         if (organization.getCommercialBins() != null && !organization.getCommercialBins().isEmpty() &&
                 !organizationToUpdate.getCommercialBins().equals(organization.getCommercialBins())) {
