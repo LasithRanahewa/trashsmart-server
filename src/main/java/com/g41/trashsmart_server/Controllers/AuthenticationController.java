@@ -6,17 +6,24 @@ import com.g41.trashsmart_server.DTO.AuthenticationResponse;
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Contractor;
+import com.g41.trashsmart_server.Repositories.ContractorRepository;
+import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -30,36 +37,56 @@ public class AuthenticationController {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private HouseholdUserRepository householdUserRepository;
+    @Autowired
+    private ContractorRepository contractorRepository;
 
     @PostMapping("/login")
-    public AuthenticationResponse authenticateUser(@RequestBody AuthenticationRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest request) {
+        try {
+            String email = request.getEmail();
+            Optional<HouseholdUser> householdUser = householdUserRepository.findHouseholdUserByEmail(email);
+            Optional<Contractor> contractor = contractorRepository.findContractorByEmail(email);
 
-        //get the role of the user by checking the instance of the user
-        Role role;
-        if (userDetails instanceof HouseholdUser) {
-            role = ((HouseholdUser) userDetails).getRole();
-        } else if (userDetails instanceof Contractor) {
-            role = ((Contractor) userDetails).getRole();
-        } else {
-            throw new IllegalStateException("Unknown user type");
+            if (householdUser.isEmpty() && contractor.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            
+            //get the role of the user by checking the instance of the user
+            Role role;
+            if (userDetails instanceof HouseholdUser) {
+                role = ((HouseholdUser) userDetails).getRole();
+            } else if (userDetails instanceof Contractor) {
+                role = ((Contractor) userDetails).getRole();
+            } else {
+                throw new IllegalStateException("Unknown user type");
+            }
+            String jwt = jwtUtils.generateToken(userDetails.getUsername(), role.name());
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
-        String jwt = jwtUtils.generateToken(userDetails.getUsername(), role.name());
-        return new AuthenticationResponse(jwt);
     }
 
-    @PostMapping("/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            String token = request.getHeader("Authorization").substring(7); // Remove "Bearer " prefix
-            jwtUtils.invalidateToken(token);
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        response.setStatus(HttpServletResponse.SC_OK);
-    }
+   @PostMapping("/logout")
+   public void logout(HttpServletRequest request, HttpServletResponse response) {
+       String authHeader = request.getHeader("Authorization");
+       if (authHeader != null && authHeader.startsWith("Bearer ")) {
+           String token = authHeader.substring(7); // Remove "Bearer " prefix
+           Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+           if (auth != null) {
+               jwtUtils.invalidateToken(token);
+               new SecurityContextLogoutHandler().logout(request, response, auth);
+           }
+           response.setStatus(HttpServletResponse.SC_OK);
+       } else {
+           response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+       }
+   }
 }
