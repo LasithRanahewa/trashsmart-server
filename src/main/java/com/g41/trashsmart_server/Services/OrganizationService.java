@@ -1,5 +1,7 @@
 package com.g41.trashsmart_server.Services;
 
+import com.g41.trashsmart_server.Configuration.SMTPGmailSenderService;
+import com.g41.trashsmart_server.Configuration.SecurityConfig;
 import com.g41.trashsmart_server.DTO.OrganizationDTO;
 import com.g41.trashsmart_server.DTO.OrganizationDTOMapper;
 import com.g41.trashsmart_server.Models.Organization;
@@ -22,6 +24,12 @@ public class OrganizationService {
         this.organizationRepository = organizationRepository;
         this.organizationDTOMapper = organizationDTOMapper;
     }
+
+    @Autowired
+    private SecurityConfig securityConfig;
+
+    @Autowired
+    private SMTPGmailSenderService smtpGmailSenderService;
 
     // Retrieve all active organizations
     public List<OrganizationDTO> getOrganizations() {
@@ -68,6 +76,19 @@ public class OrganizationService {
         );
         if(organizationOptional.isPresent()) {
             throw new IllegalStateException("Email Taken");
+        }
+        if(organization.getPassword()==null || organization.getPassword().isEmpty()) {
+            organization.setPassword(securityConfig.generateRandomPassword(10));
+
+            String subject = "TrashSmart Account Created";
+            String body = "Hello, " + organization.getFirstName() + "!\n" +
+                    "Your TrashSmart account has been created successfully.\n" +
+                    "Your login credentials are as follows:\n" +
+                    "Email: " + organization.getEmail() + "\n" +
+                    "Password: " + organization.getPassword() + "\n" +
+                    "Please change your password after logging in.\n" +
+                    "Thank you for choosing TrashSmart!";
+            smtpGmailSenderService.sendEmail(organization.getEmail(), subject, body);
         }
         organizationRepository.save(organization);
     }
