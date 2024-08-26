@@ -1,11 +1,22 @@
 package com.g41.trashsmart_server.Controllers;
 
+import com.g41.trashsmart_server.Configuration.JwtUtils;
+import com.g41.trashsmart_server.DTO.AuthenticationResponse;
 import com.g41.trashsmart_server.DTO.HouseholdUserDTO;
+import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.HouseholdUser;
+import com.g41.trashsmart_server.Repositories.ContractorRepository;
+import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
 import com.g41.trashsmart_server.Services.HouseholdUserService;
+import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +29,16 @@ public class HouseholdUserController {
     private PasswordEncoder passwordEncoder;
 
     private final HouseholdUserService householdUserService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
 
     @Autowired
     public HouseholdUserController(HouseholdUserService householdUserService) {
@@ -125,7 +146,7 @@ public class HouseholdUserController {
     }
 
     // Create a new household user
-    @PostMapping(path = "register")
+    @PostMapping(path = "")
     @Operation(
             description = "Create a new household user",
             summary = "Create a new household user when the user details are sent in the body of the POST request",
@@ -142,6 +163,36 @@ public class HouseholdUserController {
     )
     public void registerNewHouseholdUser(@RequestBody HouseholdUser householdUser) {
         householdUserService.addNewHouseholdUser(householdUser);
+    }
+
+    // Self register a new household user
+    @Operation(
+            description = "Self register a new household user",
+            summary = "Self register a new household user when the user details are sent in the body of the POST request",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    @PostMapping(path = "register")
+    public ResponseEntity<AuthenticationResponse> SelfRegisterNewHouseholdUser(@RequestBody HouseholdUser householdUser) {
+        householdUserService.addNewHouseholdUser(householdUser);
+//      //add validations later
+        // Authenticate the user
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(householdUser.getUsername(), householdUser.getPassword())
+        );
+        // Load user details
+        UserDetails userDetails = userDetailsService.loadUserByUsername(householdUser.getUsername());
+        // Generate JWT token
+        String jwt = jwtUtils.generateToken(userDetails.getUsername(), Role.HOUSEHOLD_USER.name());
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
     // Logically delete a household user from the system
