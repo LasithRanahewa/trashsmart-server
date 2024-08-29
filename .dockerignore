@@ -4,3 +4,4 @@ Dockerfile
 .dockerignore
 target
 .idea
+docker-compose.yml
