@@ -64,7 +64,7 @@ public class OrganizationService {
     public OrganizationDTO getSpecificOrganization(Long id) {
         Optional<Organization> organizationOptional = organizationRepository.findById(id);
         if(organizationOptional.isEmpty()) {
-            throw new IllegalStateException("Organization with id " + id + " does not exists");
+            throw new IllegalStateException("Organization with id " + id + " does not exist");
         }
         return organizationDTOMapper.apply(organizationOptional.get());
     }
@@ -97,7 +97,7 @@ public class OrganizationService {
     public void deleteOrganization(Long userId) {
         Optional<Organization> organizationOptional = organizationRepository.findById(userId);
         if(organizationOptional.isEmpty()) {
-            throw new IllegalStateException("Organization with id " + userId + " does not exists");
+            throw new IllegalStateException("Organization with id " + userId + " does not exist");
         }
         Organization organizationToDelete = organizationOptional.get();
         organizationToDelete.setDeleted(true);
@@ -108,7 +108,7 @@ public class OrganizationService {
     public void deletePermanentOrganization(Long userId) {
         boolean exists = organizationRepository.existsById(userId);
         if(!exists) {
-            throw new IllegalStateException("Organization with id " + userId + " does not exists");
+            throw new IllegalStateException("Organization with id " + userId + " does not exist");
         }
         organizationRepository.deleteById(userId);
     }
@@ -116,7 +116,7 @@ public class OrganizationService {
     // Update organization details
     public void updateOrganization(Long id, Organization organization) {
         Organization organizationToUpdate = organizationRepository.findById(id).orElseThrow(
-                () -> new IllegalStateException("Organization with id " + id + " does not exists")
+                () -> new IllegalStateException("Organization with id " + id + " does not exist")
         );
         if (organization.getFirstName() != null && !organization.getFirstName().isEmpty() &&
                 !organizationToUpdate.getFirstName().equals(organization.getFirstName())) {

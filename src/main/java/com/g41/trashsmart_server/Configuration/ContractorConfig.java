@@ -1,6 +1,5 @@
 package com.g41.trashsmart_server.Configuration;
 
-import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.Contractor;
 import com.g41.trashsmart_server.Repositories.ContractorRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Configuration
-public class ContractorUserConfig {
+public class ContractorConfig {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
