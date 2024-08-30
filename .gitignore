@@ -21,3 +21,6 @@ src/main/resources/env.properties
 .DS_Store
 src/.DS_Store
 src/main/.DS_Store
+docker-compose.yml
+.vscode
+
