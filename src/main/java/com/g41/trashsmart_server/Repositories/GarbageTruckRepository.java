@@ -11,11 +11,15 @@ import java.util.Optional;
 public interface GarbageTruckRepository extends JpaRepository<GarbageTruck, Long> {
     // Select a specific garbage truck using ID
     @Query("SELECT truck FROM GarbageTruck truck WHERE truck.id = :id")
-    Optional<GarbageTruck> findGarbageTruckById(Long id);
+    Optional<GarbageTruck> findGarbageTruckById(Long id, boolean deleted);
 
     // Select a specific garbage truck using license plate
     @Query("SELECT truck FROM GarbageTruck truck WHERE truck.licencePlateNo = :license_plate")
     Optional<GarbageTruck> findGarbageTruckByLicensePlate(String license_plate);
+
+    // Select all the garbage trucks in the system active/logically deleted
+    @Query("SELECT truck FROM GarbageTruck truck WHERE truck.deleted = :deleted")
+    List<GarbageTruck> findAllGarbageTrucks(Boolean deleted);
 
     // Select all the garbage trucks registered with the system
     @Query("SELECT truck FROM GarbageTruck truck")
