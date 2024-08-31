@@ -7,10 +7,14 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table
-public class Driver extends SystemUser {
+public class Driver extends SystemUser implements  UserDetails{
     private Status status = Status.ACTIVE;
     private Integer totalCollections = 0;
     private Integer currentStreak = 0;
@@ -83,5 +87,41 @@ public class Driver extends SystemUser {
 
     public void setNumberOfHolidays(Integer numberOfHolidays) {
         this.numberOfHolidays = numberOfHolidays;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Return the authorities granted to the user
+        return null; // Replace with actual authorities
+    }
+
+    @Override
+    public String getPassword() {
+        return super.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return super.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !super.isDeleted();
     }
 }

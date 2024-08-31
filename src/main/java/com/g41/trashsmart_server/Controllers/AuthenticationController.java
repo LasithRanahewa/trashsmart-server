@@ -8,6 +8,7 @@ import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Contractor;
 import com.g41.trashsmart_server.Repositories.ContractorRepository;
 import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
+import com.g41.trashsmart_server.Repositories.DriverRepository;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Driver;
 import java.util.Optional;
 
 @RestController
@@ -41,6 +43,8 @@ public class AuthenticationController {
     private HouseholdUserRepository householdUserRepository;
     @Autowired
     private ContractorRepository contractorRepository;
+    @Autowired
+    private DriverRepository driverRepository;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest request) {
@@ -48,8 +52,9 @@ public class AuthenticationController {
             String email = request.getEmail();
             Optional<HouseholdUser> householdUser = householdUserRepository.findHouseholdUserByEmail(email);
             Optional<Contractor> contractor = contractorRepository.findContractorByEmail(email);
+            Optional<com.g41.trashsmart_server.Models.Driver> driver = driverRepository.findDriverByEmail(email);
 
-            if (householdUser.isEmpty() && contractor.isEmpty()) {
+            if (householdUser.isEmpty() && contractor.isEmpty() && driver.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
@@ -64,6 +69,8 @@ public class AuthenticationController {
                 role = ((HouseholdUser) userDetails).getRole();
             } else if (userDetails instanceof Contractor) {
                 role = ((Contractor) userDetails).getRole();
+            } else if (userDetails instanceof com.g41.trashsmart_server.Models.Driver) { 
+                role = ((com.g41.trashsmart_server.Models.Driver) userDetails).getRole();
             } else {
                 throw new IllegalStateException("Unknown user type");
             }

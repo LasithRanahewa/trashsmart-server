@@ -37,5 +37,19 @@ public class DriverController {
     public DriverDTO getSpecificDriver(@PathVariable("driver_id") Long id) {
         return driverService.getSpecificDriver(id);
     }
+
+    @PutMapping(path = "update/{driver_id}")
+    @Operation(
+            description = "Update a specific driver's details",
+            summary = "The details of a driver with the given id will be updated",
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200"),
+                    @ApiResponse(description = "Unauthorized / Invalid Token", responseCode = "403"),
+                    @ApiResponse(description = "Not Found", responseCode = "404")
+            }
+    )
+    public DriverDTO updateDriver(@PathVariable("driver_id") Long id, @RequestBody DriverDTO driverDTO) {
+        return driverService.updateDriver(id, driverDTO);
+    }
     
 }
