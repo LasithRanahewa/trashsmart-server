@@ -37,7 +37,7 @@ public class DriverController {
     public DriverDTO getSpecificDriver(@PathVariable("driver_id") Long id) {
         return driverService.getSpecificDriver(id);
     }
-
+// update a specific driver's details
     @PutMapping(path = "update/{driver_id}")
     @Operation(
             description = "Update a specific driver's details",
@@ -48,8 +48,8 @@ public class DriverController {
                     @ApiResponse(description = "Not Found", responseCode = "404")
             }
     )
-    public DriverDTO updateDriver(@PathVariable("driver_id") Long id, @RequestBody DriverDTO driverDTO) {
-        return driverService.updateDriver(id, driverDTO);
+    public void updateDriver(@PathVariable("driver_id") Long id, @RequestBody Driver driver) {
+        driverService.updateDriver(id, driver);
     }
     
 }

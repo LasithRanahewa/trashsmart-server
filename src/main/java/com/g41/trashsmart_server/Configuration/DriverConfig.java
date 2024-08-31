@@ -25,6 +25,7 @@ public class DriverConfig {
                     passwordEncoder.encode("password123"),
                     "0714394788",
                     "Kurunegala",
+                    "pachax001@gmail.com",
                     "www.google.com",
                     LocalDate.of(2001, 4, 9),
                     "200110004143"

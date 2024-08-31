@@ -33,45 +33,47 @@ public class DriverService {
         }
         return driverDTOMapper.apply(driverOptional.get());
     }
-    @Transactional
-    public DriverDTO updateDriver(Long id, DriverDTO driverDTO) {
-        Driver driver = driverRepository.findById(id).orElseThrow(() ->
-                new IllegalStateException("Driver with id " + id + " does not exist"));
-
-        if (driverDTO.getFirstName() != null) {
-            driver.setFirstName(driverDTO.getFirstName());
+    
+    public void updateDriver(Long id, Driver driver) {
+        Driver driverToUpdate = driverRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("Driver with id " + id + " does not exists")
+        );
+        if (driver.getFirstName() != null && !driver.getFirstName().isEmpty() &&
+                !driverToUpdate.getFirstName().equals(driver.getFirstName())) {
+            driverToUpdate.setFirstName(driver.getFirstName());
         }
-
-        if (driverDTO.getLastName() != null) {
-            driver.setLastName(driverDTO.getLastName());
+        if (driver.getLastName() != null && !driver.getLastName().isEmpty() &&
+                !driverToUpdate.getLastName().equals(driver.getLastName())) {
+            driverToUpdate.setLastName(driver.getLastName());
         }
-
-        if (driverDTO.getEmail() != null) {
-            driver.setEmail(driverDTO.getEmail());
+        if (driver.getEmail() != null && !driver.getEmail().isEmpty() &&
+                !driverToUpdate.getEmail().equals(driver.getEmail())) {
+            Optional<Driver> driverOptional = driverRepository.findDriverByEmail(
+                    driver.getEmail(), false
+            );
+            if (driverOptional.isPresent()) {
+                throw new IllegalStateException("Email Taken");
+            }
+            driverToUpdate.setEmail(driver.getEmail());
         }
-
-        if (driverDTO.getContactNo() != null) {
-            driver.setContactNo(driverDTO.getContactNo());
+        if (driver.getContactNo() != null && !driverToUpdate.getContactNo().equals(driver.getContactNo())) {
+            driverToUpdate.setContactNo(driver.getContactNo());
         }
-
-        if (driverDTO.getAddress() != null) {
-            driver.setAddress(driverDTO.getAddress());
+        if (driver.getAddress() != null && !driverToUpdate.getAddress().equals(driver.getAddress())) {
+            driverToUpdate.setAddress(driver.getAddress());
         }
-
-        
-
-        if (driverDTO.getProfileURL() != null) {
-            driver.setProfileURL(driverDTO.getProfileURL());
+        if (driver.getProfileURL() != null && !driverToUpdate.getProfileURL().equals(driver.getProfileURL())) {
+            driverToUpdate.setProfileURL(driver.getProfileURL());
         }
-
-        
-
-        // Save the updated driver back to the database
-        driverRepository.save(driver);
-
-        // Return the updated DriverDTO
-        return driverDTOMapper.apply(driver);
+        if (driver.getDob() != null && !driverToUpdate.getDob().equals(driver.getDob())) {
+            driverToUpdate.setDob(driver.getDob());
+        }
+        if (driver.getNic() != null && !driverToUpdate.getNic().equals(driver.getNic())) {
+            driverToUpdate.setNic(driver.getNic());
+        }
+        driverRepository.save(driverToUpdate);
     }
+    
     
     
 }
