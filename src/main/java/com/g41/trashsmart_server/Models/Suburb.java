@@ -16,6 +16,8 @@ public class Suburb {
     private List<HouseholdUser> householdUsers;
     @OneToMany(mappedBy = "suburb")
     private List<SmartBin> smartBins;
+    @OneToMany(mappedBy = "suburb")
+    private List<Dispatch> dispatches;
 
     public Suburb() {
     }
@@ -63,5 +65,13 @@ public class Suburb {
 
     public void setSmartBins(List<SmartBin> smartBins) {
         this.smartBins = smartBins;
+    }
+
+    public List<Dispatch> getDispatches() {
+        return dispatches;
+    }
+
+    public void setDispatches(List<Dispatch> dispatches) {
+        this.dispatches = dispatches;
     }
 }
