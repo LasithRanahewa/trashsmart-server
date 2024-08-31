@@ -3,6 +3,8 @@ package com.g41.trashsmart_server.Models;
 import com.g41.trashsmart_server.Enums.TruckStatus;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table
 public class GarbageTruck {
@@ -13,6 +15,8 @@ public class GarbageTruck {
     private Integer mileage;
     private Integer maxVolume;
     private TruckStatus truckStatus = TruckStatus.IDLE;
+    @OneToMany(mappedBy = "garbageTruck")
+    private List<Dispatch> dispatches;
 
     public GarbageTruck() {
     }
@@ -61,5 +65,13 @@ public class GarbageTruck {
 
     public void setTruckStatus(TruckStatus truckStatus) {
         this.truckStatus = truckStatus;
+    }
+
+    public List<Dispatch> getDispatches() {
+        return dispatches;
+    }
+
+    public void setDispatches(List<Dispatch> dispatches) {
+        this.dispatches = dispatches;
     }
 }
