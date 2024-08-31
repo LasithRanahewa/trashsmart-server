@@ -19,6 +19,9 @@ public class WasteCollectionRequest {
     @ManyToOne
     @JoinColumn(name = "organization_id")
     private Organization organization;
+    @ManyToOne
+    @JoinColumn(name = "dispatch_id")
+    private OrganizationDispatch organizationDispatch;
 
     public WasteCollectionRequest() {
     }
@@ -74,5 +77,13 @@ public class WasteCollectionRequest {
 
     public void setOrganization(Organization organization) {
         this.organization = organization;
+    }
+
+    public OrganizationDispatch getOrganizationDispatch() {
+        return organizationDispatch;
+    }
+
+    public void setOrganizationDispatch(OrganizationDispatch organizationDispatch) {
+        this.organizationDispatch = organizationDispatch;
     }
 }
