@@ -14,6 +14,8 @@ public class WasteCollectionRequest {
     private Long id;
     private Double accumulatedVolume;
     private WasteType wasteType;
+    private Integer longitude;
+    private Integer latitude;
     private WasteCollectionRequestStatus wasteCollectionRequestStatus = WasteCollectionRequestStatus.NEW;
     private LocalDateTime createdTimeStamp = LocalDateTime.now();
     @ManyToOne
@@ -26,9 +28,11 @@ public class WasteCollectionRequest {
     public WasteCollectionRequest() {
     }
 
-    public WasteCollectionRequest(Double accumulatedVolume, WasteType wasteType) {
+    public WasteCollectionRequest(Double accumulatedVolume, WasteType wasteType, Integer longitude, Integer latitude) {
         this.accumulatedVolume = accumulatedVolume;
         this.wasteType = wasteType;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public Long getId() {
@@ -53,6 +57,22 @@ public class WasteCollectionRequest {
 
     public void setWasteType(WasteType wasteType) {
         this.wasteType = wasteType;
+    }
+
+    public Integer getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Integer longitude) {
+        this.longitude = longitude;
+    }
+
+    public Integer getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Integer latitude) {
+        this.latitude = latitude;
     }
 
     public WasteCollectionRequestStatus getWasteCollectionRequestStatus() {
