@@ -60,9 +60,9 @@ public class OrganizationService {
         return organizationRepository.findAll();
     }
 
-    // Retrieve a specific organization given the id
+    // Retrieve a specific organization given the id (logically active)
     public OrganizationDTO getSpecificOrganization(Long id) {
-        Optional<Organization> organizationOptional = organizationRepository.findById(id);
+        Optional<Organization> organizationOptional = organizationRepository.findOrganizationById(id, false);
         if(organizationOptional.isEmpty()) {
             throw new IllegalStateException("Organization with id " + id + " does not exist");
         }
