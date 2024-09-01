@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dispatchDiscriminator")
 public abstract class Dispatch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
