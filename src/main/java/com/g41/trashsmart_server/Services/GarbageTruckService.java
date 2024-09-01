@@ -24,12 +24,28 @@ public class GarbageTruckService {
         this.garbagetruckDTOMapper = garbagetruckDTOMapper;
     }
 
-    @Autowired
-    private SecurityConfig securityConfig;
+//    @Autowired
+//    private SecurityConfig securityConfig;
 
     // Retrieve all registered garbage trucks
     public List<GarbageTruckDTO> getAllGarbageTrucks() {
         List<GarbageTruck> garbagetrucks = garbagetruckRepository.findAllGarbageTrucksGUnFiltered();
+        return garbagetrucks.stream()
+                .map(garbagetruckDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    // Retrieve all active garbage trucks
+    public List<GarbageTruckDTO> getGarbageTrucks() {
+        List<GarbageTruck> garbagetrucks = garbagetruckRepository.findAllGarbageTrucks(false);
+        return garbagetrucks.stream()
+                .map(garbagetruckDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    // Retrieve all logically deleted garbage trucks
+    public List<GarbageTruckDTO> getDeletedGarbageTrucks() {
+        List<GarbageTruck> garbagetrucks = garbagetruckRepository.findAllGarbageTrucks(true);
         return garbagetrucks.stream()
                 .map(garbagetruckDTOMapper)
                 .collect(Collectors.toList());
@@ -40,9 +56,9 @@ public class GarbageTruckService {
         return garbagetruckRepository.findAll();
     }
 
-    // Retrieve a specific garbage truck given the id
+    // Retrieve a specific garbage truck given the id (logically active)
     public GarbageTruckDTO getSpecificGarbageTruck(Long id) {
-        Optional<GarbageTruck> garbagetruckOptional = garbagetruckRepository.findById(id);
+        Optional<GarbageTruck> garbagetruckOptional = garbagetruckRepository.findGarbageTruckById(id, false);
         if(garbagetruckOptional.isEmpty()) {
             throw new IllegalStateException("Garbage truck with id " + id + " does not exist");
         }
@@ -58,6 +74,17 @@ public class GarbageTruckService {
             throw new IllegalStateException("Garbage truck already exists");
         }
         garbagetruckRepository.save(garbagetruck);
+    }
+
+    // Logically delete a garbage truck from the system
+    public void deleteGarbageTruck(Long id) {
+        Optional<GarbageTruck> garbagetruckOptional = garbagetruckRepository.findById(id);
+        if(garbagetruckOptional.isEmpty()) {
+            throw new IllegalStateException("Garbage truck with id " + id + " does not exist");
+        }
+        GarbageTruck garbagetruckToDelete = garbagetruckOptional.get();
+        garbagetruckToDelete.setDeleted(true);
+        garbagetruckRepository.save(garbagetruckToDelete);
     }
 
     // Permanently delete a garbage truck from the system
