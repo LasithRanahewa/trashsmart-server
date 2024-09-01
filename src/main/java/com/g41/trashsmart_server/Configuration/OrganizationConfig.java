@@ -2,7 +2,6 @@ package com.g41.trashsmart_server.Configuration;
 
 import com.g41.trashsmart_server.Enums.OrgType;
 import com.g41.trashsmart_server.Enums.Scale;
-import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import org.springframework.boot.CommandLineRunner;
