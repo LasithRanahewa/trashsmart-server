@@ -188,6 +188,8 @@ public class HouseholdUserController {
         );
         // Load user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(householdUser.getUsername());
+        // Get the user id
+        Long userId = ((HouseholdUser) userDetails).getId();
         // Generate JWT token
         String jwt = jwtUtils.generateToken(userDetails.getUsername(), Role.HOUSEHOLD_USER.name(), userId);
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
