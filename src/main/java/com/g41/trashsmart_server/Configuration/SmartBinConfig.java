@@ -25,9 +25,18 @@ public class SmartBinConfig {
 
                     
             );
+            SmartBin bin2 = new SmartBin(
+                79.858333,
+                6.926944,
+                WasteType.RECYCLABLE,
+                BinSize.MEDIUM,
+                "123456788"
+
+                    
+            );
             
 
-            smartbinRepository.saveAll(List.of(bin1));
+            smartbinRepository.saveAll(List.of(bin1,bin2));
         };
     }
 }

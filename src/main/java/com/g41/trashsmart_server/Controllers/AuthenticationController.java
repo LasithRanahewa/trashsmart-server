@@ -6,6 +6,7 @@ import com.g41.trashsmart_server.DTO.AuthenticationResponse;
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Contractor;
+import com.g41.trashsmart_server.Models.Driver;
 import com.g41.trashsmart_server.Repositories.ContractorRepository;
 import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
@@ -24,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Driver;
+
 import java.util.Optional;
 
 @RestController
@@ -52,7 +53,7 @@ public class AuthenticationController {
             String email = request.getEmail();
             Optional<HouseholdUser> householdUser = householdUserRepository.findHouseholdUserByEmail(email);
             Optional<Contractor> contractor = contractorRepository.findContractorByEmail(email);
-            Optional<com.g41.trashsmart_server.Models.Driver> driver = driverRepository.findDriverByEmail(email);
+            Optional<Driver> driver = driverRepository.findDriverByEmail(email);
 
             if (householdUser.isEmpty() && contractor.isEmpty() && driver.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -69,8 +70,8 @@ public class AuthenticationController {
                 role = ((HouseholdUser) userDetails).getRole();
             } else if (userDetails instanceof Contractor) {
                 role = ((Contractor) userDetails).getRole();
-            } else if (userDetails instanceof com.g41.trashsmart_server.Models.Driver) { 
-                role = ((com.g41.trashsmart_server.Models.Driver) userDetails).getRole();
+            } else if (userDetails instanceof Driver) { 
+                role = ((Driver) userDetails).getRole();
             } else {
                 throw new IllegalStateException("Unknown user type");
             }
