@@ -74,10 +74,10 @@ public class OrganizationService {
         Optional<Organization> organizationOptional = organizationRepository.findOrganizationByEmail(
                 organization.getEmail()
         );
-        if(organizationOptional.isPresent()) {
+        if (organizationOptional.isPresent()) {
             throw new IllegalStateException("Email Taken");
         }
-        if(organization.getPassword()==null || organization.getPassword().isEmpty()) {
+        if (organization.getPassword() == null || organization.getPassword().isEmpty()) {
             organization.setPassword(securityConfig.generateRandomPassword(10));
 
             String subject = "TrashSmart Account Created";
