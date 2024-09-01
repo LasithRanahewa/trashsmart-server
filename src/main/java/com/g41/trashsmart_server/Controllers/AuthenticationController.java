@@ -6,6 +6,7 @@ import com.g41.trashsmart_server.DTO.AuthenticationResponse;
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Contractor;
+import com.g41.trashsmart_server.Models.User;
 import com.g41.trashsmart_server.Repositories.ContractorRepository;
 import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
@@ -60,14 +61,17 @@ public class AuthenticationController {
             
             //get the role of the user by checking the instance of the user
             Role role;
+            Long userId;
             if (userDetails instanceof HouseholdUser) {
                 role = ((HouseholdUser) userDetails).getRole();
+                userId = ((HouseholdUser) userDetails).getId();
             } else if (userDetails instanceof Contractor) {
                 role = ((Contractor) userDetails).getRole();
+                userId = ((Contractor) userDetails).getId();
             } else {
                 throw new IllegalStateException("Unknown user type");
             }
-            String jwt = jwtUtils.generateToken(userDetails.getUsername(), role.name());
+            String jwt = jwtUtils.generateToken(userDetails.getUsername(), role.name(), userId);
             return ResponseEntity.ok(new AuthenticationResponse(jwt));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
