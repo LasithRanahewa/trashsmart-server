@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Scale;
 import com.g41.trashsmart_server.Enums.OrgType;
@@ -24,6 +25,7 @@ public class Organization extends BusinessUser {
     @OneToMany(mappedBy = "organization")
     private List<CommercialBin> commercialBins;
     @OneToMany(mappedBy = "organization")
+    @JsonManagedReference
     private List<WasteCollectionRequest> wasteCollectionRequests;
 
     public Organization() {

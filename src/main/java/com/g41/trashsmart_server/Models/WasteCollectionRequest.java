@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
 import jakarta.persistence.*;
@@ -14,12 +15,13 @@ public class WasteCollectionRequest {
     private Long id;
     private Double accumulatedVolume;
     private WasteType wasteType;
-    private Integer longitude;
-    private Integer latitude;
+    private Double latitude;
+    private Double longitude;
     private WasteCollectionRequestStatus wasteCollectionRequestStatus = WasteCollectionRequestStatus.NEW;
     private LocalDateTime createdTimeStamp = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "organization_id")
+    @JsonBackReference
     private Organization organization;
     @ManyToOne
     @JoinColumn(name = "dispatch_id")
@@ -28,7 +30,7 @@ public class WasteCollectionRequest {
     public WasteCollectionRequest() {
     }
 
-    public WasteCollectionRequest(Double accumulatedVolume, WasteType wasteType, Integer longitude, Integer latitude) {
+    public WasteCollectionRequest(Double accumulatedVolume, WasteType wasteType, Double latitude, Double longitude) {
         this.accumulatedVolume = accumulatedVolume;
         this.wasteType = wasteType;
         this.longitude = longitude;
@@ -59,19 +61,19 @@ public class WasteCollectionRequest {
         this.wasteType = wasteType;
     }
 
-    public Integer getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Integer longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    public Integer getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Integer latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
