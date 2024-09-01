@@ -56,9 +56,9 @@ public class GarbageTruckService {
         return garbagetruckRepository.findAll();
     }
 
-    // Retrieve a specific garbage truck given the id
+    // Retrieve a specific garbage truck given the id (logically active)
     public GarbageTruckDTO getSpecificGarbageTruck(Long id) {
-        Optional<GarbageTruck> garbagetruckOptional = garbagetruckRepository.findById(id);
+        Optional<GarbageTruck> garbagetruckOptional = garbagetruckRepository.findGarbageTruckById(id, false);
         if(garbagetruckOptional.isEmpty()) {
             throw new IllegalStateException("Garbage truck with id " + id + " does not exist");
         }
