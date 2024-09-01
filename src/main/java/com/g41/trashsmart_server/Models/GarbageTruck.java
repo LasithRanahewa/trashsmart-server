@@ -12,6 +12,7 @@ public class GarbageTruck {
     private String licencePlateNo;
     private Integer mileage;
     private Integer maxVolume;
+    private Boolean deleted = false;
     private TruckStatus truckStatus = TruckStatus.IDLE;
 
     public GarbageTruck() {
@@ -61,5 +62,17 @@ public class GarbageTruck {
 
     public void setTruckStatus(TruckStatus truckStatus) {
         this.truckStatus = truckStatus;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }
