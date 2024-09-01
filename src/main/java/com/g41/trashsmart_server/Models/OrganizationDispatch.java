@@ -4,7 +4,6 @@ import com.g41.trashsmart_server.Enums.DispatchType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import java.util.List;
