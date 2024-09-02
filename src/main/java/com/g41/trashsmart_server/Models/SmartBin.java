@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "binType")
+@Table(name = "SmartBin", indexes = @Index(name = "idx_bin_api", columnList = "binAPI"))
 public class SmartBin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,8 @@ public class SmartBin {
     private LocalDate lastCollectionDate = LocalDate.now();
     private BinSize binSize;
     private Boolean deleted = false;
+    @Column(unique = true)
+    private String binAPI;
     @OneToMany(mappedBy = "smartBin")
     private List<MaintenanceRequest> maintenanceRequests;
     @ManyToOne
@@ -33,11 +36,26 @@ public class SmartBin {
     public SmartBin() {
     }
 
+    public SmartBin(Double longitude, Double latitude, Double fillLevel, BinStatus binStatus) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.fillLevel = fillLevel;
+        this.binStatus = binStatus;
+    }
+
+    public SmartBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize, String binAPI) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.wasteType = wasteType;
+        this.binSize = binSize;
+        this.binAPI = binAPI;
+    }
     public SmartBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.wasteType = wasteType;
         this.binSize = binSize;
+        
     }
 
     public Long getId() {
@@ -134,5 +152,13 @@ public class SmartBin {
 
     public void setSuburb(Suburb suburb) {
         this.suburb = suburb;
+    }
+
+    public String getBinAPI() {
+        return binAPI;
+    }
+
+    public void setBinAPI(String binAPI) {
+        this.binAPI = binAPI;
     }
 }

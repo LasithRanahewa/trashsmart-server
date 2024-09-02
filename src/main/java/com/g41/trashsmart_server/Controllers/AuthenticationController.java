@@ -6,8 +6,10 @@ import com.g41.trashsmart_server.DTO.AuthenticationResponse;
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Contractor;
+import com.g41.trashsmart_server.Models.Driver;
 import com.g41.trashsmart_server.Models.User;
 import com.g41.trashsmart_server.Repositories.ContractorRepository;
+import com.g41.trashsmart_server.Repositories.DriverRepository;
 import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,6 +44,8 @@ public class AuthenticationController {
     private HouseholdUserRepository householdUserRepository;
     @Autowired
     private ContractorRepository contractorRepository;
+    @Autowired
+    private DriverRepository driverRepository;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest request) {
@@ -49,8 +53,12 @@ public class AuthenticationController {
             String email = request.getEmail();
             Optional<HouseholdUser> householdUser = householdUserRepository.findHouseholdUserByEmail(email);
             Optional<Contractor> contractor = contractorRepository.findContractorByEmail(email);
+            Optional<Driver> driver = driverRepository.findDriverByEmail(email, false);
+            System.out.println("HouseholdUser present: " + householdUser.isPresent());
+            System.out.println("Contractor present: " + contractor.isPresent());
+            System.out.println("Driver present: " + driver.isPresent());
 
-            if (householdUser.isEmpty() && contractor.isEmpty()) {
+            if (householdUser.isEmpty() && contractor.isEmpty() && driver.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
@@ -58,6 +66,8 @@ public class AuthenticationController {
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            System.out.println("Authenticated user: " + userDetails.getUsername());
+        System.out.println("User class: " + userDetails.getClass());
             
             //get the role of the user by checking the instance of the user
             Role role;
@@ -68,6 +78,9 @@ public class AuthenticationController {
             } else if (userDetails instanceof Contractor) {
                 role = ((Contractor) userDetails).getRole();
                 userId = ((Contractor) userDetails).getId();
+            } else if (userDetails instanceof Driver) {
+                role = ((Driver) userDetails).getRole();
+                userId = ((Driver) userDetails).getId();
             } else {
                 throw new IllegalStateException("Unknown user type");
             }
