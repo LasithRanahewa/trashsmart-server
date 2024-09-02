@@ -4,13 +4,20 @@ import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table
-public class Driver extends SystemUser {
+public class Driver extends SystemUser implements  UserDetails{
     private Status status = Status.ACTIVE;
     private Integer totalCollections = 0;
     private Integer currentStreak = 0;
@@ -83,5 +90,48 @@ public class Driver extends SystemUser {
 
     public void setNumberOfHolidays(Integer numberOfHolidays) {
         this.numberOfHolidays = numberOfHolidays;
+    }
+
+    public LocalDate getDob() {
+        return super.getDob();
+    }
+    public void setDob(LocalDate dob) {
+        super.setDob(dob);
+    }
+    @Transient
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Return the authorities granted to the user
+        return Collections.singletonList(new SimpleGrantedAuthority(super.getRole().name())); // Replace with actual authorities
+    }
+
+    @Override
+    public String getPassword() {
+        return super.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return super.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !super.isDeleted();
     }
 }
