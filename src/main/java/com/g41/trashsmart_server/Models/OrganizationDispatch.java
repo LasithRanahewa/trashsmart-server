@@ -18,8 +18,8 @@ public class OrganizationDispatch extends Dispatch {
         this.setDispatchType(DispatchType.ORGANIZATION);
     }
 
-    public OrganizationDispatch(LocalDateTime dateTime, Suburb suburb, GarbageTruck garbageTruck, Driver driver) {
-        super(dateTime, suburb, garbageTruck, driver, DispatchType.ORGANIZATION);
+    public OrganizationDispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, Driver driver) {
+        super(dateTime, garbageTruck, driver, DispatchType.ORGANIZATION);
     }
 
     public List<WasteCollectionRequest> getWasteCollectionRequestList() {

@@ -16,9 +16,6 @@ public abstract class Dispatch {
     private LocalDateTime dateTime;
     private DispatchStatus dispatchStatus = DispatchStatus.NEW;
     @ManyToOne
-    @JoinColumn(name = "suburb_id")
-    private Suburb suburb;
-    @ManyToOne
     @JoinColumn(name = "truck_id")
     private GarbageTruck garbageTruck;
     @ManyToOne
@@ -30,10 +27,8 @@ public abstract class Dispatch {
     public Dispatch() {
     }
 
-    public Dispatch(LocalDateTime dateTime, Suburb suburb, GarbageTruck garbageTruck, Driver driver,
-                    DispatchType dispatchType) {
+    public Dispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, Driver driver, DispatchType dispatchType) {
         this.dateTime = dateTime;
-        this.suburb = suburb;
         this.garbageTruck = garbageTruck;
         this.driver = driver;
         this.dispatchType = dispatchType;
@@ -62,14 +57,6 @@ public abstract class Dispatch {
 
     public void setDispatchStatus(DispatchStatus dispatchStatus) {
         this.dispatchStatus = dispatchStatus;
-    }
-
-    public Suburb getSuburb() {
-        return suburb;
-    }
-
-    public void setSuburb(Suburb suburb) {
-        this.suburb = suburb;
     }
 
     public GarbageTruck getGarbageTruck() {

@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Repositories;
 
+import com.g41.trashsmart_server.Enums.TruckStatus;
 import com.g41.trashsmart_server.Models.GarbageTruck;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,7 @@ public interface GarbageTruckRepository extends JpaRepository<GarbageTruck, Long
     // Select all the garbage trucks registered with the system
     @Query("SELECT truck FROM GarbageTruck truck")
     List<GarbageTruck> findAllGarbageTrucksGUnFiltered();
+
+    // Retrieve all the garbage trucks by status
+    List<GarbageTruck> findByTruckStatus(TruckStatus truckStatus);
 }
