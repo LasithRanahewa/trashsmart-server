@@ -1,4 +1,5 @@
 package com.g41.trashsmart_server.Repositories;
+import com.g41.trashsmart_server.Enums.Status;
 import com.g41.trashsmart_server.Models.Driver;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -28,5 +29,8 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
     // Select all the drivers registered with the system
     @Query("SELECT d FROM Driver d")
     List<Driver> findAllDriversUnFiltered();
-    
+
+    // Select all the drivers based on the status
+    @Query("SELECT d from Driver WHERE d.status = :status AND d.deleted = false")
+    List<Driver> findByStatus(Status status);
 }

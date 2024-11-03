@@ -15,6 +15,6 @@ public class HouseholdDispatch extends Dispatch {
     }
 
     public HouseholdDispatch(LocalDateTime dateTime, Suburb suburb, GarbageTruck garbageTruck, Driver driver) {
-        super(dateTime, suburb, garbageTruck, driver, DispatchType.HOUSEHOLD);
+        super(dateTime, garbageTruck, driver, DispatchType.HOUSEHOLD);
     }
 }
