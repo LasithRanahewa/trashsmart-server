@@ -25,7 +25,12 @@ public class WasteCollectionRequest {
     private Organization organization;
     @ManyToOne
     @JoinColumn(name = "dispatch_id")
+    @JsonBackReference
     private OrganizationDispatch organizationDispatch;
+    @ManyToOne
+    @JoinColumn(name = "cluster_id")
+    @JsonBackReference
+    private Cluster cluster;
 
     public WasteCollectionRequest() {
     }
@@ -107,5 +112,13 @@ public class WasteCollectionRequest {
 
     public void setOrganizationDispatch(OrganizationDispatch organizationDispatch) {
         this.organizationDispatch = organizationDispatch;
+    }
+
+    public Cluster getCluster() {
+        return cluster;
+    }
+
+    public void setCluster(Cluster cluster) {
+        this.cluster = cluster;
     }
 }
