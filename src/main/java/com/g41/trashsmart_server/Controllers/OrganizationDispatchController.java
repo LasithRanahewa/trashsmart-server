@@ -148,4 +148,27 @@ public class OrganizationDispatchController {
     public Map<Integer, OrganizationDispatch> clusterWasteCollectionRequests(@RequestBody WasteType wasteType) {
         return organizationDispatchService.clusterWasteCollectionRequests(wasteType);
     }
+
+    // Update dispatch status given DispatchID
+    @PutMapping(path = "{dispatch_id}")
+    @Operation(
+            description = "Update dispatch status",
+            summary = "Update the status of the dispatch given by the Id",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void updateOrganizationDispatchStatus(
+            @PathVariable("dispatch_id") Long id,
+            @RequestBody DispatchStatus dispatchStatus
+    ) {
+        organizationDispatchService.updateOrganizationDispatchStatus(id, dispatchStatus);
+    }
 }
