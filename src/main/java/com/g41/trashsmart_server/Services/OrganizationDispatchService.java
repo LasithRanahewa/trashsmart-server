@@ -3,16 +3,14 @@ package com.g41.trashsmart_server.Services;
 import com.g41.trashsmart_server.Enums.Status;
 import com.g41.trashsmart_server.Enums.TruckStatus;
 import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
-import com.g41.trashsmart_server.Models.Cluster;
-import com.g41.trashsmart_server.Models.Driver;
-import com.g41.trashsmart_server.Models.GarbageTruck;
-import com.g41.trashsmart_server.Models.WasteCollectionRequest;
+import com.g41.trashsmart_server.Models.*;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
 import com.g41.trashsmart_server.Repositories.GarbageTruckRepository;
 import com.g41.trashsmart_server.Repositories.WasteCollectionRequestRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -139,6 +137,29 @@ public class OrganizationDispatchService {
             result.put(cluster.getId(), new ArrayList<>(cluster.getWasteCollectionRequests()));
         }
         return result;
+    }
+
+    // Assign a driver and a truck to each cluster
+    private Map<Integer, OrganizationDispatch> assignOrganizationDispatches(List<Cluster> clusterList,
+                                                                            List<GarbageTruck> garbageTruckList,
+                                                                            List<Driver> driverList) {
+        Map<Integer, OrganizationDispatch> organizationDispatches = new HashMap<>();
+        for (int i = 0; i < clusterList.size(); i++) {
+            Cluster cluster = clusterList.get(i);
+            GarbageTruck garbageTruck = garbageTruckList.get(i);
+            Driver driver = driverList.get(i);
+
+            OrganizationDispatch dispatch = new OrganizationDispatch(
+                    LocalDateTime.now(),
+                    garbageTruck,
+                    driver,
+                    new ArrayList<>(cluster.getWasteCollectionRequests())
+            );
+
+            organizationDispatches.put(cluster.getId(), dispatch);
+        }
+
+        return organizationDispatches;
     }
 
     // Calculate lateral distance between the request and the cluster
