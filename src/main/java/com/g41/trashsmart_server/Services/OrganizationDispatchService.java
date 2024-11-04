@@ -1,12 +1,10 @@
 package com.g41.trashsmart_server.Services;
 
-import com.g41.trashsmart_server.Enums.Status;
-import com.g41.trashsmart_server.Enums.TruckStatus;
-import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
-import com.g41.trashsmart_server.Enums.WasteType;
+import com.g41.trashsmart_server.Enums.*;
 import com.g41.trashsmart_server.Models.*;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
 import com.g41.trashsmart_server.Repositories.GarbageTruckRepository;
+import com.g41.trashsmart_server.Repositories.OrganizationDispatchRepository;
 import com.g41.trashsmart_server.Repositories.WasteCollectionRequestRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +17,7 @@ import java.util.Map;
 
 @Service
 public class OrganizationDispatchService {
+    private final OrganizationDispatchRepository organizationDispatchRepository;
     private final WasteCollectionRequestRepository wasteCollectionRequestRepository;
     private final GarbageTruckRepository garbageTruckRepository;
     private final DriverRepository driverRepository;
@@ -29,15 +28,38 @@ public class OrganizationDispatchService {
     @Value("${municipal.council.longitude}")
     private double municipalLongitude;
 
-    public OrganizationDispatchService(WasteCollectionRequestRepository wasteCollectionRequestRepository,
+    public OrganizationDispatchService(OrganizationDispatchRepository organizationDispatchRepository,
+                                       WasteCollectionRequestRepository wasteCollectionRequestRepository,
                                        GarbageTruckRepository garbageTruckRepository,
                                        DriverRepository driverRepository
     ) {
+        this.organizationDispatchRepository = organizationDispatchRepository;
         this.wasteCollectionRequestRepository = wasteCollectionRequestRepository;
         this.garbageTruckRepository = garbageTruckRepository;
         this.driverRepository = driverRepository;
     }
 
+    // Get all the organization dispatches
+    public List<OrganizationDispatch> getAllOrganizationDispatches() {
+        return organizationDispatchRepository.findAll();
+    }
+
+    // Get all the dispatches based on the DispatchStatus
+    public List<OrganizationDispatch> getOrganizationDispatchesByStatus(DispatchStatus dispatchStatus) {
+        return organizationDispatchRepository.findByDispatchStatus(dispatchStatus);
+    }
+
+    // Get all the dispatches based on the DispatchStatus
+    public List<OrganizationDispatch> getOrganizationDispatchesByStatusAndWasteType(DispatchStatus dispatchStatus, WasteType wasteType) {
+        return organizationDispatchRepository.findByDispatchStatusAndWasteType(dispatchStatus, wasteType);
+    }
+
+    // Get all the dispatches based on the Waste Type
+    public List<OrganizationDispatch> getOrganizationWasteType(WasteType wasteType) {
+        return organizationDispatchRepository.findByWasteType(wasteType);
+    }
+
+    // Create dispatches based  on the waste type
     public Map<Integer, OrganizationDispatch> clusterWasteCollectionRequests(WasteType wasteType) {
         final int MAX_CLUSTERS = 10;
         final int MIN_REQUESTS_PER_CLUSTER = 5;
