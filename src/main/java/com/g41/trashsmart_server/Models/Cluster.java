@@ -1,13 +1,17 @@
 package com.g41.trashsmart_server.Models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // Cluster class to represent a cluster of waste collection requests
+@Entity
+@Table
 public class Cluster {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private double latitude;
     private double longitude;

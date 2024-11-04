@@ -3,10 +3,12 @@ package com.g41.trashsmart_server.Repositories;
 import com.g41.trashsmart_server.Models.Organization;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface OrganizationRepository extends JpaRepository<Organization, Long> {
     // Select a specific organization user using email
     @Query("SELECT org FROM Organization org WHERE org.email = :email AND org.deleted = :deleted")
