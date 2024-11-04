@@ -1,8 +1,10 @@
 package com.g41.trashsmart_server.Repositories;
 
 import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
+import com.g41.trashsmart_server.Enums.WasteType;
 import com.g41.trashsmart_server.Models.WasteCollectionRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,6 +14,11 @@ public interface WasteCollectionRequestRepository extends JpaRepository<WasteCol
     // Retrieve all the waste collection requests opened by a given organization
     List<WasteCollectionRequest> findByOrganizationId(Long organizationId);
 
-    // Retrieve all the waste collection requests by the given Request status
-    List<WasteCollectionRequest> findByWasteCollectionRequestStatus(WasteCollectionRequestStatus wasteCollectionRequestStatus);
+    // Retrieve all the waste collection requests by the given Request status and waste type
+    @Query( "SELECT wcr " +
+            "FROM WasteCollectionRequest wcr" +
+            "WHERE wcr.wasteCollectionRequestStatus = :wasteCollectionRequestStatus" +
+            "AND wcr.wasteType = :wasteType")
+    List<WasteCollectionRequest> findByWCRStatusAndWasteType(WasteCollectionRequestStatus wasteCollectionRequestStatus,
+                                                             WasteType wasteType);
 }

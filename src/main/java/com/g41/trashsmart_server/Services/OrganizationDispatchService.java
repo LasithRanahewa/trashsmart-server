@@ -3,6 +3,7 @@ package com.g41.trashsmart_server.Services;
 import com.g41.trashsmart_server.Enums.Status;
 import com.g41.trashsmart_server.Enums.TruckStatus;
 import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
+import com.g41.trashsmart_server.Enums.WasteType;
 import com.g41.trashsmart_server.Models.*;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
 import com.g41.trashsmart_server.Repositories.GarbageTruckRepository;
@@ -37,12 +38,12 @@ public class OrganizationDispatchService {
         this.driverRepository = driverRepository;
     }
 
-    public Map<Integer, OrganizationDispatch> clusterWasteCollectionRequests() {
+    public Map<Integer, OrganizationDispatch> clusterWasteCollectionRequests(WasteType wasteType) {
         final int MAX_CLUSTERS = 10;
         final int MIN_REQUESTS_PER_CLUSTER = 5;
 
         List<WasteCollectionRequest> wasteCollectionRequests =
-                wasteCollectionRequestRepository.findByWasteCollectionRequestStatus(WasteCollectionRequestStatus.NEW);
+                wasteCollectionRequestRepository.findByWCRStatusAndWasteType(WasteCollectionRequestStatus.NEW, wasteType);
         List<GarbageTruck> garbageTrucks = garbageTruckRepository.findByTruckStatus(TruckStatus.IDLE);
         List<Driver> drivers = driverRepository.findByStatus(Status.ACTIVE);
 
@@ -64,7 +65,7 @@ public class OrganizationDispatchService {
             clusterUpdated = updateClusterCentroids(clusters);
         } while(clusterUpdated);
 
-        return assignOrganizationDispatches(clusters, garbageTrucks, drivers);
+        return assignOrganizationDispatches(clusters, garbageTrucks, drivers, wasteType);
     }
 
     // Initialize clusters with centroids taken from the input request set
@@ -142,7 +143,8 @@ public class OrganizationDispatchService {
     // Assign a driver and a truck to each cluster
     private Map<Integer, OrganizationDispatch> assignOrganizationDispatches(List<Cluster> clusterList,
                                                                             List<GarbageTruck> garbageTruckList,
-                                                                            List<Driver> driverList) {
+                                                                            List<Driver> driverList,
+                                                                            WasteType wasteType) {
         Map<Integer, OrganizationDispatch> organizationDispatches = new HashMap<>();
         for (int i = 0; i < clusterList.size(); i++) {
             Cluster cluster = clusterList.get(i);
@@ -153,7 +155,8 @@ public class OrganizationDispatchService {
                     LocalDateTime.now(),
                     garbageTruck,
                     driver,
-                    new ArrayList<>(cluster.getWasteCollectionRequests())
+                    new ArrayList<>(cluster.getWasteCollectionRequests()),
+                    wasteType
             );
 
             organizationDispatches.put(cluster.getId(), dispatch);
