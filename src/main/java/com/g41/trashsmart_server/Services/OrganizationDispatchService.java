@@ -179,6 +179,8 @@ public class OrganizationDispatchService {
             Cluster cluster = clusterList.get(i);
             GarbageTruck garbageTruck = garbageTruckList.get(i);
             Driver driver = driverList.get(i);
+            garbageTruck.setTruckStatus(TruckStatus.EN_ROUTE);
+            driver.setStatus(Status.UNAVAILABLE);
 
             OrganizationDispatch dispatch = new OrganizationDispatch(
                     LocalDateTime.now(),
