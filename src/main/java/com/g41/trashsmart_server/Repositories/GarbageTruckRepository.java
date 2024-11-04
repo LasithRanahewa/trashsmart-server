@@ -5,11 +5,13 @@ import com.g41.trashsmart_server.Enums.WasteType;
 import com.g41.trashsmart_server.Models.GarbageTruck;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface GarbageTruckRepository extends JpaRepository<GarbageTruck, Long> {
     // Select a specific garbage truck using ID
     @Query("SELECT truck FROM GarbageTruck truck WHERE truck.id = :id")

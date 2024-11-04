@@ -16,7 +16,7 @@ public interface WasteCollectionRequestRepository extends JpaRepository<WasteCol
 
     // Retrieve all the waste collection requests by the given Request status and waste type
     @Query( "SELECT wcr " +
-            "FROM WasteCollectionRequest wcr" +
+            "FROM WasteCollectionRequest wcr " +
             "WHERE wcr.wasteCollectionRequestStatus = :wasteCollectionRequestStatus" +
             "AND wcr.wasteType = :wasteType")
     List<WasteCollectionRequest> findByWCRStatusAndWasteType(WasteCollectionRequestStatus wasteCollectionRequestStatus,
