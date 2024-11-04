@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OrganizationDispatchService {
@@ -50,13 +47,23 @@ public class OrganizationDispatchService {
     }
 
     // Get all the dispatches based on the DispatchStatus
-    public List<OrganizationDispatch> getOrganizationDispatchesByStatusAndWasteType(DispatchStatus dispatchStatus, WasteType wasteType) {
+    public List<OrganizationDispatch> getOrganizationDispatchesByStatusAndWasteType(DispatchStatus dispatchStatus,
+                                                                                    WasteType wasteType) {
         return organizationDispatchRepository.findByDispatchStatusAndWasteType(dispatchStatus, wasteType);
     }
 
     // Get all the dispatches based on the Waste Type
-    public List<OrganizationDispatch> getOrganizationWasteType(WasteType wasteType) {
+    public List<OrganizationDispatch> getOrganizationDispatchesWasteType(WasteType wasteType) {
         return organizationDispatchRepository.findByWasteType(wasteType);
+    }
+
+    // Get all the dispatches based on ID
+    public OrganizationDispatch getOrganizationDispatchById(Long id) {
+        Optional<OrganizationDispatch> organizationDispatchOptional = organizationDispatchRepository.findById(id);
+        if (organizationDispatchOptional.isEmpty()) {
+            throw new IllegalStateException("Dispatch with id " + id + " does not exist");
+        }
+        return organizationDispatchOptional.get();
     }
 
     // Create dispatches based  on the waste type
