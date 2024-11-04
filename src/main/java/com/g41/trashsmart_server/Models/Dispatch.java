@@ -2,6 +2,7 @@ package com.g41.trashsmart_server.Models;
 
 import com.g41.trashsmart_server.Enums.DispatchStatus;
 import com.g41.trashsmart_server.Enums.DispatchType;
+import com.g41.trashsmart_server.Enums.WasteType;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -22,16 +23,19 @@ public abstract class Dispatch {
     @JoinColumn(name = "driver_id")
     private Driver driver;
     private DispatchType dispatchType;
+    private WasteType wasteType;
     private LocalDateTime createdDateTime;
 
     public Dispatch() {
     }
 
-    public Dispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, Driver driver, DispatchType dispatchType) {
+    public Dispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, Driver driver, DispatchType dispatchType,
+                    WasteType wasteType) {
         this.dateTime = dateTime;
         this.garbageTruck = garbageTruck;
         this.driver = driver;
         this.dispatchType = dispatchType;
+        this.wasteType = wasteType;
         this.createdDateTime = LocalDateTime.now();
     }
 
@@ -81,6 +85,14 @@ public abstract class Dispatch {
 
     public void setDispatchType(DispatchType dispatchType) {
         this.dispatchType = dispatchType;
+    }
+
+    public WasteType getWasteType() {
+        return wasteType;
+    }
+
+    public void setWasteType(WasteType wasteType) {
+        this.wasteType = wasteType;
     }
 
     public LocalDateTime getCreatedDateTime() {

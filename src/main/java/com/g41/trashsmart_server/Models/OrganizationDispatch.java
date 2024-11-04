@@ -2,6 +2,7 @@ package com.g41.trashsmart_server.Models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.g41.trashsmart_server.Enums.DispatchType;
+import com.g41.trashsmart_server.Enums.WasteType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -21,8 +22,8 @@ public class OrganizationDispatch extends Dispatch {
     }
 
     public OrganizationDispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, Driver driver,
-                                List<WasteCollectionRequest> wasteCollectionRequestList) {
-        super(dateTime, garbageTruck, driver, DispatchType.ORGANIZATION);
+                                List<WasteCollectionRequest> wasteCollectionRequestList, WasteType wasteType) {
+        super(dateTime, garbageTruck, driver, DispatchType.ORGANIZATION, wasteType);
         this.wasteCollectionRequestList = wasteCollectionRequestList;
     }
 

@@ -31,6 +31,6 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
     List<Driver> findAllDriversUnFiltered();
 
     // Select all the drivers based on the status
-    @Query("SELECT d from Driver WHERE d.status = :status AND d.deleted = false")
+    @Query("SELECT d from Driver d WHERE d.status = :status AND d.deleted = false")
     List<Driver> findByStatus(Status status);
 }
