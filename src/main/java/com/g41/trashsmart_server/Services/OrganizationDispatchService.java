@@ -199,4 +199,16 @@ public class OrganizationDispatchService {
                                      double clusterLatitude, double clusterLongitude) {
         return Math.sqrt(Math.pow(requestLatitude - clusterLatitude, 2) + Math.pow(requestLongitude - clusterLongitude, 2));
     }
+
+    // Update the status of a dispatch given its ID
+    public void updateOrganizationDispatchStatus(Long id, DispatchStatus dispatchStatus) {
+        Optional<OrganizationDispatch> optionalOrganizationDispatch = organizationDispatchRepository.findById(id);
+        if (optionalOrganizationDispatch.isEmpty()) {
+            throw new IllegalStateException("Dispatch with id " + id + " does not exist");
+        }
+        OrganizationDispatch organizationDispatch = optionalOrganizationDispatch.get();
+        if (organizationDispatch.getDispatchStatus() != dispatchStatus) {
+            organizationDispatch.setDispatchStatus(dispatchStatus);
+        }
+    }
 }
