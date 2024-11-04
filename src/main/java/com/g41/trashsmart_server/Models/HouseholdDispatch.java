@@ -2,6 +2,7 @@ package com.g41.trashsmart_server.Models;
 
 
 import com.g41.trashsmart_server.Enums.DispatchType;
+import com.g41.trashsmart_server.Enums.WasteType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -14,7 +15,7 @@ public class HouseholdDispatch extends Dispatch {
         this.setDispatchType(DispatchType.HOUSEHOLD);
     }
 
-    public HouseholdDispatch(LocalDateTime dateTime, Suburb suburb, GarbageTruck garbageTruck, Driver driver) {
-        super(dateTime, garbageTruck, driver, DispatchType.HOUSEHOLD);
+    public HouseholdDispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, Driver driver, WasteType wasteType) {
+        super(dateTime, garbageTruck, driver, DispatchType.HOUSEHOLD, wasteType);
     }
 }
