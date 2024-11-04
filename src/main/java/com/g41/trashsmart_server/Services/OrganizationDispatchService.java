@@ -37,7 +37,7 @@ public class OrganizationDispatchService {
         this.driverRepository = driverRepository;
     }
 
-    public Map<Integer, List<WasteCollectionRequest>> clusterWasteCollectionRequests() {
+    public Map<Integer, OrganizationDispatch> clusterWasteCollectionRequests() {
         final int MAX_CLUSTERS = 10;
         final int MIN_REQUESTS_PER_CLUSTER = 5;
 
@@ -64,7 +64,7 @@ public class OrganizationDispatchService {
             clusterUpdated = updateClusterCentroids(clusters);
         } while(clusterUpdated);
 
-        return convertClustersToResult(clusters);
+        return assignOrganizationDispatches(clusters, garbageTrucks, drivers);
     }
 
     // Initialize clusters with centroids taken from the input request set
