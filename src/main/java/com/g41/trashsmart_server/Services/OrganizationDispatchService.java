@@ -55,7 +55,7 @@ public class OrganizationDispatchService {
         } else if(k == 0) {
             throw new IllegalStateException("Not enough drivers or trucks");
         } else if(wasteCollectionRequests.size() < k * MIN_REQUESTS_PER_CLUSTER) {
-            throw new IllegalStateException("Not enough waste collection requests");
+            throw new IllegalStateException("Not enough waste collection requests, wait until there are more requests to dispatch");
         }
 
         List<Cluster> clusters = initializeClusters(k, wasteCollectionRequests);

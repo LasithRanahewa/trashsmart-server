@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.g41.trashsmart_server.Enums.DispatchType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -12,6 +13,7 @@ import java.util.List;
 @DiscriminatorValue("ORGANIZATION")
 public class OrganizationDispatch extends Dispatch {
     @OneToMany(mappedBy = "organizationDispatch")
+    @JsonManagedReference
     private List<WasteCollectionRequest> wasteCollectionRequestList;
 
     public OrganizationDispatch() {

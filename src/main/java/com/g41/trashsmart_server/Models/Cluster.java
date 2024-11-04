@@ -1,5 +1,8 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +11,9 @@ public class Cluster {
     private int id;
     private double latitude;
     private double longitude;
-    private List<WasteCollectionRequest> wasteCollectionRequests;
+    @OneToMany(mappedBy = "cluster")
+    @JsonManagedReference
+    private final List<WasteCollectionRequest> wasteCollectionRequests;
 
     public Cluster(int id, double latitude, double longitude) {
         this.id = id;
