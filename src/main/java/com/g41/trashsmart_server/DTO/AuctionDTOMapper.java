@@ -13,12 +13,10 @@ public class AuctionDTOMapper implements Function<Auction, AuctionDTO> {
                 auction.getId(),
                 auction.getAuctionWasteType(),
                 auction.getWeight(),
-                auction.getBasePrice(),
-                auction.getCurrentBidPrice(),
+                auction.getMinimumBidAmount(),
+                auction.getCurrentBid(),
                 auction.getStartDate(),
-                auction.getEndDate(),
-                auction.getClosed(),
-                auction.getContractor() != null ? auction.getContractor().getId() : null
+                auction.getEndDate()
         );
     }
 }
