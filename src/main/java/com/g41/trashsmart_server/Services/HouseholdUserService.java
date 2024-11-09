@@ -57,9 +57,9 @@ public class HouseholdUserService {
         return householdUserRepository.findAll();
     }
 
-    // Retrieve a specific household user given the id
+    // Retrieve a specific household user given the id (logically active)
     public HouseholdUserDTO getSpecificHouseholdUser(Long id) {
-        Optional<HouseholdUser> householdUserOptional = householdUserRepository.findById(id);
+        Optional<HouseholdUser> householdUserOptional = householdUserRepository.findHouseholdUserById(id, false);
         if(householdUserOptional.isEmpty()) {
             throw new IllegalStateException("Household User with id " + id + " does not exists");
         }
