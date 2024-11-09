@@ -2,8 +2,13 @@ package com.g41.trashsmart_server.Services;
 
 import com.g41.trashsmart_server.DTO.AuctionDTO;
 import com.g41.trashsmart_server.DTO.AuctionDTOMapper;
+import com.g41.trashsmart_server.DTO.BidDTO;
 import com.g41.trashsmart_server.Models.Auction;
+import com.g41.trashsmart_server.Models.Bid;
+import com.g41.trashsmart_server.Models.RecyclingPlant;
 import com.g41.trashsmart_server.Repositories.AuctionRepository;
+import com.g41.trashsmart_server.Repositories.BidRepository;
+import com.g41.trashsmart_server.Repositories.RecyclingPlantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,11 +22,15 @@ import java.util.stream.Collectors;
 public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final AuctionDTOMapper auctionDTOMapper;
+    private final RecyclingPlantRepository recyclingPlantRepository;
+    private final BidRepository bidRepository;
 
     @Autowired
-    public AuctionService(AuctionRepository auctionRepository, AuctionDTOMapper auctionDTOMapper) {
+    public AuctionService(AuctionRepository auctionRepository, AuctionDTOMapper auctionDTOMapper, RecyclingPlantRepository recyclingPlantRepository, BidRepository bidRepository) {
         this.auctionRepository = auctionRepository;
         this.auctionDTOMapper = auctionDTOMapper;
+        this.recyclingPlantRepository = recyclingPlantRepository;
+        this.bidRepository = bidRepository;
     }
 
     public Auction createAuction(Auction auction) {
@@ -120,5 +129,39 @@ public class AuctionService {
         }
 
         auctionRepository.delete(auctionToDelete);
+    }
+
+
+    public String registerForAuction(Long auctionId, Long recyclingPlantId) {
+        Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
+        Optional<RecyclingPlant> recyclingPlantOptional = recyclingPlantRepository.findById(recyclingPlantId);
+
+        if (auctionOptional.isEmpty()) {
+            throw new IllegalStateException("Auction with ID " + auctionId + " does not exist.");
+        }
+        if (recyclingPlantOptional.isEmpty()) {
+            throw new IllegalStateException("Recycling Plant with ID " + recyclingPlantId + " does not exist.");
+        }
+
+        Auction auction = auctionOptional.get();
+        RecyclingPlant recyclingPlant = recyclingPlantOptional.get();
+
+        // Validate if the auction is upcoming
+        if (auction.getStartDate().isBefore(LocalDateTime.now()) || auction.getClosed()) {
+            throw new IllegalStateException("Auction with ID " + auctionId + " is not upcoming.");
+        }
+
+        // Check if the recycling plant is already registered
+        if (bidRepository.existsByAuctionAndRecyclingPlant(auction, recyclingPlant)) {
+            throw new IllegalStateException("Recycling Plant is already registered for this auction.");
+        }
+
+        Bid registrationBid = new Bid();
+        registrationBid.setAuction(auction);
+        registrationBid.setRecyclingPlant(recyclingPlant);
+        registrationBid.setBidAmount(auction.getMinimumBidAmount());
+        bidRepository.save(registrationBid);
+
+        return "Recycling Plant successfully registered to the upcoming auction.";
     }
 }
