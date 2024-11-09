@@ -15,4 +15,5 @@ public class GarbageTruckDTO {
     private Integer maxVolume;
     private TruckStatus truckStatus;
     private Boolean deleted;
+
 }
