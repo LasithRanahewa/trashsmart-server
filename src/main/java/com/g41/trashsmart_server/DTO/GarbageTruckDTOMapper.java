@@ -14,7 +14,9 @@ public class GarbageTruckDTOMapper implements Function<GarbageTruck, GarbageTruc
                 garbagetruck.getLicencePlateNo(),
                 garbagetruck.getMileage(),
                 garbagetruck.getMaxVolume(),
-                garbagetruck.getTruckStatus()
+                garbagetruck.getTruckStatus(),
+                garbagetruck.getDeleted()
+
         );
     }
 }
