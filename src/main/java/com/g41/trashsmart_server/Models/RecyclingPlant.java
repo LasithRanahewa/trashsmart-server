@@ -30,4 +30,9 @@ public class RecyclingPlant extends BusinessUser {
     public void setBRN(String BRN) {
         this.BRN = BRN;
     }
+
+    public boolean isEnabled() {
+        return !super.isDeleted();
+    }
+
 }

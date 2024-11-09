@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/contractor/auction")
+@RequestMapping(path = "api/v1/auction")
 public class AuctionController {
     private final AuctionService auctionService;
 
@@ -205,6 +205,21 @@ public class AuctionController {
     public ResponseEntity<Void> deleteUpcomingAuction(@PathVariable Long auctionId) {
         auctionService.deleteUpcomingAuction(auctionId);
         return ResponseEntity.ok().build();
+    }
+
+
+    @Operation(
+            description = "Recycle Plant has to be registered in the auction for them to bid.",
+            summary = "Recycle Plant registering for an auction.",
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200"),
+                    @ApiResponse(description = "Not Found", responseCode = "404")
+            }
+    )
+    @PostMapping(path = "{auctionId}/register")
+    public ResponseEntity<String> registerForAuction(@PathVariable Long auctionId, @RequestParam Long recyclingPlantId) {
+        String response = auctionService.registerForAuction(auctionId, recyclingPlantId);
+        return ResponseEntity.ok(response);
     }
 
 }

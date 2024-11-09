@@ -60,8 +60,6 @@ public class Auction {
         }
     }
 
-    // Automatically closes the auction if the current time exceeds the end date
-
 
     // getters and setters
 
