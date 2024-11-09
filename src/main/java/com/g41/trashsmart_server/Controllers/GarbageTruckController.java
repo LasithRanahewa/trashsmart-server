@@ -3,6 +3,8 @@ package com.g41.trashsmart_server.Controllers;
 import com.g41.trashsmart_server.DTO.GarbageTruckDTO;
 import com.g41.trashsmart_server.Models.GarbageTruck;
 import com.g41.trashsmart_server.Services.GarbageTruckService;
+import com.g41.trashsmart_server.Services.OrganizationService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ public class GarbageTruckController {
     public GarbageTruckController(GarbageTruckService garbagetruckService) {
         this.garbagetruckService = garbagetruckService;
     }
+
 
     // Retrieve all active garbage trucks
     @GetMapping
@@ -59,6 +62,7 @@ public class GarbageTruckController {
     public List<GarbageTruckDTO> getDeletedGarbageTrucks() {
         return garbagetruckService.getDeletedGarbageTrucks();
     }
+
 
     // Retrieve all the garbage trucks
     @GetMapping(path = "getAll")
@@ -140,6 +144,7 @@ public class GarbageTruckController {
         garbagetruckService.addNewGarbageTruck(garbagetruck);
     }
 
+
     // Logically delete an garbage truck from the system
     @DeleteMapping(path = "{garbagetruck_id}")
     @Operation(
@@ -159,6 +164,7 @@ public class GarbageTruckController {
     public void deletedGarbageTruck(@PathVariable("garbagetruck_id") Long id) {
         garbagetruckService.deleteGarbageTruck(id);
     }
+
 
     // Permanently delete a garbage truck from the system (Admin Privilege)
     @DeleteMapping(path = "delete/{garbagetruck_id}")

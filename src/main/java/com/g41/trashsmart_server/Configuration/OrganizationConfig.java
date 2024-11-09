@@ -17,7 +17,7 @@ public class OrganizationConfig {
     CommandLineRunner organizationCommandLineRunner(OrganizationRepository organizationRepository) {
         return args -> {
             Organization ucsc = new Organization(
-                    "UCSC",
+                    "University of Colombo School of Computing",
                     "UCSC Admin",
                     "ucsc@cmb.ac.lk",
                     "password@12345678",
