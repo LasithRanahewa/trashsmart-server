@@ -124,6 +124,7 @@ public class OrganizationDispatchService {
             }
             if(closetCluster != null) {
                 closetCluster.addWasteCollectionRequests(wasteCollectionRequest);
+                wasteCollectionRequest.setWasteCollectionRequestStatus(WasteCollectionRequestStatus.COLLECTING);
             }
         }
     }
