@@ -2,7 +2,7 @@ package com.g41.trashsmart_server.Services;
 
 import com.g41.trashsmart_server.DTO.AuctionDTO;
 import com.g41.trashsmart_server.DTO.AuctionDTOMapper;
-import com.g41.trashsmart_server.DTO.BidDTO;
+import com.g41.trashsmart_server.Enums.AuctionStatus;
 import com.g41.trashsmart_server.Models.Auction;
 import com.g41.trashsmart_server.Models.Bid;
 import com.g41.trashsmart_server.Models.RecyclingPlant;
@@ -10,8 +10,9 @@ import com.g41.trashsmart_server.Repositories.AuctionRepository;
 import com.g41.trashsmart_server.Repositories.BidRepository;
 import com.g41.trashsmart_server.Repositories.RecyclingPlantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +36,14 @@ public class AuctionService {
 
     public Auction createAuction(Auction auction) {
         return auctionRepository.save(auction);
+    }
+
+
+    public List<AuctionDTO> getAllAuctions() {
+        List<Auction> auctions = auctionRepository.findAll();
+        return auctions.stream()
+                .map(auctionDTOMapper)
+                .collect(Collectors.toList());
     }
 
     public List<AuctionDTO> getLiveAuctions() {
@@ -65,6 +74,13 @@ public class AuctionService {
                 .collect(Collectors.toList());
     }
 
+    public List<AuctionDTO> getDeletedAuctions() {
+        List<Auction> deletedAuctions = auctionRepository.findDeletedAuctions();
+        return deletedAuctions.stream()
+                .map(auctionDTOMapper)
+                .collect(Collectors.toList());
+    }
+
     public AuctionDTO getAuctionById(Long auctionId, String status) {
         Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
         if (auctionOptional.isEmpty()) {
@@ -72,26 +88,25 @@ public class AuctionService {
         }
 
         Auction auction = auctionOptional.get();
-        LocalDateTime now = LocalDateTime.now();
 
         switch (status) {
             case "Live":
-                if (auction.getClosed() || now.isBefore(auction.getStartDate()) || now.isAfter(auction.getEndDate())) {
+                if (auction.getStatus() != AuctionStatus.LIVE) {
                     throw new RuntimeException("Auction with ID " + auctionId + " is not a live auction.");
                 }
                 break;
             case "Past":
-                if (!auction.getClosed() || now.isBefore(auction.getEndDate())) {
+                if (auction.getStatus() != AuctionStatus.PAST) {
                     throw new RuntimeException("Auction with ID " + auctionId + " is not a past auction.");
                 }
                 break;
             case "Canceled":
-                if (!auction.getClosed() || now.isAfter(auction.getEndDate())) {
+                if (auction.getStatus() != AuctionStatus.CANCELLED) {
                     throw new RuntimeException("Auction with ID " + auctionId + " is not a canceled auction.");
                 }
                 break;
             case "Upcoming":
-                if (!auction.getClosed() || now.isBefore(auction.getStartDate())) {
+                if (auction.getStatus() != AuctionStatus.UPCOMING) {
                     throw new RuntimeException("Auction with ID " + auctionId + " is not an upcoming auction.");
                 }
                 break;
@@ -107,8 +122,7 @@ public class AuctionService {
         }
         Auction auctionToDelete = auctionOptional.get();
 
-        LocalDateTime now = LocalDateTime.now();
-        if (!auctionToDelete.getClosed() || now.isBefore(auctionToDelete.getEndDate())) {
+        if (auctionToDelete.getStatus() != AuctionStatus.PAST) {
             throw new IllegalStateException("Auction with ID " + auctionId + " is not a past auction.");
         }
 
@@ -123,8 +137,7 @@ public class AuctionService {
         }
         Auction auctionToDelete = auctionOptional.get();
 
-        LocalDateTime now = LocalDateTime.now();
-        if (now.isAfter(auctionToDelete.getStartDate())) {
+        if (auctionToDelete.getStatus() != AuctionStatus.UPCOMING) {
             throw new IllegalStateException("Auction with ID " + auctionId + " has already started and cannot be deleted.");
         }
 
@@ -132,6 +145,25 @@ public class AuctionService {
     }
 
 
+    public void cancelLiveAuction(Long auctionId) {
+        Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
+        if (auctionOptional.isEmpty()) {
+            throw new IllegalStateException("Auction with ID " + auctionId + " does not exist.");
+        }
+
+        Auction auction = auctionOptional.get();
+
+        if (auction.getStatus() != AuctionStatus.LIVE) {
+            throw new IllegalStateException("Auction with ID " + auctionId + " is not live and cannot be canceled.");
+        }
+
+        auction.setStatus(AuctionStatus.CANCELLED);
+        auctionRepository.save(auction);
+        System.out.println("Auction ID " + auction.getId() + " has been canceled.");
+    }
+
+
+    @Transactional
     public String registerForAuction(Long auctionId, Long recyclingPlantId) {
         Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
         Optional<RecyclingPlant> recyclingPlantOptional = recyclingPlantRepository.findById(recyclingPlantId);
@@ -147,7 +179,7 @@ public class AuctionService {
         RecyclingPlant recyclingPlant = recyclingPlantOptional.get();
 
         // Validate if the auction is upcoming
-        if (auction.getStartDate().isBefore(LocalDateTime.now()) || auction.getClosed()) {
+        if (auction.getStatus() != AuctionStatus.UPCOMING) {
             throw new IllegalStateException("Auction with ID " + auctionId + " is not upcoming.");
         }
 
@@ -156,12 +188,48 @@ public class AuctionService {
             throw new IllegalStateException("Recycling Plant is already registered for this auction.");
         }
 
+        auction.getRegisteredPlants().add(recyclingPlant);
+        auctionRepository.save(auction);
+
         Bid registrationBid = new Bid();
         registrationBid.setAuction(auction);
         registrationBid.setRecyclingPlant(recyclingPlant);
-        registrationBid.setBidAmount(auction.getMinimumBidAmount());
+        registrationBid.setBidAmount(null);
         bidRepository.save(registrationBid);
 
         return "Recycling Plant successfully registered to the upcoming auction.";
     }
+
+
+    //Scheduled task to automatically transition auctions from UPCOMING to LIVE and LIVE to PAST
+    @Scheduled(fixedRate = 60000)
+    public void updateAuctionStatus() {
+        LocalDateTime now = LocalDateTime.now();
+
+        try {
+            //UPCOMING to LIVE
+            List<Auction> upcomingAuctions = auctionRepository.findByStatus(AuctionStatus.UPCOMING);
+            for (Auction auction : upcomingAuctions) {
+                if (now.isAfter(auction.getStartDate()) || now.isEqual(auction.getStartDate())) {
+                    auction.setStatus(AuctionStatus.LIVE);
+                    auctionRepository.save(auction);
+                    System.out.println("Auction ID " + auction.getId() + " is now live.");
+                }
+            }
+
+            //LIVE to PAST
+            List<Auction> liveAuctions = auctionRepository.findByStatus(AuctionStatus.LIVE);
+            for (Auction auction : liveAuctions) {
+                if (now.isAfter(auction.getEndDate())) {
+                    auction.setStatus(AuctionStatus.PAST);
+                    auctionRepository.save(auction);
+                    System.out.println("Auction ID " + auction.getId() + " has ended and is now past.");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error updating auction statuses: " + e.getMessage());
+        }
+
+    }
+
 }

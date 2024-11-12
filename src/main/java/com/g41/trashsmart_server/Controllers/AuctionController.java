@@ -43,6 +43,24 @@ public class AuctionController {
 
 
     @Operation(
+            description = "Get all auctions",
+            summary = "Fetch all auctions with any status",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "401")
+            }
+    )
+    @GetMapping
+    public List<AuctionDTO> getAllAuctions() {
+        return auctionService.getAllAuctions();
+    }
+
+
+    @Operation(
             description = "Get Live Ongoing Auctions",
             summary = "All the ongoing auctions will be displayed",
             responses = {
@@ -56,7 +74,7 @@ public class AuctionController {
                     )
             }
     )
-    @GetMapping
+    @GetMapping(path = "/live")
     public List<AuctionDTO> getLiveAuctions() {
         return auctionService.getLiveAuctions();
     }
@@ -121,6 +139,24 @@ public class AuctionController {
         return auctionService.getUpcomingAuctions();
     }
 
+    @Operation(
+            description = "Get Upcoming Auctions",
+            summary = "All the upcoming auctions will be displayed",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unautherized / Invalid Token",
+                            responseCode = "401"
+                    )
+            }
+    )
+    @GetMapping(path = "/deleted")
+    public List<AuctionDTO> getDeletedAuctions() {
+        return auctionService.getDeletedAuctions();
+    }
 
     @Operation(
             description = "Get specific live auction by ID",
@@ -166,7 +202,7 @@ public class AuctionController {
 
     @Operation(
             description = "Get specific upcoming auction by ID",
-            summary = "Fetch details of a specific canceled auction",
+            summary = "Fetch details of a specific upcoming auction",
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200"),
                     @ApiResponse(description = "Not Found", responseCode = "404")
@@ -175,6 +211,22 @@ public class AuctionController {
     @GetMapping("/upcoming/{auctionId}")
     public AuctionDTO getUpcomingAuctionById(@PathVariable Long auctionId) {
         return auctionService.getAuctionById(auctionId, "Upcoming");
+    }
+
+
+    @Operation(
+            description = "Manually cancel a live auction",
+            summary = "Contractor cancels a live auction",
+            responses = {
+                    @ApiResponse(
+                            description = "Success", responseCode = "200"),
+                    @ApiResponse(description = "Not Found", responseCode = "404")
+            }
+    )
+    @PutMapping(path = "/cancel/{auctionId}")
+    public ResponseEntity<Void> cancelAuction(@PathVariable Long auctionId) {
+        auctionService.cancelLiveAuction(auctionId);
+        return ResponseEntity.ok().build();
     }
 
 

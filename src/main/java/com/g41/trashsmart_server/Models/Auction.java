@@ -1,32 +1,49 @@
 package com.g41.trashsmart_server.Models;
 
+import com.g41.trashsmart_server.Controllers.AuctionController;
+import com.g41.trashsmart_server.Enums.AuctionStatus;
 import com.g41.trashsmart_server.Enums.AuctionWasteType;
 import jakarta.persistence.*;
 
 import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
-@Table
+@Table(name = "auction")
 @Entity
 public class Auction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private AuctionWasteType auctionWasteType;
     private Double weight;
     private Double minimumBidAmount;
     private Double currentBid;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    @Enumerated(EnumType.STRING)
+    private AuctionStatus status;
+
+    private Long winningPlantId;
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
     private List<Bid> bids;
 
-    private boolean isClosed;
     private boolean isDeleted;
-    private String status;
+
+    private boolean isClosed;
+
+    @ManyToMany
+    @JoinTable(
+            name = "auction_recycling_plant",
+            joinColumns = @JoinColumn(name = "auction_id"),
+            inverseJoinColumns = @JoinColumn(name = "recycling_plant_id")
+    )
+    private Set<RecyclingPlant> registeredPlants;
+
 
     public Auction() {}
 
@@ -34,29 +51,32 @@ public class Auction {
         this.auctionWasteType = auctionWasteType;
         this.weight = weight;
         this.minimumBidAmount = minimumBidAmount;
-        this.currentBid = minimumBidAmount;
+        this.currentBid = null;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isClosed = true;
+        this.status = null;
         this.isDeleted = false;
+        this.isClosed = false;
     }
 
-    // Automatically set the auction as open if current time is within start and end date
-    @PrePersist
-    public void onPrePersist() {
+    // Automatically update the status when the entity is loaded
+    @PostLoad
+    public void updateStatus() {
         LocalDateTime now = LocalDateTime.now();
         if (now.isAfter(startDate) && now.isBefore(endDate)) {
-            this.isClosed = false;
-        } else {
-            this.isClosed = true;
+            this.status = AuctionStatus.LIVE;
+        } else if (now.isAfter(endDate)) {
+            this.status = AuctionStatus.PAST;
+        } else if (now.isBefore(startDate)) {
+            this.status = AuctionStatus.UPCOMING;
         }
-        this.currentBid = this.minimumBidAmount;
     }
 
     // Updates the current bid if a higher bid is received
-    public void updateCurrentBid(double newBid) {
-        if (newBid > currentBid) {
+    public void updateCurrentBid(double newBid, Long recyclingPlantId) {
+        if (this.status == AuctionStatus.LIVE && newBid > currentBid) {
             this.currentBid = newBid;
+            this.winningPlantId = recyclingPlantId;
         }
     }
 
@@ -123,19 +143,24 @@ public class Auction {
         this.bids = bids;
     }
 
-    public Boolean getClosed() {
-        return isClosed;
-    }
-
-    public void setClosed(Boolean closed) {
-        isClosed = closed;
-    }
-
     public boolean isDeleted() { return isDeleted; }
 
     public void setDeleted(Boolean deleted) { isDeleted = deleted; }
 
-    public String getStatus() { return status; }
+    public AuctionStatus getStatus() { return status ;}
+    public void setStatus(AuctionStatus status) { this.status = status; }
 
-    public void setStatus(String status) { this.status = status; }
+    public Long getWinningPlantId() { return winningPlantId; }
+
+    public void setWinningPlantId(Long winningPlantId) { this.winningPlantId = winningPlantId; }
+
+    public Set<RecyclingPlant> getRegisteredPlants() { return registeredPlants; }
+
+    public void setRegisteredPlants(Set<RecyclingPlant> registeredPlants) { this.registeredPlants = registeredPlants; }
+
+    public void addRecyclingPlant(RecyclingPlant recyclingPlant) { this.registeredPlants.add(recyclingPlant); }
+
+    public Boolean isClosed() { return isClosed; }
+    public void setClosed(Boolean closed ) { this.isClosed = closed; }
+
 }

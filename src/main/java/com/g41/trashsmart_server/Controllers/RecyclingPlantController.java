@@ -65,7 +65,7 @@ public class RecyclingPlantController {
 
 
     @Operation(
-            description = "Retrieve all active/logically-deleted recycling plants which are added to the system.",
+            description = "Retrieve all active recycling plants which are added to the system.",
             summary = "Get all active recycling plants.",
             responses = {
                     @ApiResponse(
@@ -167,4 +167,5 @@ public class RecyclingPlantController {
         RecyclingPlantDTO recyclingPlantDTO = recyclingPlantService.updateRecyclingPlant(plantId, updateDTO);
         return ResponseEntity.ok(recyclingPlantDTO);
     }
+
 }
