@@ -2,12 +2,14 @@ package com.g41.trashsmart_server.Models;
 
 import com.g41.trashsmart_server.Enums.Role;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "recycling-plant")
 public class RecyclingPlant extends BusinessUser {
     private String BRN;
 
@@ -22,6 +24,9 @@ public class RecyclingPlant extends BusinessUser {
         this.setRole(Role.RECYCLING_PLANT);
     }
 
+    @ManyToMany(mappedBy = "registeredPlants")
+    private Set<Auction> auctions;
+
     // Getters and Setters
     public String getBRN() {
         return BRN;
@@ -35,4 +40,7 @@ public class RecyclingPlant extends BusinessUser {
         return !super.isDeleted();
     }
 
+    public Set<Auction> getAuctions() { return auctions; }
+
+    public void setAuctions(Set<Auction> auctions) { this.auctions = auctions; }
 }

@@ -17,9 +17,12 @@ public class BidDTO {
     private Long auctionId;
     private Long recyclingPlantId;
 
-    public BidDTO(Long auctionId, Long recyclingPlantId) {
-        this.auctionId = auctionId;
-        this.recyclingPlantId = recyclingPlantId;
+    public BidDTO(Bid bid) {
+        this.id = bid.getId();
+        this.bidAmount = bid.getBidAmount();
+        this.bidTime = bid.getBidTime();
+        this.auctionId = bid.getAuction() != null ? bid.getAuction().getId() : null;
+        this.recyclingPlantId = bid.getRecyclingPlant() != null ? bid.getRecyclingPlant().getId() : null;
     }
 
 }

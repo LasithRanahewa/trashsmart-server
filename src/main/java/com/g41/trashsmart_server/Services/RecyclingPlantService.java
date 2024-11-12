@@ -27,6 +27,10 @@ public class RecyclingPlantService {
         Optional<RecyclingPlant> existingPlantByBRN = recyclingPlantRepository.findByBRN(recyclingPlant.getBRN());
         Optional<RecyclingPlant> existingByEmail = recyclingPlantRepository.findByEmail(recyclingPlant.getEmail());
 
+        if (recyclingPlant.getEmail().isEmpty()) {
+            throw new IllegalStateException("Email is essential.");
+        }
+
         // Check if the recycling plant already exists by BRN or email
         if (existingByEmail.isPresent()) {
             throw new IllegalStateException("Recycling Plant with email " + recyclingPlant.getEmail() + " already exists.");
