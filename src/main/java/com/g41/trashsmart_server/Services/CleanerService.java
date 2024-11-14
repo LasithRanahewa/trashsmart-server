@@ -39,6 +39,7 @@ public class CleanerService {
     }
 
 
+    //Get active cleaners
     public List<CleanerDTO> getCleaners() {
         List<Cleaner> cleaners = cleanerRepository.findCleaners(false);
         return cleaners.stream()
@@ -46,6 +47,7 @@ public class CleanerService {
                 .collect(Collectors.toList());
     }
 
+    //Get logically deleted cleaners
     public List<CleanerDTO> getDeletedCleaners() {
         List<Cleaner> cleaners = cleanerRepository.findCleaners(true);
         return cleaners.stream()
@@ -53,6 +55,7 @@ public class CleanerService {
                 .collect(Collectors.toList());
     }
 
+    //Get all cleaners
     public List<CleanerDTO> getAllCleaners() {
         List<Cleaner> cleaners = cleanerRepository.findAllCleanersUnfiltered();
         return cleaners.stream()
@@ -60,6 +63,7 @@ public class CleanerService {
                 .collect(Collectors.toList());
     }
 
+    //Get cleaners all details
     public List<Cleaner> getCleanersAdmin() {
         return cleanerRepository.findAll();
     }
@@ -72,6 +76,7 @@ public class CleanerService {
         return cleanerDTOMapper.apply(cleanerOptional.get());
     }
 
+    //Add new cleaner
     public Cleaner addNewCleaner(Cleaner cleaner) {
         Optional<Cleaner> existingByEmail = cleanerRepository.findByEmail(cleaner.getEmail());
         Optional<Cleaner> existingByContactNo = cleanerRepository.findByContactNo(cleaner.getContactNo());
@@ -105,6 +110,7 @@ public class CleanerService {
         return cleanerRepository.save(cleaner);
     }
 
+    //Logically delete a cleaner
     public void deleteCleaner(Long cleanerId) {
         Optional<Cleaner> cleanerOptional = cleanerRepository.findById(cleanerId);
 
@@ -118,6 +124,7 @@ public class CleanerService {
         cleanerRepository.save(cleanerToDelete);
     }
 
+    //Permanently delete a cleaner
     public void deletePermanentCleaner(Long cleanerId) {
         Optional<Cleaner> cleanerOptional = cleanerRepository.findById(cleanerId);
 
@@ -128,6 +135,7 @@ public class CleanerService {
         cleanerRepository.delete(cleanerOptional.get());
     }
 
+    //Update a cleaner
     public void updateCleaner(Long cleanerId, Cleaner cleaner) {
         Optional<Cleaner> cleanerOptional = cleanerRepository.findById(cleanerId);
 
@@ -165,8 +173,14 @@ public class CleanerService {
         if (cleaner.getNic() != null && !cleanerToUpdate.getNic().equals(cleaner.getNic())) {
             cleanerToUpdate.setNic(cleaner.getNic());
         }
+        if (cleaner.getStatus() != null && !cleanerToUpdate.getStatus().equals(cleaner.getStatus())) {
+            cleanerToUpdate.setStatus(cleaner.getStatus());
+        }
         if (cleaner.getPassword() != null && !cleanerToUpdate.getPassword().equals(cleaner.getPassword())) {
             cleanerToUpdate.setPassword(passwordEncoder.encode(cleaner.getPassword()));
+        }
+        if (cleaner.getCommunalBins() != null && !cleanerToUpdate.getCommunalBins().equals(cleaner.getCommunalBins())) {
+            cleanerToUpdate.setCommunalBins(cleaner.getCommunalBins());
         }
 
         cleanerRepository.save(cleanerToUpdate);
