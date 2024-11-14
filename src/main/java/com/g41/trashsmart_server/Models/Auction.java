@@ -4,6 +4,7 @@ import com.g41.trashsmart_server.Controllers.AuctionController;
 import com.g41.trashsmart_server.Enums.AuctionStatus;
 import com.g41.trashsmart_server.Enums.AuctionWasteType;
 import jakarta.persistence.*;
+import org.springframework.data.repository.query.Param;
 
 import javax.swing.*;
 import java.time.LocalDateTime;
@@ -148,7 +149,7 @@ public class Auction {
     public void setDeleted(Boolean deleted) { isDeleted = deleted; }
 
     public AuctionStatus getStatus() { return status ;}
-    public void setStatus(AuctionStatus status) { this.status = status; }
+    public void setStatus(@Param("status") AuctionStatus status) { this.status = status; }
 
     public Long getWinningPlantId() { return winningPlantId; }
 

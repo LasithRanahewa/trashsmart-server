@@ -12,16 +12,16 @@ import java.util.List;
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
-    @Query("SELECT a FROM Auction a WHERE a.isDeleted = false AND a.startDate <= CURRENT_TIMESTAMP AND a.endDate >= CURRENT_TIMESTAMP ")
+    @Query("SELECT a FROM Auction a WHERE a.isDeleted = false AND a.isClosed = false AND a.startDate <= CURRENT_TIMESTAMP AND a.endDate >= CURRENT_TIMESTAMP ")
     List<Auction> findLiveAuctions();
 
-    @Query("SELECT a FROM Auction a WHERE a.isDeleted = false AND a.endDate < CURRENT_TIMESTAMP")
+    @Query("SELECT a FROM Auction a WHERE a.isDeleted = false AND a.isClosed = false AND a.endDate < CURRENT_TIMESTAMP")
     List<Auction> findPastAuctions();
 
     @Query("SELECT a FROM Auction a WHERE a.isDeleted = false AND a.isClosed = true")
     List<Auction> findCanceledAuctions();
 
-    @Query("SELECT a FROM Auction a WHERE a.isDeleted = false AND a.startDate > CURRENT_TIMESTAMP")
+    @Query("SELECT a FROM Auction a WHERE a.isDeleted = false AND a.isClosed = false AND  a.startDate > CURRENT_TIMESTAMP")
     List<Auction> findUpcomingAuctions();
 
     @Query("SELECT a FROM Auction a WHERE a.isDeleted = true AND a.endDate < CURRENT_TIMESTAMP")
@@ -29,4 +29,6 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     List<Auction> findByStatus(AuctionStatus auctionStatus);
 
+    @Query("SELECT a FROM Auction a WHERE a.isDeleted = false AND a.isClosed = false ")
+    List<Auction> findAllAuctions();
 }
