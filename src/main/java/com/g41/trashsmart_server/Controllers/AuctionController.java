@@ -159,6 +159,19 @@ public class AuctionController {
     }
 
     @Operation(
+            description = "Get specific auction by ID",
+            summary = "Fetch details of a specific auction",
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200"),
+                    @ApiResponse(description = "Not Found", responseCode = "404")
+            }
+    )
+    @GetMapping("/{auctionId}")
+    public AuctionDTO getSpecificAuction(@PathVariable Long auctionId) {
+        return auctionService.getSpecificAuction(auctionId);
+    }
+
+    @Operation(
             description = "Get specific live auction by ID",
             summary = "Fetch details of a specific live auction",
             responses = {
@@ -166,7 +179,7 @@ public class AuctionController {
                     @ApiResponse(description = "Not Found", responseCode = "404")
             }
     )
-    @GetMapping("/{auctionId}")
+    @GetMapping("/live/{auctionId}")
     public AuctionDTO getLiveAuctionById(@PathVariable Long auctionId) {
         return auctionService.getAuctionById(auctionId, "Live");
     }
@@ -238,7 +251,7 @@ public class AuctionController {
                     @ApiResponse(description = "Not Found", responseCode = "404")
             }
     )
-    @DeleteMapping(path = "/past/{auctionId}")
+    @PutMapping(path = "/past/{auctionId}")
     public ResponseEntity<Void> deletePastAuction(@PathVariable Long auctionId) {
         auctionService.deletePastAuction(auctionId);
         return ResponseEntity.ok().build();

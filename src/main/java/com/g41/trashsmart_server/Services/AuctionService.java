@@ -40,7 +40,7 @@ public class AuctionService {
 
 
     public List<AuctionDTO> getAllAuctions() {
-        List<Auction> auctions = auctionRepository.findAll();
+        List<Auction> auctions = auctionRepository.findAllAuctions();
         return auctions.stream()
                 .map(auctionDTOMapper)
                 .collect(Collectors.toList());
@@ -79,6 +79,15 @@ public class AuctionService {
         return deletedAuctions.stream()
                 .map(auctionDTOMapper)
                 .collect(Collectors.toList());
+    }
+
+    public AuctionDTO getSpecificAuction(Long auctionId) {
+        Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
+        if (auctionOptional.isEmpty()) {
+            throw new IllegalStateException("Auction with id " + auctionId + "does not exist.");
+        }
+
+        return auctionDTOMapper.apply(auctionOptional.get());
     }
 
     public AuctionDTO getAuctionById(Long auctionId, String status) {
@@ -158,6 +167,7 @@ public class AuctionService {
         }
 
         auction.setStatus(AuctionStatus.CANCELLED);
+        auction.setClosed(true);
         auctionRepository.save(auction);
         System.out.println("Auction ID " + auction.getId() + " has been canceled.");
     }
@@ -231,5 +241,4 @@ public class AuctionService {
         }
 
     }
-
 }
