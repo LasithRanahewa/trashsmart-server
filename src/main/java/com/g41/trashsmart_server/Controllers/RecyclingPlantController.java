@@ -163,9 +163,8 @@ public class RecyclingPlantController {
             }
     )
     @PutMapping(path = "/{plantId}")
-    public ResponseEntity<RecyclingPlantDTO> updateRecyclingPlant(@PathVariable Long plantId, @RequestBody RecyclingPlantDTO updateDTO) {
-        RecyclingPlantDTO recyclingPlantDTO = recyclingPlantService.updateRecyclingPlant(plantId, updateDTO);
-        return ResponseEntity.ok(recyclingPlantDTO);
+    public void updateRecyclingPlant(@PathVariable Long plantId, @RequestBody RecyclingPlant recyclingPlant) {
+        recyclingPlantService.updateRecyclingPlant(plantId, recyclingPlant);
     }
 
 }
