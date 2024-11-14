@@ -8,6 +8,7 @@ import com.g41.trashsmart_server.Repositories.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -103,6 +104,7 @@ public class DriverService {
     }
 
     // Update driver details
+    @Transactional
     public void updateDriver(Long id, Driver driver) {
         Driver driverToUpdate = driverRepository.findById(id).orElseThrow(
                 () -> new IllegalStateException("Driver with id " + id + " does not exist")
@@ -116,7 +118,7 @@ public class DriverService {
             driverToUpdate.setCurrentStreak(driver.getCurrentStreak());
         }
         if (driver.getNumberOfHolidays() != null &&
-                !driver.getNumberOfHolidays().equals(driver.getNumberOfHolidays())) {
+                !driverToUpdate.getNumberOfHolidays().equals(driver.getNumberOfHolidays())) {
             driverToUpdate.setNumberOfHolidays(driver.getNumberOfHolidays());
         }
         if (driver.getTotalCollections() != null &&
@@ -127,6 +129,56 @@ public class DriverService {
                 !driverToUpdate.getTotalActiveDays().equals(driver.getTotalActiveDays())) {
             driverToUpdate.setTotalActiveDays(driver.getTotalActiveDays());
         }
+        if (driver.getStatus() != null &&
+                !driverToUpdate.getStatus().equals(driver.getStatus())) {
+            driverToUpdate.setStatus(driver.getStatus());
+        }
+        if (driver.getFirstName() != null &&
+                !driverToUpdate.getFirstName().equals(driver.getFirstName())) {
+            driverToUpdate.setFirstName(driver.getFirstName());
+        }
+        if (driver.getLastName() != null && !driver.getLastName().isEmpty() &&
+                !driverToUpdate.getLastName().equals(driver.getLastName())) {
+            driverToUpdate.setLastName(driver.getLastName());
+        }
+        if (driver.getEmail() != null && !driver.getEmail().isEmpty() &&
+                !driverToUpdate.getEmail().equals(driver.getEmail())) {
+            Optional<Driver> driverOptional = driverRepository.findDriverByEmail(
+                    driver.getEmail()
+            );
+            if(driverOptional.isPresent()) {
+                throw new IllegalStateException("Email Taken");
+            }
+            driverToUpdate.setEmail(driver.getEmail());
+        }
+        if (driver.getPassword() != null &&
+                !driverToUpdate.getPassword().equals(driver.getPassword())) {
+            driverToUpdate.setPassword(driver.getPassword());
+        }
+        if (driver.getAddress() != null &&
+                !driverToUpdate.getAddress().equals(driver.getAddress())) {
+            driverToUpdate.setAddress(driver.getAddress());
+        }
+        if (driver.getContactNo() != null &&
+                !driverToUpdate.getContactNo().equals(driver.getContactNo())) {
+            driverToUpdate.setContactNo(driver.getContactNo());
+        }
+        if (driver.getRole() != null && !driverToUpdate.getRole().equals(driver.getRole())) {
+            driverToUpdate.setRole(driver.getRole());
+        }
+        if (driver.getProfileURL() != null && !driver.getProfileURL().isEmpty() &&
+                !driverToUpdate.getProfileURL().equals(driver.getProfileURL())) {
+            driverToUpdate.setProfileURL(driver.getProfileURL());
+        }
+        if (driver.getDob() != null &&
+                !driverToUpdate.getDob().equals(driver.getDob())) {
+            driverToUpdate.setDob(driver.getDob());
+        }
+        if (driver.getNic() != null &&
+                !driverToUpdate.getNic().equals(driver.getNic())) {
+            driverToUpdate.setNic(driver.getNic());
+        }
+
         driverRepository.save(driverToUpdate);
     }
 }
