@@ -77,7 +77,7 @@ public class CleanerService {
     }
 
     //Add new cleaner
-    public Cleaner addNewCleaner(Cleaner cleaner) {
+    public void addNewCleaner(Cleaner cleaner) {
         Optional<Cleaner> existingByEmail = cleanerRepository.findByEmail(cleaner.getEmail());
         Optional<Cleaner> existingByContactNo = cleanerRepository.findByContactNo(cleaner.getContactNo());
 
@@ -88,26 +88,26 @@ public class CleanerService {
             throw new IllegalStateException("Cleaner with the contact No. " + cleaner.getContactNo() + " already exist.");
         }
 
-        if (cleaner.getPassword() == null || cleaner.getPassword().isEmpty()) {
-            cleaner.setPassword(securityConfig.generateRandomPassword(10));
-
-            String subject = "TrashSmart Account Created";
-            String body = "Hello, " + cleaner.getFirstName() + "!\n" +
-                    "Your TrashSmart account has been created successfully.\n" +
-                    "Your login credentials are as follows:\n" +
-                    "Email: " + cleaner.getEmail() + "\n" +
-                    "Password: " + cleaner.getPassword() + "\n" +
-                    "Please change your password after logging in.\n" +
-                    "Thank you for choosing TrashSmart!";
-            smtpGmailSenderService.sendEmail(cleaner.getEmail(), subject, body);
-        } else {
-            cleaner.setPassword(passwordEncoder.encode(cleaner.getPassword()));
-        }
+//        if (cleaner.getPassword() == null || cleaner.getPassword().isEmpty()) {
+//            cleaner.setPassword(securityConfig.generateRandomPassword(10));
+//
+//            String subject = "TrashSmart Account Created";
+//            String body = "Hello, " + cleaner.getFirstName() + "!\n" +
+//                    "Your TrashSmart account has been created successfully.\n" +
+//                    "Your login credentials are as follows:\n" +
+//                    "Email: " + cleaner.getEmail() + "\n" +
+//                    "Password: " + cleaner.getPassword() + "\n" +
+//                    "Please change your password after logging in.\n" +
+//                    "Thank you for choosing TrashSmart!";
+//            smtpGmailSenderService.sendEmail(cleaner.getEmail(), subject, body);
+//        } else {
+//            cleaner.setPassword(passwordEncoder.encode(cleaner.getPassword()));
+//        }
 
         cleaner.setRole(Role.CLEANER);
         cleaner.setStatus(Status.ACTIVE);
 
-        return cleanerRepository.save(cleaner);
+        cleanerRepository.save(cleaner);
     }
 
     //Logically delete a cleaner

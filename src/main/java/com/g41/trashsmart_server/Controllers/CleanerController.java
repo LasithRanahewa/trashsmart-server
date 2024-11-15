@@ -159,9 +159,8 @@ public class CleanerController {
             }
     )
     @PostMapping
-    public ResponseEntity<Cleaner> registerNewCleaner(@RequestBody Cleaner cleaner) {
-        Cleaner addedCleaner = cleanerService.addNewCleaner(cleaner);
-        return ResponseEntity.ok(addedCleaner);
+    public void registerNewCleaner(@RequestBody Cleaner cleaner) {
+        cleanerService.addNewCleaner(cleaner);
     }
 
 
