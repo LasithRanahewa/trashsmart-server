@@ -3,7 +3,6 @@ package com.g41.trashsmart_server.Controllers;
 import com.g41.trashsmart_server.DTO.GarbageTruckDTO;
 import com.g41.trashsmart_server.Models.GarbageTruck;
 import com.g41.trashsmart_server.Services.GarbageTruckService;
-import com.g41.trashsmart_server.Services.OrganizationService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
