@@ -1,6 +1,5 @@
 package com.g41.trashsmart_server.Controllers;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.g41.trashsmart_server.Configuration.JwtUtils;
 import com.g41.trashsmart_server.DTO.AuthenticationRequest;
 import com.g41.trashsmart_server.DTO.AuthenticationResponse;
@@ -9,6 +8,7 @@ import com.g41.trashsmart_server.Models.*;
 import com.g41.trashsmart_server.Repositories.ContractorRepository;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
 import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
+import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import com.g41.trashsmart_server.Services.DriverService;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
