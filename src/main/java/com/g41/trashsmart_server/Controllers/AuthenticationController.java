@@ -4,14 +4,11 @@ import com.g41.trashsmart_server.Configuration.JwtUtils;
 import com.g41.trashsmart_server.DTO.AuthenticationRequest;
 import com.g41.trashsmart_server.DTO.AuthenticationResponse;
 import com.g41.trashsmart_server.Enums.Role;
-import com.g41.trashsmart_server.Models.Driver;
-import com.g41.trashsmart_server.Models.HouseholdUser;
-import com.g41.trashsmart_server.Models.Contractor;
-import com.g41.trashsmart_server.Models.User;
+import com.g41.trashsmart_server.Models.*;
 import com.g41.trashsmart_server.Repositories.ContractorRepository;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
 import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
-import com.g41.trashsmart_server.Services.DriverService;
+import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -47,6 +44,8 @@ public class AuthenticationController {
     private ContractorRepository contractorRepository;
     @Autowired
     private DriverRepository driverRepository;
+    @Autowired
+    private OrganizationRepository organizationRepository;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest request) {
@@ -55,8 +54,9 @@ public class AuthenticationController {
             Optional<HouseholdUser> householdUser = householdUserRepository.findHouseholdUserByEmail(email);
             Optional<Contractor> contractor = contractorRepository.findContractorByEmail(email);
             Optional<Driver> driver = driverRepository.findDriverByEmail(email);
+            Optional<Organization> organization = organizationRepository.findOrganizationByEmail(email);
 
-            if (householdUser.isEmpty() && contractor.isEmpty() && driver.isEmpty()) {
+            if (householdUser.isEmpty() && contractor.isEmpty() && driver.isEmpty() && organization.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
@@ -77,6 +77,9 @@ public class AuthenticationController {
             } else if (userDetails instanceof Driver) {
                 role = ((Driver) userDetails).getRole();
                 userId = ((Driver) userDetails).getId();
+            } else if (userDetails instanceof Organization) {
+                role = ((Organization) userDetails).getRole();
+                userId = ((Organization) userDetails).getId();
             } else {
                 throw new IllegalStateException("Unknown user type");
             }
