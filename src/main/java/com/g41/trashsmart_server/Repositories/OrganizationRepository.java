@@ -20,6 +20,10 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
     @Query("SELECT org FROM Organization org WHERE org.id = :id AND org.deleted = :deleted")
     Optional<Organization> findOrganizationById(Long id, Boolean deleted);
 
+    // Select a specific organization using name
+    @Query("SELECT org FROM Organization org WHERE org.firstName = :firstName AND org.deleted = :deleted")
+    Optional<Organization> findOrganizationByFirstName(String firstName, Boolean deleted);
+
     // Select all the organizations in the system active/logically deleted
     @Query("SELECT org FROM Organization org WHERE org.deleted = :deleted")
     List<Organization> findAllOrganizations(Boolean deleted);

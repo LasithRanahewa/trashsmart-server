@@ -21,6 +21,11 @@ public class CommercialBin extends SmartBin{
         super(longitude, latitude, wasteType, binSize);
     }
 
+    public CommercialBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize, Organization organization) {
+        super(longitude, latitude, wasteType, binSize);
+        this.organization = organization;
+    }
+
     public LocalDate getPurchaseDate() {
         return purchaseDate;
     }
