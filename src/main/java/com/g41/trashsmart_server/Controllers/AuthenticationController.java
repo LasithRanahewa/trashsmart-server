@@ -5,10 +5,7 @@ import com.g41.trashsmart_server.DTO.AuthenticationRequest;
 import com.g41.trashsmart_server.DTO.AuthenticationResponse;
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.*;
-import com.g41.trashsmart_server.Repositories.ContractorRepository;
-import com.g41.trashsmart_server.Repositories.DriverRepository;
-import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
-import com.g41.trashsmart_server.Repositories.OrganizationRepository;
+import com.g41.trashsmart_server.Repositories.*;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import com.g41.trashsmart_server.Services.DriverService;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
@@ -45,6 +42,8 @@ public class AuthenticationController {
     private DriverRepository driverRepository;
     @Autowired
     private OrganizationRepository organizationRepository;
+    @Autowired
+    private RecyclingPlantRepository recyclingPlantRepository;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest request) {
@@ -54,8 +53,9 @@ public class AuthenticationController {
             Optional<Contractor> contractor = contractorRepository.findContractorByEmail(email);
             Optional<Driver> driver = driverRepository.findDriverByEmail(email);
             Optional<Organization> organization = organizationRepository.findOrganizationByEmail(email);
+            Optional<RecyclingPlant> recyclingPlant = recyclingPlantRepository.findByEmail(email);
 
-            if (householdUser.isEmpty() && contractor.isEmpty() && driver.isEmpty() && organization.isEmpty()) {
+            if (householdUser.isEmpty() && contractor.isEmpty() && driver.isEmpty() && organization.isEmpty() && recyclingPlant.isEmpty()) {
 //                System.out.println("No user found!");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
@@ -85,6 +85,10 @@ public class AuthenticationController {
                 case Organization organization1 -> {
                     role = organization1.getRole();
                     userId = organization1.getId();
+                }
+                case RecyclingPlant recyclingPlant1 -> {
+                    role = recyclingPlant1.getRole();
+                    userId = recyclingPlant1.getId();
                 }
                 case null, default -> throw new IllegalStateException("Unknown user type");
             }
