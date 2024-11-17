@@ -3,7 +3,9 @@ package com.g41.trashsmart_server.Services;
 import com.g41.trashsmart_server.DTO.CommercialBinDTO;
 import com.g41.trashsmart_server.DTO.CommercialBinDTOMapper;
 import com.g41.trashsmart_server.Models.CommercialBin;
+import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Repositories.CommercialBinRepository;
+import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +17,14 @@ import java.util.stream.Collectors;
 public class CommercialBinService {
     private final CommercialBinRepository commercialBinRepository;
     private final CommercialBinDTOMapper commercialBinDTOMapper;
+    private final OrganizationRepository organizationRepository;
 
     @Autowired
     public CommercialBinService(CommercialBinRepository commercialBinRepository,
-                               CommercialBinDTOMapper commercialBinDTOMapper) {
+                               CommercialBinDTOMapper commercialBinDTOMapper, OrganizationRepository organizationRepository) {
         this.commercialBinRepository = commercialBinRepository;
         this.commercialBinDTOMapper = commercialBinDTOMapper;
+        this.organizationRepository = organizationRepository;
     }
 
 
@@ -71,8 +75,14 @@ public class CommercialBinService {
     }
 
     // Create a new commercial bin
-    public void addNewCommercialBin(CommercialBin CommercialBin) {
-        commercialBinRepository.save(CommercialBin);
+    public void addNewCommercialBin(CommercialBin commercialBin, Long organizationId) {
+        Optional<Organization> organizationOptional = organizationRepository.findById(organizationId);
+        if (organizationOptional.isEmpty()) {
+            throw new IllegalStateException("Organization with id " + organizationId + " does not exist");
+        }
+        Organization organization = organizationOptional.get();
+        commercialBin.setOrganization(organization);
+        commercialBinRepository.save(commercialBin);
     }
 
     // Logically delete a commercial bin from the system
