@@ -39,7 +39,7 @@ public class DriverConfig {
                     passwordEncoder.encode("password123"),
                     "0712990638",
                     "35, Reid Avenue, Colombo 07",
-                    "rusara.wimalasena123@gmail.com",
+                    "ravija@gmail.com",
                     "www.google.com",
                     LocalDate.of(1995, 12, 12),
                     "200168686830"
