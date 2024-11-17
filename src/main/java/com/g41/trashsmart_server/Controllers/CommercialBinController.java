@@ -1,19 +1,12 @@
 package com.g41.trashsmart_server.Controllers;
 
 import com.g41.trashsmart_server.DTO.CommercialBinDTO;
-import com.g41.trashsmart_server.DTO.CommercialBinRequestDTO;
 import com.g41.trashsmart_server.Models.CommercialBin;
-import com.g41.trashsmart_server.Models.GarbageTruck;
-import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Services.CommercialBinService;
-import com.g41.trashsmart_server.Repositories.OrganizationRepository;
-import com.g41.trashsmart_server.Enums.WasteType;
-import com.g41.trashsmart_server.Enums.BinSize;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +15,10 @@ import java.util.List;
 @RequestMapping(path = "api/v1/commercial_bin")
 public class CommercialBinController {
     private final CommercialBinService commercialBinService;
-    //private final OrganizationRepository organizationRepository;
 
     @Autowired
     public CommercialBinController(CommercialBinService commercialBinService) {
         this.commercialBinService = commercialBinService;
-        //this.organizationRepository = organizationRepository;
     }
     
     // Retrieve all active commercial bins
@@ -131,11 +122,11 @@ public class CommercialBinController {
         return commercialBinService.getSpecificCommercialBin(id);
     }
 
-    // Create a new commercial bin
-    @PostMapping
+    // Create a new waste collection request
+    @PostMapping(path = "{org_id}")
     @Operation(
             description = "Create a new commercial bin",
-            summary = "Create a new commercial bin when the commercial bin details are sent in the body of the POST request",
+            summary = "New commercial bin is created. Organization id has to be given",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -147,24 +138,9 @@ public class CommercialBinController {
                     )
             }
     )
-//    public void registerNewCommercialBin(@RequestBody CommercialBinRequestDTO commercialBinRequest) {
-//        Organization organization = organizationRepository.findOrganizationById(commercialBinRequest.getOrganizationId(), false)
-//                .orElseThrow(() -> new RuntimeException("Organization not found"));
-//
-//        CommercialBin commercialBin = new CommercialBin(
-//                commercialBinRequest.getLongitude(),
-//                commercialBinRequest.getLatitude(),
-//                WasteType.valueOf(commercialBinRequest.getWasteType()),
-//                BinSize.valueOf(commercialBinRequest.getBinSize()),
-//                organization
-//        );
-//
-//        commercialBinService.addNewCommercialBin(commercialBin);
-//    }
-    public void registerNewCommercialBin(@RequestBody CommercialBin commercialBin) {
-        commercialBinService.addNewCommercialBin(commercialBin);
+    public void registerNewCommercialBin(@RequestBody CommercialBin commercialBin, @PathVariable("org_id") Long id) {
+        commercialBinService.addNewCommercialBin(commercialBin, id);
     }
-
 
     // Logically delete commercial bin from the system
     @DeleteMapping(path = "{CommercialBin_id}")
