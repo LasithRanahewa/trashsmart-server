@@ -48,8 +48,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Organization organization = organizationRepository.findOrganizationByEmail(email).orElse(null);
         if (organization != null) {
-            return (UserDetails) organization;
+            return organization;
         }
+
+
+
+
 
         throw new UsernameNotFoundException("User not found with email: " + email);
     }
