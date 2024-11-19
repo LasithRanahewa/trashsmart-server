@@ -20,6 +20,7 @@ public class AuctionDTOMapper implements Function<Auction, AuctionDTO> {
                 auction.getStatus(),
                 auction.getStartDate(),
                 auction.getEndDate(),
+                auction.getWinningPlantId(),
                 auction.getRegisteredPlants().stream()
                         .map(RecyclingPlant::getId)
                         .collect(Collectors.toSet())

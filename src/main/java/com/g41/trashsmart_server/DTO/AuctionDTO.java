@@ -21,5 +21,6 @@ public class AuctionDTO {
     private AuctionStatus status;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private Long winningPlantId;
     private Set<Long> registeredPlantIds;
 }

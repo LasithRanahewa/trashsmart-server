@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BidRepository extends JpaRepository<Bid, Long> {
+
     boolean existsByAuctionAndRecyclingPlant(Auction auction, RecyclingPlant recyclingPlant);
 
     List<Bid> findAllByAuctionOrderByBidAmountDesc(Auction auction);
