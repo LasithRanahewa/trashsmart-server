@@ -68,6 +68,7 @@ public class BidService {
         bid.setBidTime(LocalDateTime.now());
 
         auction.setCurrentBid(bidAmount);
+        auction.setWinningPlantId(recyclingPlantId);
         auctionRepository.save(auction);
         bidRepository.save(bid);
 

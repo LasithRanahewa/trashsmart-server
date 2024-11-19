@@ -36,9 +36,8 @@ public class AuctionController {
             }
     )
     @PostMapping
-    public ResponseEntity<Auction> createAuction(@RequestBody Auction auction) {
-        Auction createdAuction = auctionService.createAuction(auction);
-        return ResponseEntity.ok(createdAuction);
+    public void createAuction(@RequestBody Auction auction) {
+        auctionService.createAuction(auction);
     }
 
 

@@ -48,11 +48,24 @@ public class Auction {
 
     public Auction() {}
 
+    public Auction(AuctionWasteType auctionWasteType, Double weight, Double minimumBidAmount, LocalDateTime startDate, LocalDateTime endDate, Set<RecyclingPlant> registeredPlants) {
+        this.auctionWasteType = auctionWasteType;
+        this.weight = weight;
+        this.minimumBidAmount = minimumBidAmount;
+        this.currentBid = minimumBidAmount;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = null;
+        this.isDeleted = false;
+        this.isClosed = false;
+        this.registeredPlants = registeredPlants;
+    }
+
     public Auction(AuctionWasteType auctionWasteType, Double weight, Double minimumBidAmount, LocalDateTime startDate, LocalDateTime endDate) {
         this.auctionWasteType = auctionWasteType;
         this.weight = weight;
         this.minimumBidAmount = minimumBidAmount;
-        this.currentBid = null;
+        this.currentBid = minimumBidAmount;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = null;

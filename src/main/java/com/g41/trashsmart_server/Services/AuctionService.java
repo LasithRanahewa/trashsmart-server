@@ -34,8 +34,8 @@ public class AuctionService {
         this.bidRepository = bidRepository;
     }
 
-    public Auction createAuction(Auction auction) {
-        return auctionRepository.save(auction);
+    public void createAuction(Auction auction) {
+        auctionRepository.save(auction);
     }
 
 
@@ -189,8 +189,8 @@ public class AuctionService {
         RecyclingPlant recyclingPlant = recyclingPlantOptional.get();
 
         // Validate if the auction is upcoming
-        if (auction.getStatus() != AuctionStatus.UPCOMING) {
-            throw new IllegalStateException("Auction with ID " + auctionId + " is not upcoming.");
+        if (auction.getStatus() != AuctionStatus.UPCOMING && auction.getStatus() != AuctionStatus.LIVE) {
+            throw new IllegalStateException("Auction with ID " + auctionId + " is neither upcoming nor live.");
         }
 
         // Check if the recycling plant is already registered

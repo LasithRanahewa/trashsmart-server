@@ -2,22 +2,33 @@ package com.g41.trashsmart_server.Configuration;
 
 import com.g41.trashsmart_server.Enums.AuctionWasteType;
 import com.g41.trashsmart_server.Models.Auction;
+import com.g41.trashsmart_server.Models.RecyclingPlant;
 import com.g41.trashsmart_server.Repositories.AuctionRepository;
+import com.g41.trashsmart_server.Repositories.RecyclingPlantRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Configuration
 public class AuctionConfig {
+
+    @Autowired
+    private RecyclingPlantRepository recyclingPlantRepository;
+
     @Bean
     CommandLineRunner auctionCommandLineRunner (AuctionRepository auctionRepository) {
         return args -> {
 
             DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
 
             Auction plasticAuction = new Auction(
                     AuctionWasteType.PLASTIC,
