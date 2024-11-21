@@ -101,7 +101,7 @@ public class CommercialBinService {
     public void deletePermanentCommercialBin(Long id) {
         boolean exists = commercialBinRepository.existsById(id);
         if(!exists) {
-            throw new IllegalStateException("Garbage truck with id " + id + " does not exist");
+            throw new IllegalStateException("Commercial bin with id " + id + " does not exist");
         }
         commercialBinRepository.deleteById(id);
     }

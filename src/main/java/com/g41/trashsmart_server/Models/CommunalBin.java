@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.g41.trashsmart_server.Enums.BinSize;
 import com.g41.trashsmart_server.Enums.WasteType;
 import jakarta.persistence.*;
