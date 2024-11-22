@@ -6,6 +6,7 @@ import com.g41.trashsmart_server.Models.MaintenanceRequest;
 import com.g41.trashsmart_server.Models.SmartBin;
 import com.g41.trashsmart_server.Repositories.MaintenanceRequestRepository;
 import com.g41.trashsmart_server.Repositories.SmartBinRepository;
+import com.sun.tools.javac.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,18 +35,16 @@ public class MaintenanceRequestService {
 
     // Retrieve all maintenance requests
     public List<MaintenanceRequestDTO> getAllMaintenanceRequests() {
-        List<MaintenanceRequest> MaintenanceRequests = maintenanceRequestRepository.findAllMaintenanceRequestsUnFiltered();
+        List<MaintenanceRequest> MaintenanceRequests = maintenanceRequestRepository.findAllMaintenanceRequests(false);
         return MaintenanceRequests.stream()
                 .map(maintenanceRequestDTOMapper)
                 .collect(Collectors.toList());
     }
-    
 
     // Retrieve all maintenance request details
     public List<MaintenanceRequest> getMaintenanceRequestsAdmin() {
         return maintenanceRequestRepository.findAll();
     }
-
 
     // Retrieve a specific maintenance request given the id
     public MaintenanceRequestDTO getSpecificMaintenanceRequest(Long id) {
@@ -66,5 +65,36 @@ public class MaintenanceRequestService {
         SmartBin smartBin = smartBinOptional.get();
         maintenanceRequest.setSmartBin(smartBin);
         maintenanceRequestRepository.save(maintenanceRequest);
+    }
+
+    // Update commercial bin details
+    public void updateRequest(Long id, MaintenanceRequest maintenanceRequest) {
+        MaintenanceRequest requestToUpdate = maintenanceRequestRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("Maintenance request with id " + id + " does not exist")
+        );
+        if (maintenanceRequest.getRequestStatus() != null &&
+                !requestToUpdate.getRequestStatus().equals(maintenanceRequest.getRequestStatus())) {
+            requestToUpdate.setRequestStatus(maintenanceRequest.getRequestStatus());
+        }
+        if (!requestToUpdate.getOtherNotes().equals(maintenanceRequest.getOtherNotes())) {
+            requestToUpdate.setOtherNotes(maintenanceRequest.getOtherNotes());
+        }
+        maintenanceRequestRepository.save(requestToUpdate);
+    }
+
+    // Logically delete a maintenance request from the system
+    public void deleteRequest(Long id) {
+        Optional<MaintenanceRequest> maintenanceRequestOptional = maintenanceRequestRepository.findById(id);
+        if(maintenanceRequestOptional.isEmpty()) {
+            throw new IllegalStateException("Maintenance request with id " + id + " does not exist");
+        }
+        MaintenanceRequest maintenanceRequestToDelete = maintenanceRequestOptional.get();
+        maintenanceRequestToDelete.setDeleted(true);
+        maintenanceRequestRepository.save(maintenanceRequestToDelete);
+    }
+
+    // Retrieve the total number of maintenance requests
+    public Long getMaintenanceRequestsCount() {
+        return maintenanceRequestRepository.findMaintenanceRequestsCount();
     }
 }
