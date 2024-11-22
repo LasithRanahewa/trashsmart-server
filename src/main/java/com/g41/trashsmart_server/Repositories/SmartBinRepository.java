@@ -29,4 +29,13 @@ public interface SmartBinRepository extends JpaRepository<SmartBin, Long> {
     // Select all the smart bins registered with the system
     @Query("SELECT smartbin FROM SmartBin smartbin")
     List<SmartBin> findAllSmartBinsUnFiltered();
+
+    // Find the total number of active registered bins in the system
+    @Query("SELECT COUNT(smartbin) FROM SmartBin smartbin WHERE smartbin.deleted = false")
+    Long findTotalCount();
+
+    // Find the total number of FULL bins
+    @Query("SELECT COUNT(smartbin) FROM SmartBin smartbin WHERE smartbin.deleted = false AND smartbin.fillLevel = :fillLevel")
+    Long findFullLevelCount(BinStatus fillLevel);
+
 }

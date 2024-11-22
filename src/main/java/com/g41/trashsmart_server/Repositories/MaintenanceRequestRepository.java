@@ -26,4 +26,12 @@ public interface MaintenanceRequestRepository extends JpaRepository<MaintenanceR
     // Select all the maintenance requests registered with the system
     @Query("SELECT maintenancereq FROM MaintenanceRequest maintenancereq")
     List<MaintenanceRequest> findAllMaintenanceRequestsUnFiltered();
+
+    // Select all the maintenance requests registered with the system (active)
+    @Query("SELECT maintenancereq FROM MaintenanceRequest maintenancereq WHERE maintenancereq.deleted = :deleted")
+    List<MaintenanceRequest> findAllMaintenanceRequests(Boolean deleted);
+
+    // Find the total number of maintenance requests for bins
+    @Query("SELECT COUNT(maintenancereq) FROM MaintenanceRequest maintenancereq WHERE maintenancereq.smartBin.deleted = false AND maintenancereq.deleted = false")
+    Long findMaintenanceRequestsCount();
 }

@@ -19,6 +19,7 @@ public class MaintenanceRequest {
     @JsonBackReference
     private SmartBin smartBin;
     private String otherNotes;
+    private boolean deleted = false;
 
     public MaintenanceRequest() {
     }
@@ -70,5 +71,13 @@ public class MaintenanceRequest {
 
     public void setOtherNotes(String otherNotes) {
         this.otherNotes = otherNotes;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }
