@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.g41.trashsmart_server.Enums.BinSize;
 import com.g41.trashsmart_server.Enums.BinStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
@@ -25,6 +26,7 @@ public class SmartBin {
     private BinSize binSize;
     private Boolean deleted = false;
     @OneToMany(mappedBy = "smartBin")
+    @JsonManagedReference
     private List<MaintenanceRequest> maintenanceRequests;
     @ManyToOne
     @JoinColumn(name = "suburb_id")
