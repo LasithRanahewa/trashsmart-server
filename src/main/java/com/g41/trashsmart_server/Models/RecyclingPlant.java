@@ -3,12 +3,16 @@ package com.g41.trashsmart_server.Models;
 import com.g41.trashsmart_server.Enums.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table
-public class RecyclingPlant extends BusinessUser {
+public class RecyclingPlant extends BusinessUser implements UserDetails {
     private String BRN;
 
     public RecyclingPlant() {
@@ -30,4 +34,39 @@ public class RecyclingPlant extends BusinessUser {
     public void setBRN(String BRN) {
         this.BRN = BRN;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getPassword() {
+        return super.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return super.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    public boolean isEnabled() {
+        return !super.isDeleted();
+    }
+
 }
