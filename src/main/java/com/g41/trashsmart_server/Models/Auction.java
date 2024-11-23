@@ -30,7 +30,7 @@ public class Auction {
 
     private Long winningPlantId;
 
-    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bid> bids;
 
     private boolean isDeleted;

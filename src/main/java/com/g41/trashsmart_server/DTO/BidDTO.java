@@ -1,6 +1,7 @@
 package com.g41.trashsmart_server.DTO;
 
 import com.g41.trashsmart_server.Models.Bid;
+import com.g41.trashsmart_server.Models.RecyclingPlant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,14 +16,14 @@ public class BidDTO {
     private Double bidAmount;
     private LocalDateTime bidTime;
     private Long auctionId;
-    private Long recyclingPlantId;
+    private RecyclingPlantDTO recyclingPlant;
 
-    public BidDTO(Bid bid) {
-        this.id = bid.getId();
-        this.bidAmount = bid.getBidAmount();
-        this.bidTime = bid.getBidTime();
-        this.auctionId = bid.getAuction() != null ? bid.getAuction().getId() : null;
-        this.recyclingPlantId = bid.getRecyclingPlant() != null ? bid.getRecyclingPlant().getId() : null;
-    }
+//    public BidDTO(Bid bid) {
+//        this.id = bid.getId();
+//        this.bidAmount = bid.getBidAmount();
+//        this.bidTime = bid.getBidTime();
+//        this.auctionId = bid.getAuction() != null ? bid.getAuction().getId() : null;
+//        this.recyclingPlant = bid.getRecyclingPlant();
+//    }
 
 }

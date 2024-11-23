@@ -194,18 +194,15 @@ public class AuctionService {
         }
 
         // Check if the recycling plant is already registered
-        if (bidRepository.existsByAuctionAndRecyclingPlant(auction, recyclingPlant)) {
+        if (auction.getRegisteredPlants().stream().anyMatch(plant -> recyclingPlant.getId().equals(recyclingPlantId))) {
             throw new IllegalStateException("Recycling Plant is already registered for this auction.");
         }
 
         auction.getRegisteredPlants().add(recyclingPlant);
         auctionRepository.save(auction);
 
-        Bid registrationBid = new Bid();
-        registrationBid.setAuction(auction);
-        registrationBid.setRecyclingPlant(recyclingPlant);
-        registrationBid.setBidAmount(null);
-        bidRepository.save(registrationBid);
+        recyclingPlant.getAuctions().add(auction);
+        recyclingPlantRepository.save(recyclingPlant);
 
         return "Recycling Plant successfully registered to the upcoming auction.";
     }
