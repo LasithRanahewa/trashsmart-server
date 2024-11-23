@@ -21,15 +21,15 @@ public class WasteCollectionRequest {
     private LocalDateTime createdTimeStamp = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "organization_id")
-    @JsonBackReference
+    @JsonBackReference(value = "organization-back-ref")
     private Organization organization;
     @ManyToOne
     @JoinColumn(name = "dispatch_id")
-    @JsonBackReference
+    @JsonBackReference(value = "organizationDispatch-back-ref")
     private OrganizationDispatch organizationDispatch;
     @ManyToOne
     @JoinColumn(name = "cluster_id")
-    @JsonBackReference
+    @JsonBackReference(value = "cluster-back-ref")
     private Cluster cluster;
 
     public WasteCollectionRequest() {

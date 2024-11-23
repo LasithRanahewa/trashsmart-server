@@ -14,7 +14,7 @@ import java.util.List;
 @DiscriminatorValue("ORGANIZATION")
 public class OrganizationDispatch extends Dispatch {
     @OneToMany(mappedBy = "organizationDispatch")
-    @JsonManagedReference
+    @JsonManagedReference(value = "organizationDispatch-back-ref")
     private List<WasteCollectionRequest> wasteCollectionRequestList;
 
     public OrganizationDispatch() {
