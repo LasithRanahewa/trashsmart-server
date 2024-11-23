@@ -25,7 +25,7 @@ public class Organization extends BusinessUser {
     @OneToMany(mappedBy = "organization")
     private List<CommercialBin> commercialBins;
     @OneToMany(mappedBy = "organization")
-    @JsonManagedReference
+    @JsonManagedReference(value = "organization-back-ref")
     private List<WasteCollectionRequest> wasteCollectionRequests;
 
     public Organization() {

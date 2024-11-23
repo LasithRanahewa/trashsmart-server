@@ -17,7 +17,7 @@ public class Cluster {
     private double longitude;
     private double volume;
     @OneToMany(mappedBy = "cluster")
-    @JsonManagedReference
+    @JsonManagedReference(value = "cluster-back-ref")
     private final List<WasteCollectionRequest> wasteCollectionRequests;
 
     public Cluster(int id, double latitude, double longitude) {
