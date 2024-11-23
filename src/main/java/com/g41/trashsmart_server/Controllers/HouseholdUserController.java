@@ -5,8 +5,6 @@ import com.g41.trashsmart_server.DTO.AuthenticationResponse;
 import com.g41.trashsmart_server.DTO.HouseholdUserDTO;
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.HouseholdUser;
-import com.g41.trashsmart_server.Repositories.ContractorRepository;
-import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
 import com.g41.trashsmart_server.Services.HouseholdUserService;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -190,8 +188,10 @@ public class HouseholdUserController {
         );
         // Load user details
         UserDetails userDetails = userDetailsService.loadUserByUsername(householdUser.getUsername());
+        // Get the user id
+        Long userId = ((HouseholdUser) userDetails).getId();
         // Generate JWT token
-        String jwt = jwtUtils.generateToken(userDetails.getUsername(), Role.HOUSEHOLD_USER.name());
+        String jwt = jwtUtils.generateToken(userDetails.getUsername(), Role.HOUSEHOLD_USER.name(), userId);
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 

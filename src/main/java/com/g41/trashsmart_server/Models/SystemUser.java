@@ -24,7 +24,7 @@ public abstract class SystemUser extends User {
 
     // Driver/Cleaner ContactNo Registration no Email
     public SystemUser(String firstName, String lastName, String password, String contactNo, String address,
-                      String profileURL, LocalDateTime createdTimeStamp, LocalDate dob, String nic) {
+                      String profileURL, LocalDateTime createdTimeStamp, LocalDate  dob, String nic) {
         super(firstName, lastName, password, contactNo, address, profileURL, createdTimeStamp);
         this.dob = dob;
         this.nic = nic;

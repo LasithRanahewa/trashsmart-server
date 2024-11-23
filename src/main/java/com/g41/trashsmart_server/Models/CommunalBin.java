@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.g41.trashsmart_server.Enums.BinSize;
 import com.g41.trashsmart_server.Enums.WasteType;
 import jakarta.persistence.*;
@@ -20,7 +21,8 @@ public class CommunalBin extends SmartBin {
     public CommunalBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize,
                        LocalDate installationDate) {
         super(longitude, latitude, wasteType, binSize);
-        this.installationDate = installationDate;
+//        this.installationDate = installationDate;
+        this.installationDate = LocalDate.now();
     }
 
     public LocalDate getInstallationDate() {

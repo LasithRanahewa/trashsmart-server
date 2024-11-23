@@ -21,6 +21,20 @@ public interface GarbageTruckRepository extends JpaRepository<GarbageTruck, Long
     @Query("SELECT truck FROM GarbageTruck truck WHERE truck.licencePlateNo = :license_plate")
     Optional<GarbageTruck> findGarbageTruckByLicensePlate(String license_plate);
 
+
+    // Select a specific active garbage truck using ID
+    @Query("SELECT truck FROM GarbageTruck truck WHERE truck.id = :id AND truck.deleted = :deleted")
+    Optional<GarbageTruck> findGarbageTruckById(Long id, Boolean deleted);
+
+    // Select a specific garbage truck using license plate
+    @Query("SELECT truck FROM GarbageTruck truck WHERE truck.licencePlateNo = :license_plate AND truck.deleted = :deleted")
+    Optional<GarbageTruck> findGarbageTruckByLicensePlate(String license_plate, Boolean deleted);
+
+    // Select all the garbage trucks in the system active/logically deleted
+    @Query("SELECT truck FROM GarbageTruck truck WHERE truck.deleted = :deleted")
+    List<GarbageTruck> findAllGarbageTrucks(Boolean deleted);
+
+
     // Select all the garbage trucks registered with the system
     @Query("SELECT truck FROM GarbageTruck truck")
     List<GarbageTruck> findAllGarbageTrucksGUnFiltered();
