@@ -4,15 +4,22 @@ import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+
 import jakarta.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table
-public class Driver extends SystemUser {
+public class Driver extends SystemUser implements UserDetails{
     private Status status = Status.ACTIVE;
     private Integer totalCollections = 0;
     private Integer currentStreak = 0;
@@ -47,6 +54,26 @@ public class Driver extends SystemUser {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Override
+    @Transient
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(super.getRole().name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return super.getPassword();
+    }
+
+    @Override
+    public String getEmail() {
+        return super.getEmail();
+    }
+
+    public String getUsername() {
+        return super.getEmail();
     }
 
     public Integer getTotalCollections() {

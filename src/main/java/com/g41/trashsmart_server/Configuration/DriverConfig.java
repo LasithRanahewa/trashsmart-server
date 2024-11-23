@@ -1,48 +1,51 @@
 package com.g41.trashsmart_server.Configuration;
 
+import com.g41.trashsmart_server.Enums.Status;
 import com.g41.trashsmart_server.Models.Driver;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Configuration
 public class DriverConfig {
-    
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Bean
     CommandLineRunner driverCommandLineRunner(DriverRepository driverRepository) {
         return args -> {
-            Driver rumal = new Driver(
-                    "Rumal",
-                    "Gunawardana",
+            Driver Rusara = new Driver(
+                    "Rusara",
+                    "Wimalasena",
                     passwordEncoder.encode("password123"),
-                    "0714394788",
-                    "Kurunegala",
+                    "0712990638",
+                    "35, Reid Avenue, Colombo 07",
+                    "rusara.wimalasena123@gmail.com",
                     "www.google.com",
-                    LocalDate.of(2001, 4, 9),
-                    "200110004143"
+                    LocalDate.of(1995, 12, 12),
+                    "200168686830"
             );
-            Driver winditha = new Driver(
-                    "Winditha",
-                    "Gunawardana",
-                    passwordEncoder.encode("password123"),
-                    "0789209595",
-                    "Kurunegala",
-                    "rumalg123@gmail.com",
-                    "www.google.com",
-                    LocalDate.of(2001, 4, 9),
-                    "200110004143"
-            );
-           
 
-            driverRepository.saveAll(List.of(rumal,winditha));
+            Driver Ravija = new Driver(
+                    "Ravija",
+                    "Salpitikorala",
+                    passwordEncoder.encode("password123"),
+                    "0712990638",
+                    "35, Reid Avenue, Colombo 07",
+                    "ravija@gmail.com",
+                    "www.google.com",
+                    LocalDate.of(1995, 12, 12),
+                    "200168686830"
+            );
+
+            driverRepository.saveAll(List.of(Rusara, Ravija));
         };
     }
 }

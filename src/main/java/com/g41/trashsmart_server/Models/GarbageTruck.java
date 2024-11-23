@@ -14,6 +14,7 @@ public class GarbageTruck {
     private String licencePlateNo;
     private Integer mileage;
     private Integer maxVolume;
+    private Boolean deleted = false;
     private TruckStatus truckStatus = TruckStatus.IDLE;
     @OneToMany(mappedBy = "garbageTruck")
     private List<Dispatch> dispatches;
@@ -73,5 +74,16 @@ public class GarbageTruck {
 
     public void setDispatches(List<Dispatch> dispatches) {
         this.dispatches = dispatches;
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }
