@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Controllers;
 
+import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
 import com.g41.trashsmart_server.Models.WasteCollectionRequest;
 import com.g41.trashsmart_server.Services.WasteCollectionRequestService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,7 +39,7 @@ public class WasteCollectionRequestController {
     }
 
     // Retrieve all the waste collection requests opened by a given organization
-    @GetMapping(path = "organization/{org_id}")
+    @GetMapping(path = "organization/{org_id}/{status}")
     @Operation(
             description = "Retrieve all the waste collection requests opened by a given organization",
             summary = "All the waste collection requests of the given organization will be retrieved",
@@ -53,8 +54,9 @@ public class WasteCollectionRequestController {
                     )
             }
     )
-    public List<WasteCollectionRequest> getAllRequestsByOrganization(@PathVariable("org_id") Long id) {
-        return wasteCollectionRequestService.getAllRequestsByOrganization(id);
+    public List<WasteCollectionRequest> getAllRequestsByOrganization(@PathVariable("org_id") Long id,
+                                                                     @PathVariable("status") Integer status) {
+        return wasteCollectionRequestService.getAllRequestsByOrganization(id, status);
     }
 
     // Retrieve specific by id
