@@ -2,7 +2,10 @@ package com.g41.trashsmart_server.Models;
 
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Status;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.*;
+
 import jakarta.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -22,6 +26,8 @@ public class Driver extends SystemUser implements UserDetails{
     private Integer longestStreak = 0;
     private Integer totalActiveDays = 0;
     private Integer numberOfHolidays = 0;
+    @OneToMany(mappedBy = "driver")
+    private List<Dispatch> dispatches;
 
     public Driver() {
         this.setRole(Role.DRIVER);
@@ -108,5 +114,13 @@ public class Driver extends SystemUser implements UserDetails{
 
     public void setNumberOfHolidays(Integer numberOfHolidays) {
         this.numberOfHolidays = numberOfHolidays;
+    }
+
+    public List<Dispatch> getDispatches() {
+        return dispatches;
+    }
+
+    public void setDispatches(List<Dispatch> dispatches) {
+        this.dispatches = dispatches;
     }
 }
