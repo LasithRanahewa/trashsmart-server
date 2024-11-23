@@ -15,6 +15,7 @@ public class Cluster {
     private int id;
     private double latitude;
     private double longitude;
+    private double volume;
     @OneToMany(mappedBy = "cluster")
     @JsonManagedReference
     private final List<WasteCollectionRequest> wasteCollectionRequests;
@@ -23,6 +24,7 @@ public class Cluster {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.volume = 0.0;
         this.wasteCollectionRequests = new ArrayList<>();
     }
 
@@ -48,6 +50,14 @@ public class Cluster {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(double volume) {
+        this.volume = volume;
     }
 
     public List<WasteCollectionRequest> getWasteCollectionRequests() {
