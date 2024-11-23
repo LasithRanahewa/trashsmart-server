@@ -3,6 +3,7 @@ package com.g41.trashsmart_server.Services;
 import com.g41.trashsmart_server.DTO.CommercialBinDTO;
 import com.g41.trashsmart_server.DTO.CommercialBinDTOMapper;
 import com.g41.trashsmart_server.Models.CommercialBin;
+import com.g41.trashsmart_server.Models.CommunalBin;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Repositories.CommercialBinRepository;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
@@ -122,6 +123,9 @@ public class CommercialBinService {
         if(CommercialBin.getWasteType() != null  &&
                 !CommercialBinToUpdate.getWasteType().equals(CommercialBin.getWasteType())) {
             CommercialBinToUpdate.setWasteType(CommercialBin.getWasteType());
+        }
+        if(!CommercialBinToUpdate.getBinStatus().equals(CommercialBin.getBinStatus())) {
+            CommercialBinToUpdate.setBinStatus(CommercialBin.getBinStatus());
         }
         commercialBinRepository.save(CommercialBinToUpdate);
     }
