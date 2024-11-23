@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Services;
 
+import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Models.WasteCollectionRequest;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
@@ -26,8 +27,15 @@ public class WasteCollectionRequestService {
     }
 
     // Retrieve all the waste collection requests opened by a given organization
-    public List<WasteCollectionRequest> getAllRequestsByOrganization(Long organizationId) {
-        return wasteCollectionRequestRepository.findByOrganizationId(organizationId);
+    public List<WasteCollectionRequest> getAllRequestsByOrganization(Long organizationId, Integer status) {
+        WasteCollectionRequestStatus wasteCollectionRequestStatus = switch (status) {
+            case 1 -> WasteCollectionRequestStatus.NEW;
+            case 2 -> WasteCollectionRequestStatus.COLLECTING;
+            case 3 -> WasteCollectionRequestStatus.COLLECTED;
+            case 4 -> WasteCollectionRequestStatus.MISSED;
+            default -> throw new IllegalStateException("Wrong Waste Collection Request Status");
+        };
+        return wasteCollectionRequestRepository.findByOrganizationId(organizationId, wasteCollectionRequestStatus);
     }
 
     // Retrieve specific by id
