@@ -1,8 +1,8 @@
 package com.g41.trashsmart_server.Controllers;
 
-import com.g41.trashsmart_server.DTO.GarbageTruckDTO;
-import com.g41.trashsmart_server.Models.GarbageTruck;
-import com.g41.trashsmart_server.Services.GarbageTruckService;
+import com.g41.trashsmart_server.DTO.CommunalBinDTO;
+import com.g41.trashsmart_server.Models.CommunalBin;
+import com.g41.trashsmart_server.Services.CommunalBinService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/garbage_truck")
-public class GarbageTruckController {
-    private final GarbageTruckService garbagetruckService;
+@RequestMapping(path = "api/v1/communal_bin")
+
+public class CommunalBinController {
+    private final CommunalBinService communalBinService;
 
     @Autowired
-    public GarbageTruckController(GarbageTruckService garbagetruckService) {
-        this.garbagetruckService = garbagetruckService;
+    public CommunalBinController(CommunalBinService communalBinService) {
+        this.communalBinService = communalBinService;
     }
 
-
-    // Retrieve all active garbage trucks
+    // Retrieve all active communal bins
     @GetMapping
     @Operation(
-            description = "Retrieve all active garbage trucks",
-            summary = "All the active(deleted = false) garbage trucks will be retrieved",
+            description = "Retrieve all active communal bins",
+            summary = "All the active(deleted = false) communal bins will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -38,15 +38,15 @@ public class GarbageTruckController {
                     )
             }
     )
-    public List<GarbageTruckDTO> getGarbageTrucks() {
-        return garbagetruckService.getGarbageTrucks();
+    public List<CommunalBinDTO> getCommunalBins() {
+        return communalBinService.getCommunalBins();
     }
 
-    // Retrieve all logically deleted garbage trucks
+    // Retrieve all logically deleted communal bins
     @GetMapping(path = "getDeletedAll")
     @Operation(
-            description = "Retrieve all logically deleted garbage trucks",
-            summary = "All the logically deleted(deleted = true) garbage trucks will be retrieved",
+            description = "Retrieve all logically deleted communal bins",
+            summary = "All the logically deleted(deleted = true) communal bins will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -58,16 +58,16 @@ public class GarbageTruckController {
                     )
             }
     )
-    public List<GarbageTruckDTO> getDeletedGarbageTrucks() {
-        return garbagetruckService.getDeletedGarbageTrucks();
+    public List<CommunalBinDTO> getDeletedCommunalBins() {
+        return communalBinService.getDeletedCommunalBins();
     }
 
 
-    // Retrieve all the garbage trucks
+    // Retrieve all the communal bins
     @GetMapping(path = "getAll")
     @Operation(
-            description = "Retrieve all the garbage trucks",
-            summary = "All the registered and existing garbage trucks will be retrieved",
+            description = "Retrieve all the communal bins",
+            summary = "All the registered and existing communal bins will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -79,15 +79,15 @@ public class GarbageTruckController {
                     )
             }
     )
-    public List<GarbageTruckDTO> getAllGarbageTrucks() {
-        return garbagetruckService.getAllGarbageTrucks();
+    public List<CommunalBinDTO> getAllCommunalBins() {
+        return communalBinService.getAllCommunalBins();
     }
 
-    // Retrieve all the garbage truck details (Admin Privilege)
+    // Retrieve all the communal bin details (Admin Privilege)
     @GetMapping(path = "getAllAdmin")
     @Operation(
-            description = "Retrieve all the garbage trucks",
-            summary = "All garbage trucks will be retrieved with all the details",
+            description = "Retrieve all the communal bins",
+            summary = "All communal bins will be retrieved with all the details",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -99,15 +99,15 @@ public class GarbageTruckController {
                     )
             }
     )
-    public List<GarbageTruck> getGarbageTrucksAdmin() {
-        return garbagetruckService.getGarbageTrucksAdmin();
+    public List<CommunalBin> getCommunalBinsAdmin() {
+        return communalBinService.getCommunalBinsAdmin();
     }
 
-    // Retrieve a specific garbage truck given the id
-    @GetMapping(path = "{garbagetruck_id}")
+    // Retrieve a specific communal bin given the id
+    @GetMapping(path = "{CommunalBin_id}")
     @Operation(
-            description = "Retrieve a specific garbage truck given the id",
-            summary = "A specific garbage truck with the given id in the path will be retrieved",
+            description = "Retrieve a specific communal bin given the id",
+            summary = "A specific communal bin with the given id in the path will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -119,15 +119,15 @@ public class GarbageTruckController {
                     )
             }
     )
-    public GarbageTruckDTO getSpecificGarbageTruck(@PathVariable("garbagetruck_id") Long id) {
-        return garbagetruckService.getSpecificGarbageTruck(id);
+    public CommunalBinDTO getSpecificCommunalBin(@PathVariable("CommunalBin_id") Long id) {
+        return communalBinService.getSpecificCommunalBin(id);
     }
 
-    // Create a new garbage truck
-    @PostMapping
+    // Create a new waste collection request
+    @PostMapping(path = "")
     @Operation(
-            description = "Create a new garbage truck",
-            summary = "Create a new garbage truck when the garbage truck details are sent in the body of the POST request",
+            description = "Create a new communal bin",
+            summary = "New communal bin is created. Organization id has to be given",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -139,16 +139,36 @@ public class GarbageTruckController {
                     )
             }
     )
-    public void registerNewGarbageTruck(@RequestBody GarbageTruck garbagetruck) {
-        garbagetruckService.addNewGarbageTruck(garbagetruck);
+    public void registerNewCommunalBin(@RequestBody CommunalBin communalBin) {
+        communalBinService.addNewCommunalBin(communalBin);
+    }
+
+    // Logically delete communal bin from the system
+    @DeleteMapping(path = "{CommunalBin_id}")
+    @Operation(
+            description = "Logically delete a communal bin from the system",
+            summary = "communal bin will be logically deleted from the system",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void deletedCommunalBin(@PathVariable("CommunalBin_id") Long id) {
+        communalBinService.deleteCommunalBin(id);
     }
 
 
-    // Logically delete an garbage truck from the system
-    @DeleteMapping(path = "{garbagetruck_id}")
+    // Permanently delete a communal bin from the system (Admin Privilege)
+    @DeleteMapping(path = "delete/{CommunalBin_id}")
     @Operation(
-            description = "Logically delete a garbage truck from the system",
-            summary = "Garbage truck will be logically deleted from the system",
+            description = "Permanently delete a communal bin from the system",
+            summary = "communal bin will be permanently deleted from the system",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -160,16 +180,15 @@ public class GarbageTruckController {
                     )
             }
     )
-    public void deletedGarbageTruck(@PathVariable("garbagetruck_id") Long id) {
-        garbagetruckService.deleteGarbageTruck(id);
+    public void deletePermanentCommunalBin(@PathVariable("CommunalBin_id") Long id) {
+        communalBinService.deletePermanentCommunalBin(id);
     }
 
-
-    // Permanently delete a garbage truck from the system (Admin Privilege)
-    @DeleteMapping(path = "delete/{garbagetruck_id}")
+    // Update communal bin details
+    @PutMapping(path = "{CommunalBin_id}")
     @Operation(
-            description = "Permanently delete a garbage truck from the system",
-            summary = "Garbage truck will be permanently deleted from the system",
+            description = "Update communal bin details",
+            summary = "communal bin details will be updated based on the object passed",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -181,28 +200,8 @@ public class GarbageTruckController {
                     )
             }
     )
-    public void deletePermanentGarbageTruck(@PathVariable("garbagetruck_id") Long id) {
-        garbagetruckService.deletePermanentGarbageTruck(id);
-    }
-
-    // Update garbage truck details
-    @PutMapping(path = "{garbagetruck_id}")
-    @Operation(
-            description = "Update garbage truck details",
-            summary = "Garbage truck details will be updated based on the object passed",
-            responses = {
-                    @ApiResponse(
-                            description = "Success",
-                            responseCode = "200"
-                    ),
-                    @ApiResponse(
-                            description = "Unauthorized / Invalid Token",
-                            responseCode = "403"
-                    )
-            }
-    )
-    public void updateGarbageTruck(@PathVariable("garbagetruck_id") Long id,
-                                   @RequestBody GarbageTruck garbagetruck) {
-        garbagetruckService.updateGarbageTruck(id, garbagetruck);
+    public void updateCommunalBin(@PathVariable("CommunalBin_id") Long id,
+                                    @RequestBody CommunalBin communalBin) {
+        communalBinService.updateCommunalBin(id, communalBin);
     }
 }

@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.g41.trashsmart_server.Enums.RequestStatus;
 import jakarta.persistence.*;
 
@@ -15,8 +16,10 @@ public class MaintenanceRequest {
     private RequestStatus requestStatus = RequestStatus.TO_DO;
     @ManyToOne
     @JoinColumn(name = "bin_id")
+    @JsonBackReference
     private SmartBin smartBin;
     private String otherNotes;
+    private boolean deleted = false;
 
     public MaintenanceRequest() {
     }
@@ -68,5 +71,13 @@ public class MaintenanceRequest {
 
     public void setOtherNotes(String otherNotes) {
         this.otherNotes = otherNotes;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }
