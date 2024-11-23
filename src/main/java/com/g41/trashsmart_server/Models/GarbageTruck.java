@@ -28,61 +28,6 @@ public class GarbageTruck {
         this.maxVolume = maxVolume;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLicencePlateNo() {
-        return licencePlateNo;
-    }
-
-    public void setLicencePlateNo(String licencePlateNo) {
-        this.licencePlateNo = licencePlateNo;
-    }
-
-    public Integer getMileage() {
-        return mileage;
-    }
-
-    public void setMileage(Integer mileage) {
-        this.mileage = mileage;
-    }
-
-    public Integer getMaxVolume() {
-        return maxVolume;
-    }
-
-    public void setMaxVolume(Integer maxVolume) {
-        this.maxVolume = maxVolume;
-    }
-
-    public TruckStatus getTruckStatus() {
-        return truckStatus;
-    }
-
-    public void setTruckStatus(TruckStatus truckStatus) {
-        this.truckStatus = truckStatus;
-    }
-
-    public List<Dispatch> getDispatches() {
-        return dispatches;
-    }
-
-    public void setDispatches(List<Dispatch> dispatches) {
-        this.dispatches = dispatches;
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
