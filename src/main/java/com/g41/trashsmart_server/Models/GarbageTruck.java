@@ -74,6 +74,7 @@ public class GarbageTruck {
 
     public void setDispatches(List<Dispatch> dispatches) {
         this.dispatches = dispatches;
+    }
 
     public Boolean getDeleted() {
         return deleted;
