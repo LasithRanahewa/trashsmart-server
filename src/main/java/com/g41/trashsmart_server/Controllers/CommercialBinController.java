@@ -1,8 +1,8 @@
 package com.g41.trashsmart_server.Controllers;
 
-import com.g41.trashsmart_server.DTO.GarbageTruckDTO;
-import com.g41.trashsmart_server.Models.GarbageTruck;
-import com.g41.trashsmart_server.Services.GarbageTruckService;
+import com.g41.trashsmart_server.DTO.CommercialBinDTO;
+import com.g41.trashsmart_server.Models.CommercialBin;
+import com.g41.trashsmart_server.Services.CommercialBinService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,21 +12,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/garbage_truck")
-public class GarbageTruckController {
-    private final GarbageTruckService garbagetruckService;
+@RequestMapping(path = "api/v1/commercial_bin")
+public class CommercialBinController {
+    private final CommercialBinService commercialBinService;
 
     @Autowired
-    public GarbageTruckController(GarbageTruckService garbagetruckService) {
-        this.garbagetruckService = garbagetruckService;
+    public CommercialBinController(CommercialBinService commercialBinService) {
+        this.commercialBinService = commercialBinService;
     }
-
-
-    // Retrieve all active garbage trucks
+    
+    // Retrieve all active commercial bins
     @GetMapping
     @Operation(
-            description = "Retrieve all active garbage trucks",
-            summary = "All the active(deleted = false) garbage trucks will be retrieved",
+            description = "Retrieve all active commercial bins",
+            summary = "All the active(deleted = false) commercial bins will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -38,15 +37,15 @@ public class GarbageTruckController {
                     )
             }
     )
-    public List<GarbageTruckDTO> getGarbageTrucks() {
-        return garbagetruckService.getGarbageTrucks();
+    public List<CommercialBinDTO> getCommercialBins() {
+        return commercialBinService.getCommercialBins();
     }
 
-    // Retrieve all logically deleted garbage trucks
+    // Retrieve all logically deleted commercial bins
     @GetMapping(path = "getDeletedAll")
     @Operation(
-            description = "Retrieve all logically deleted garbage trucks",
-            summary = "All the logically deleted(deleted = true) garbage trucks will be retrieved",
+            description = "Retrieve all logically deleted commercial bins",
+            summary = "All the logically deleted(deleted = true) commercial bins will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -58,16 +57,16 @@ public class GarbageTruckController {
                     )
             }
     )
-    public List<GarbageTruckDTO> getDeletedGarbageTrucks() {
-        return garbagetruckService.getDeletedGarbageTrucks();
+    public List<CommercialBinDTO> getDeletedCommercialBins() {
+        return commercialBinService.getDeletedCommercialBins();
     }
 
 
-    // Retrieve all the garbage trucks
+    // Retrieve all the commercial bins
     @GetMapping(path = "getAll")
     @Operation(
-            description = "Retrieve all the garbage trucks",
-            summary = "All the registered and existing garbage trucks will be retrieved",
+            description = "Retrieve all the commercial bins",
+            summary = "All the registered and existing commercial bins will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -79,15 +78,15 @@ public class GarbageTruckController {
                     )
             }
     )
-    public List<GarbageTruckDTO> getAllGarbageTrucks() {
-        return garbagetruckService.getAllGarbageTrucks();
+    public List<CommercialBinDTO> getAllCommercialBins() {
+        return commercialBinService.getAllCommercialBins();
     }
 
-    // Retrieve all the garbage truck details (Admin Privilege)
+    // Retrieve all the commercial bin details (Admin Privilege)
     @GetMapping(path = "getAllAdmin")
     @Operation(
-            description = "Retrieve all the garbage trucks",
-            summary = "All garbage trucks will be retrieved with all the details",
+            description = "Retrieve all the commercial bins",
+            summary = "All commercial bins will be retrieved with all the details",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -99,15 +98,15 @@ public class GarbageTruckController {
                     )
             }
     )
-    public List<GarbageTruck> getGarbageTrucksAdmin() {
-        return garbagetruckService.getGarbageTrucksAdmin();
+    public List<CommercialBin> getCommercialBinsAdmin() {
+        return commercialBinService.getCommercialBinsAdmin();
     }
 
-    // Retrieve a specific garbage truck given the id
-    @GetMapping(path = "{garbagetruck_id}")
+    // Retrieve a specific commercial bin given the id
+    @GetMapping(path = "{CommercialBin_id}")
     @Operation(
-            description = "Retrieve a specific garbage truck given the id",
-            summary = "A specific garbage truck with the given id in the path will be retrieved",
+            description = "Retrieve a specific commercial bin given the id",
+            summary = "A specific commercial bin with the given id in the path will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -119,15 +118,15 @@ public class GarbageTruckController {
                     )
             }
     )
-    public GarbageTruckDTO getSpecificGarbageTruck(@PathVariable("garbagetruck_id") Long id) {
-        return garbagetruckService.getSpecificGarbageTruck(id);
+    public CommercialBinDTO getSpecificCommercialBin(@PathVariable("CommercialBin_id") Long id) {
+        return commercialBinService.getSpecificCommercialBin(id);
     }
 
-    // Create a new garbage truck
-    @PostMapping
+    // Create a new waste collection request
+    @PostMapping(path = "{org_id}")
     @Operation(
-            description = "Create a new garbage truck",
-            summary = "Create a new garbage truck when the garbage truck details are sent in the body of the POST request",
+            description = "Create a new commercial bin",
+            summary = "New commercial bin is created. Organization id has to be given",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -139,16 +138,36 @@ public class GarbageTruckController {
                     )
             }
     )
-    public void registerNewGarbageTruck(@RequestBody GarbageTruck garbagetruck) {
-        garbagetruckService.addNewGarbageTruck(garbagetruck);
+    public void registerNewCommercialBin(@RequestBody CommercialBin commercialBin, @PathVariable("org_id") Long id) {
+        commercialBinService.addNewCommercialBin(commercialBin, id);
+    }
+
+    // Logically delete commercial bin from the system
+    @DeleteMapping(path = "{CommercialBin_id}")
+    @Operation(
+            description = "Logically delete a commercial bin from the system",
+            summary = "commercial bin will be logically deleted from the system",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void deletedCommercialBin(@PathVariable("CommercialBin_id") Long id) {
+        commercialBinService.deleteCommercialBin(id);
     }
 
 
-    // Logically delete an garbage truck from the system
-    @DeleteMapping(path = "{garbagetruck_id}")
+    // Permanently delete a commercial bin from the system (Admin Privilege)
+    @DeleteMapping(path = "delete/{CommercialBin_id}")
     @Operation(
-            description = "Logically delete a garbage truck from the system",
-            summary = "Garbage truck will be logically deleted from the system",
+            description = "Permanently delete a commercial bin from the system",
+            summary = "commercial bin will be permanently deleted from the system",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -160,16 +179,15 @@ public class GarbageTruckController {
                     )
             }
     )
-    public void deletedGarbageTruck(@PathVariable("garbagetruck_id") Long id) {
-        garbagetruckService.deleteGarbageTruck(id);
+    public void deletePermanentCommercialBin(@PathVariable("CommercialBin_id") Long id) {
+        commercialBinService.deletePermanentCommercialBin(id);
     }
 
-
-    // Permanently delete a garbage truck from the system (Admin Privilege)
-    @DeleteMapping(path = "delete/{garbagetruck_id}")
+    // Update commercial bin details
+    @PutMapping(path = "{CommercialBin_id}")
     @Operation(
-            description = "Permanently delete a garbage truck from the system",
-            summary = "Garbage truck will be permanently deleted from the system",
+            description = "Update commercial bin details",
+            summary = "commercial bin details will be updated based on the object passed",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -181,28 +199,8 @@ public class GarbageTruckController {
                     )
             }
     )
-    public void deletePermanentGarbageTruck(@PathVariable("garbagetruck_id") Long id) {
-        garbagetruckService.deletePermanentGarbageTruck(id);
-    }
-
-    // Update garbage truck details
-    @PutMapping(path = "{garbagetruck_id}")
-    @Operation(
-            description = "Update garbage truck details",
-            summary = "Garbage truck details will be updated based on the object passed",
-            responses = {
-                    @ApiResponse(
-                            description = "Success",
-                            responseCode = "200"
-                    ),
-                    @ApiResponse(
-                            description = "Unauthorized / Invalid Token",
-                            responseCode = "403"
-                    )
-            }
-    )
-    public void updateGarbageTruck(@PathVariable("garbagetruck_id") Long id,
-                                   @RequestBody GarbageTruck garbagetruck) {
-        garbagetruckService.updateGarbageTruck(id, garbagetruck);
+    public void updateCommercialBin(@PathVariable("CommercialBin_id") Long id,
+                                   @RequestBody CommercialBin commercialBin) {
+        commercialBinService.updateCommercialBin(id, commercialBin);
     }
 }
