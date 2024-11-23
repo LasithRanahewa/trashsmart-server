@@ -113,6 +113,9 @@ public class CommunalBinService {
                 !CommunalBinToUpdate.getWasteType().equals(CommunalBin.getWasteType())) {
             CommunalBinToUpdate.setWasteType(CommunalBin.getWasteType());
         }
+        if(!CommunalBinToUpdate.getBinStatus().equals(CommunalBin.getBinStatus())) {
+            CommunalBinToUpdate.setBinStatus(CommunalBin.getBinStatus());
+        }
         communalBinRepository.save(CommunalBinToUpdate);
     }
 }
