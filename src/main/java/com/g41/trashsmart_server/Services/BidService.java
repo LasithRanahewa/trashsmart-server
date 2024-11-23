@@ -52,7 +52,7 @@ public class BidService {
         }
 
         // Check if the recycling plant is registered for the auction
-        if (!bidRepository.existsByAuctionAndRecyclingPlant(auction, recyclingPlant)) {
+        if (!auction.getRegisteredPlants().stream().anyMatch(plant -> recyclingPlant.getId().equals(recyclingPlantId))) {
             throw new IllegalStateException("Recycling Plant is not registered for this auction.");
         }
 
@@ -106,6 +106,6 @@ public class BidService {
                 () -> new IllegalStateException("No bids found for the auction with ID " + auctionId)
         );
 
-        return new BidDTO(winningBid);
+        return bidDTOMapper.apply(winningBid);
     }
 }

@@ -1,11 +1,10 @@
 package com.g41.trashsmart_server.Models;
 
 import com.g41.trashsmart_server.Enums.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,6 +26,10 @@ public class RecyclingPlant extends BusinessUser {
     @ManyToMany(mappedBy = "registeredPlants")
     private Set<Auction> auctions;
 
+    @OneToMany(mappedBy = "recyclingPlant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bid> bids;
+
+
     // Getters and Setters
     public String getBRN() {
         return BRN;
@@ -43,4 +46,13 @@ public class RecyclingPlant extends BusinessUser {
     public Set<Auction> getAuctions() { return auctions; }
 
     public void setAuctions(Set<Auction> auctions) { this.auctions = auctions; }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
+    }
 }
+
