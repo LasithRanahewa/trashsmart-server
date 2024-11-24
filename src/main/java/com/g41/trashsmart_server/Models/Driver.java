@@ -3,20 +3,31 @@ package com.g41.trashsmart_server.Models;
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Status;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+
 import jakarta.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table
-public class Driver extends SystemUser {
+public class Driver extends SystemUser implements UserDetails{
     private Status status = Status.ACTIVE;
     private Integer totalCollections = 0;
     private Integer currentStreak = 0;
     private Integer longestStreak = 0;
     private Integer totalActiveDays = 0;
     private Integer numberOfHolidays = 0;
+    @OneToMany(mappedBy = "driver")
+    private List<Dispatch> dispatches;
 
     public Driver() {
         this.setRole(Role.DRIVER);
@@ -43,6 +54,26 @@ public class Driver extends SystemUser {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Override
+    @Transient
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(super.getRole().name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return super.getPassword();
+    }
+
+    @Override
+    public String getEmail() {
+        return super.getEmail();
+    }
+
+    public String getUsername() {
+        return super.getEmail();
     }
 
     public Integer getTotalCollections() {
@@ -83,5 +114,13 @@ public class Driver extends SystemUser {
 
     public void setNumberOfHolidays(Integer numberOfHolidays) {
         this.numberOfHolidays = numberOfHolidays;
+    }
+
+    public List<Dispatch> getDispatches() {
+        return dispatches;
+    }
+
+    public void setDispatches(List<Dispatch> dispatches) {
+        this.dispatches = dispatches;
     }
 }

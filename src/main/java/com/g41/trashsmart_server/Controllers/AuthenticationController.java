@@ -4,11 +4,10 @@ import com.g41.trashsmart_server.Configuration.JwtUtils;
 import com.g41.trashsmart_server.DTO.AuthenticationRequest;
 import com.g41.trashsmart_server.DTO.AuthenticationResponse;
 import com.g41.trashsmart_server.Enums.Role;
-import com.g41.trashsmart_server.Models.HouseholdUser;
-import com.g41.trashsmart_server.Models.Contractor;
-import com.g41.trashsmart_server.Models.User;
-import com.g41.trashsmart_server.Repositories.ContractorRepository;
-import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
+import com.g41.trashsmart_server.Models.*;
+import com.g41.trashsmart_server.Repositories.*;
+import com.g41.trashsmart_server.Repositories.OrganizationRepository;
+import com.g41.trashsmart_server.Services.DriverService;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,19 +28,22 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private JwtUtils jwtUtils;
-
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
     @Autowired
     private HouseholdUserRepository householdUserRepository;
     @Autowired
     private ContractorRepository contractorRepository;
+    @Autowired
+    private DriverRepository driverRepository;
+    @Autowired
+    private OrganizationRepository organizationRepository;
+    @Autowired
+    private RecyclingPlantRepository recyclingPlantRepository;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest request) {
@@ -49,31 +51,53 @@ public class AuthenticationController {
             String email = request.getEmail();
             Optional<HouseholdUser> householdUser = householdUserRepository.findHouseholdUserByEmail(email);
             Optional<Contractor> contractor = contractorRepository.findContractorByEmail(email);
+            Optional<Driver> driver = driverRepository.findDriverByEmail(email);
+            Optional<Organization> organization = organizationRepository.findOrganizationByEmail(email);
+            Optional<RecyclingPlant> recyclingPlant = recyclingPlantRepository.findByEmail(email);
 
-            if (householdUser.isEmpty() && contractor.isEmpty()) {
+            if (householdUser.isEmpty() && contractor.isEmpty() && driver.isEmpty() && organization.isEmpty() && recyclingPlant.isEmpty()) {
+//                System.out.println("No user found!");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
+
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             
             //get the role of the user by checking the instance of the user
             Role role;
             Long userId;
-            if (userDetails instanceof HouseholdUser) {
-                role = ((HouseholdUser) userDetails).getRole();
-                userId = ((HouseholdUser) userDetails).getId();
-            } else if (userDetails instanceof Contractor) {
-                role = ((Contractor) userDetails).getRole();
-                userId = ((Contractor) userDetails).getId();
-            } else {
-                throw new IllegalStateException("Unknown user type");
+            switch (userDetails) {
+                case HouseholdUser user -> {
+                    role = user.getRole();
+                    userId = user.getId();
+                }
+                case Contractor contractor1 -> {
+                    role = contractor1.getRole();
+                    userId = contractor1.getId();
+                }
+                case Driver driver1 -> {
+                    role = driver1.getRole();
+                    userId = driver1.getId();
+                }
+                case Organization organization1 -> {
+                    role = organization1.getRole();
+                    userId = organization1.getId();
+                }
+                case RecyclingPlant recyclingPlant1 -> {
+                    role = recyclingPlant1.getRole();
+                    userId = recyclingPlant1.getId();
+                }
+                case null, default -> throw new IllegalStateException("Unknown user type");
             }
             String jwt = jwtUtils.generateToken(userDetails.getUsername(), role.name(), userId);
             return ResponseEntity.ok(new AuthenticationResponse(jwt));
         } catch (AuthenticationException e) {
+//            System.out.println(request.getEmail());
+//            System.out.println(request.getPassword());
+//            System.out.println(e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
