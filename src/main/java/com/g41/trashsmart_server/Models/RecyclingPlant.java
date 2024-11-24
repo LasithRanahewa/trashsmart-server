@@ -2,7 +2,7 @@ package com.g41.trashsmart_server.Models;
 
 import com.g41.trashsmart_server.Enums.Role;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,9 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "recycling-plant")
 public class RecyclingPlant extends BusinessUser implements UserDetails {
 
     private String BRN;
