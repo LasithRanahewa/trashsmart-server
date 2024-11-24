@@ -1,6 +1,7 @@
 package com.g41.trashsmart_server.Models;
 
 import com.g41.trashsmart_server.Enums.Role;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table
 public class RecyclingPlant extends BusinessUser implements UserDetails {
+
     private String BRN;
 
     public RecyclingPlant() {
@@ -25,6 +27,13 @@ public class RecyclingPlant extends BusinessUser implements UserDetails {
         this.BRN = BRN;
         this.setRole(Role.RECYCLING_PLANT);
     }
+
+    @ManyToMany(mappedBy = "registeredPlants")
+    private Set<Auction> auctions;
+
+    @OneToMany(mappedBy = "recyclingPlant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bid> bids;
+
 
     // Getters and Setters
     public String getBRN() {
@@ -69,4 +78,16 @@ public class RecyclingPlant extends BusinessUser implements UserDetails {
         return !super.isDeleted();
     }
 
+    public Set<Auction> getAuctions() { return auctions; }
+
+    public void setAuctions(Set<Auction> auctions) { this.auctions = auctions; }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
+    }
 }
+

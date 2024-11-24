@@ -1,11 +1,14 @@
 package com.g41.trashsmart_server.Services;
 
+import com.g41.trashsmart_server.Configuration.SMTPGmailSenderService;
+import com.g41.trashsmart_server.Configuration.SecurityConfig;
 import com.g41.trashsmart_server.DTO.RecyclingPlantDTO;
 import com.g41.trashsmart_server.DTO.RecyclingPlantDTOMapper;
+import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Models.RecyclingPlant;
 import com.g41.trashsmart_server.Repositories.RecyclingPlantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,15 @@ public class RecyclingPlantService {
     private final RecyclingPlantDTOMapper recyclingPlantDTOMapper;
 
     @Autowired
+    private SMTPGmailSenderService smtpGmailSenderService;
+
+    @Autowired
+    private SecurityConfig securityConfig;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     public RecyclingPlantService(RecyclingPlantRepository recyclingPlantRepository, RecyclingPlantDTOMapper recyclingPlantDTOMapper) {
         this.recyclingPlantRepository = recyclingPlantRepository;
         this.recyclingPlantDTOMapper = recyclingPlantDTOMapper;
@@ -27,6 +39,10 @@ public class RecyclingPlantService {
         Optional<RecyclingPlant> existingPlantByBRN = recyclingPlantRepository.findByBRN(recyclingPlant.getBRN());
         Optional<RecyclingPlant> existingByEmail = recyclingPlantRepository.findByEmail(recyclingPlant.getEmail());
 
+        if (recyclingPlant.getEmail().isEmpty()) {
+            throw new IllegalStateException("Email is essential.");
+        }
+
         // Check if the recycling plant already exists by BRN or email
         if (existingByEmail.isPresent()) {
             throw new IllegalStateException("Recycling Plant with email " + recyclingPlant.getEmail() + " already exists.");
@@ -34,6 +50,22 @@ public class RecyclingPlantService {
         if (existingPlantByBRN.isPresent()) {
             throw new IllegalStateException("Recycling Plant with BRN " + recyclingPlant.getBRN() + " already exists.");
         }
+
+        if (recyclingPlant.getPassword() == null || recyclingPlant.getPassword().isEmpty()) {
+            recyclingPlant.setPassword(securityConfig.generateRandomPassword(10));
+
+            String subject = "TrashSmart Account Created";
+            String body = "Hello, " + recyclingPlant.getFirstName() + "!\n" +
+                    "Your TrashSmart account has been created successfully.\n" +
+                    "Your login credentials are as follows:\n" +
+                    "Email: " + recyclingPlant.getEmail() + "\n" +
+                    "Password: " + recyclingPlant.getPassword() + "\n" +
+                    "Please change your password after logging in.\n" +
+                    "Thank you for choosing TrashSmart!";
+            smtpGmailSenderService.sendEmail(recyclingPlant.getEmail(), subject, body);
+        }
+
+        recyclingPlant.setRole(Role.RECYCLING_PLANT);
 
         return recyclingPlantRepository.save(recyclingPlant);
     }
@@ -83,7 +115,7 @@ public class RecyclingPlantService {
     }
 
 
-    public RecyclingPlantDTO updateRecyclingPlant(Long plantId, RecyclingPlantDTO updateDTO) {
+    public void updateRecyclingPlant(Long plantId, RecyclingPlant recyclingPlant) {
         Optional<RecyclingPlant> recyclingPlantOptional = recyclingPlantRepository.findById(plantId);
 
         if (recyclingPlantOptional.isEmpty()) {
@@ -93,41 +125,43 @@ public class RecyclingPlantService {
         RecyclingPlant existingPlant = recyclingPlantOptional.get();
 
         // Check for email conflict if the email is being updated
-        if (updateDTO.getEmail() != null && !updateDTO.getEmail().equals(existingPlant.getEmail())) {
-            Optional<RecyclingPlant> existingByEmail = recyclingPlantRepository.findByEmail(updateDTO.getEmail());
+        if (recyclingPlant.getEmail() != null && !recyclingPlant.getEmail().equals(existingPlant.getEmail())) {
+            Optional<RecyclingPlant> existingByEmail = recyclingPlantRepository.findByEmail(recyclingPlant.getEmail());
             if (existingByEmail.isPresent()) {
-                throw new IllegalStateException("Recycling Plant with email " + updateDTO.getEmail() + " already exists.");
+                throw new IllegalStateException("Recycling Plant with email " + recyclingPlant.getEmail() + " already exists.");
             }
-            existingPlant.setEmail(updateDTO.getEmail());
+            existingPlant.setEmail(recyclingPlant.getEmail());
         }
 
         // Check for BRN conflict if the BRN is being updated
-        if (updateDTO.getBRN() != null && !updateDTO.getBRN().equals(existingPlant.getBRN())) {
-            Optional<RecyclingPlant> existingByBRN = recyclingPlantRepository.findByBRN(updateDTO.getBRN());
+        if (recyclingPlant.getBRN() != null && !recyclingPlant.getBRN().equals(existingPlant.getBRN())) {
+            Optional<RecyclingPlant> existingByBRN = recyclingPlantRepository.findByBRN(recyclingPlant.getBRN());
             if (existingByBRN.isPresent()) {
-                throw new IllegalStateException("Recycling Plant with BRN " + updateDTO.getBRN() + " already exists.");
+                throw new IllegalStateException("Recycling Plant with BRN " + recyclingPlant.getBRN() + " already exists.");
             }
-            existingPlant.setBRN(updateDTO.getBRN());
+            existingPlant.setBRN(recyclingPlant.getBRN());
         }
 
         //Update other fields if provided
-        if (updateDTO.getFirstName() != null) {
-            existingPlant.setFirstName(updateDTO.getFirstName());
+        if (recyclingPlant.getFirstName() != null) {
+            existingPlant.setFirstName(recyclingPlant.getFirstName());
         }
-        if (updateDTO.getLastName() != null) {
-            existingPlant.setLastName(updateDTO.getLastName());
+        if (recyclingPlant.getLastName() != null) {
+            existingPlant.setLastName(recyclingPlant.getLastName());
         }
-        if (updateDTO.getContactNo() != null) {
-            existingPlant.setContactNo(updateDTO.getContactNo());
+        if (recyclingPlant.getContactNo() != null) {
+            existingPlant.setContactNo(recyclingPlant.getContactNo());
         }
-        if (updateDTO.getAddress() != null) {
-            existingPlant.setAddress(updateDTO.getAddress());
+        if (recyclingPlant.getAddress() != null) {
+            existingPlant.setAddress(recyclingPlant.getAddress());
         }
-        if (updateDTO.getProfileURL() != null) {
-            existingPlant.setProfileURL(updateDTO.getProfileURL());
+        if (recyclingPlant.getProfileURL() != null) {
+            existingPlant.setProfileURL(recyclingPlant.getProfileURL());
+        }
+        if (recyclingPlant.getPassword() != null && !existingPlant.getPassword().equals(recyclingPlant.getPassword())) {
+            existingPlant.setPassword(passwordEncoder.encode(recyclingPlant.getPassword()));
         }
 
-        RecyclingPlant updatedPlant = recyclingPlantRepository.save(existingPlant);
-        return recyclingPlantDTOMapper.apply(updatedPlant);
+        recyclingPlantRepository.save(existingPlant);
     }
 }
