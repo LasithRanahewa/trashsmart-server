@@ -52,7 +52,7 @@ public class BidService {
         }
 
         // Check if the recycling plant is registered for the auction
-        if (!auction.getRegisteredPlants().stream().anyMatch(plant -> recyclingPlant.getId().equals(recyclingPlantId))) {
+        if (!auction.getRegisteredPlants().stream().anyMatch(plant -> plant.getId().equals(recyclingPlantId))) {
             throw new IllegalStateException("Recycling Plant is not registered for this auction.");
         }
 

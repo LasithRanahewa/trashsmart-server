@@ -194,7 +194,7 @@ public class AuctionService {
         }
 
         // Check if the recycling plant is already registered
-        if (auction.getRegisteredPlants().stream().anyMatch(plant -> recyclingPlant.getId().equals(recyclingPlantId))) {
+        if (auction.getRegisteredPlants().stream().anyMatch(plant -> plant.getId().equals(recyclingPlantId))) {
             throw new IllegalStateException("Recycling Plant is already registered for this auction.");
         }
 
