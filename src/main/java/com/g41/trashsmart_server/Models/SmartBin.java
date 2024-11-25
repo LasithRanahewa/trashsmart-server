@@ -31,17 +31,18 @@ public class SmartBin {
     @ManyToOne
     @JoinColumn(name = "suburb_id")
     private Suburb suburb;
-    @Column(name = "APIKEY", unique = true)
+    @Column(name = "APIKEY", unique = true, nullable = false)
     private String APIKEY;
 
     public SmartBin() {
     }
 
-    public SmartBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize) {
+    public SmartBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize, String APIKEY) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.wasteType = wasteType;
         this.binSize = binSize;
+        this.APIKEY = APIKEY;
     }
 
     public Long getId() {

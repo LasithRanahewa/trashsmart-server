@@ -4,6 +4,7 @@ import com.g41.trashsmart_server.Enums.BinStatus;
 import com.g41.trashsmart_server.Models.SmartBin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 //import javax.swing.text.html.Option;
 import java.util.List;
@@ -40,5 +41,5 @@ public interface SmartBinRepository extends JpaRepository<SmartBin, Long> {
 
     // Find Smart bin using APIKEY
     @Query("SELECT smartbin FROM SmartBin smartbin WHERE smartbin.APIKEY = :APIKEY")
-    Optional<SmartBin> findSmartBinByAPIKey(String APIKEY);
+    Optional<SmartBin> findSmartBinByAPIKey(@Param("APIKEY") String APIKEY);
 }
