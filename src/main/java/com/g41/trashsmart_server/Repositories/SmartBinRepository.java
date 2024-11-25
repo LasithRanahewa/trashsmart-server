@@ -38,4 +38,7 @@ public interface SmartBinRepository extends JpaRepository<SmartBin, Long> {
     @Query("SELECT COALESCE(COUNT(smartbin), 0) FROM SmartBin smartbin WHERE smartbin.deleted = false AND smartbin.binStatus = :binStatus")
     Long findFullLevelCount(BinStatus binStatus);
 
+    // Find Smart bin using APIKEY
+    @Query("SELECT smartbin FROM SmartBin smartbin WHERE smartbin.APIKEY = :APIKEY")
+    Optional<SmartBin> findSmartBinByAPIKey(String APIKEY);
 }

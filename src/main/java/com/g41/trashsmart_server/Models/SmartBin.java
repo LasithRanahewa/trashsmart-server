@@ -31,6 +31,8 @@ public class SmartBin {
     @ManyToOne
     @JoinColumn(name = "suburb_id")
     private Suburb suburb;
+    @Column(name = "APIKEY", unique = true)
+    private String APIKEY;
 
     public SmartBin() {
     }
@@ -136,5 +138,13 @@ public class SmartBin {
 
     public void setSuburb(Suburb suburb) {
         this.suburb = suburb;
+    }
+
+    public String getAPIKEY() {
+        return APIKEY;
+    }
+
+    public void setAPIKEY(String APIKEY) {
+        this.APIKEY = APIKEY;
     }
 }
