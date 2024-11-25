@@ -7,11 +7,13 @@ import com.g41.trashsmart_server.Models.CommunalBin;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Repositories.CommercialBinRepository;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
+import com.g41.trashsmart_server.Repositories.SmartBinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,13 +21,15 @@ public class CommercialBinService {
     private final CommercialBinRepository commercialBinRepository;
     private final CommercialBinDTOMapper commercialBinDTOMapper;
     private final OrganizationRepository organizationRepository;
+    private final SmartBinRepository smartBinRepository;
 
     @Autowired
     public CommercialBinService(CommercialBinRepository commercialBinRepository,
-                               CommercialBinDTOMapper commercialBinDTOMapper, OrganizationRepository organizationRepository) {
+                                CommercialBinDTOMapper commercialBinDTOMapper, OrganizationRepository organizationRepository, SmartBinRepository smartBinRepository) {
         this.commercialBinRepository = commercialBinRepository;
         this.commercialBinDTOMapper = commercialBinDTOMapper;
         this.organizationRepository = organizationRepository;
+        this.smartBinRepository = smartBinRepository;
     }
 
 
@@ -81,10 +85,20 @@ public class CommercialBinService {
         if (organizationOptional.isEmpty()) {
             throw new IllegalStateException("Organization with id " + organizationId + " does not exist");
         }
+        String apiKey = generateUniqueApiKey();
         Organization organization = organizationOptional.get();
         commercialBin.setOrganization(organization);
+        commercialBin.setAPIKEY(apiKey);
         commercialBinRepository.save(commercialBin);
     }
+    private String generateUniqueApiKey() {
+        String apiKey;
+        do {
+            apiKey = UUID.randomUUID().toString();
+        } while (smartBinRepository.findSmartBinByAPIKey(apiKey).isPresent());
+        return apiKey;
+    }
+
 
     // Logically delete a commercial bin from the system
     public void deleteCommercialBin(Long id) {

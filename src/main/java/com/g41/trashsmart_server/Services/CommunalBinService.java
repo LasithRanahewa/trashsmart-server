@@ -4,23 +4,27 @@ import com.g41.trashsmart_server.DTO.CommunalBinDTO;
 import com.g41.trashsmart_server.DTO.CommunalBinDTOMapper;
 import com.g41.trashsmart_server.Models.CommunalBin;
 import com.g41.trashsmart_server.Repositories.CommunalBinRepository;
+import com.g41.trashsmart_server.Repositories.SmartBinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class CommunalBinService {
     private final CommunalBinRepository communalBinRepository;
     private final CommunalBinDTOMapper communalBinDTOMapper;
+    private final SmartBinRepository smartBinRepository;
 
     @Autowired
     public CommunalBinService(CommunalBinRepository communalBinRepository,
-                                CommunalBinDTOMapper communalBinDTOMapper) {
+                              CommunalBinDTOMapper communalBinDTOMapper, SmartBinRepository smartBinRepository) {
         this.communalBinRepository = communalBinRepository;
         this.communalBinDTOMapper = communalBinDTOMapper;
+        this.smartBinRepository = smartBinRepository;
     }
 
 
@@ -72,9 +76,18 @@ public class CommunalBinService {
 
     // Create a new communal bin
     public void addNewCommunalBin(CommunalBin communalBin) {
+        String apikey = generateUniqueApiKey();
+        communalBin.setAPIKEY(apikey);
         communalBinRepository.save(communalBin);
     }
 
+    private String generateUniqueApiKey() {
+        String apiKey;
+        do {
+            apiKey = UUID.randomUUID().toString();
+        } while (smartBinRepository.findSmartBinByAPIKey(apiKey).isPresent());
+        return apiKey;
+    }
     // Logically delete a communal bin from the system
     public void deleteCommunalBin(Long id) {
         Optional<CommunalBin> CommunalBinOptional = communalBinRepository.findById(id);

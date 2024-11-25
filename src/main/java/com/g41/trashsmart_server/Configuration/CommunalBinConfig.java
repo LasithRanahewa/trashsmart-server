@@ -23,14 +23,16 @@ public class CommunalBinConfig {
                     79.861244,
                     WasteType.NON_BIO_DEGRADABLE,
                     BinSize.MEGA,
-                    LocalDate.of(2024,8,10)
+                    LocalDate.of(2024,8,10),
+                    "apikey007"
             );
             CommunalBin Bin002 = new CommunalBin(
                     6.927079,
                     79.861244,
                     WasteType.NON_BIO_DEGRADABLE,
                     BinSize.MEGA,
-                    LocalDate.of(2024,10,15)
+                    LocalDate.of(2024,10,15),
+                    "apikey009"
             );
             communalBinRepository.saveAll(List.of(Bin001, Bin002));
         };

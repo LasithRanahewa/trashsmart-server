@@ -26,7 +26,8 @@ public class CommercialBinConfig {
                         6.927079,
                         79.861244,
                         WasteType.NON_BIO_DEGRADABLE,
-                        BinSize.MEGA
+                        BinSize.MEGA,
+                        "apikey88616"
                 );
                 Bin001.setOrganization(organization);
 
@@ -34,7 +35,8 @@ public class CommercialBinConfig {
                         6.927079,
                         79.861244,
                         WasteType.BIO_DEGRADABLE,
-                        BinSize.MEDIUM
+                        BinSize.MEDIUM,
+                        "apikey886167"
                 );
                 Bin002.setOrganization(organization);
                 commercialBinRepository.saveAll(List.of(Bin001, Bin002));

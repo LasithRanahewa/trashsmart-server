@@ -29,5 +29,6 @@ public class SmartBinDTO {
     private Boolean deleted;
     private List<MaintenanceRequest> maintenanceRequests;
     private Suburb suburb;
+
 }
 
