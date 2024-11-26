@@ -19,8 +19,8 @@ public class CommercialBin extends SmartBin{
     public CommercialBin() {
     }
 
-    public CommercialBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize) {
-        super(longitude, latitude, wasteType, binSize);
+    public CommercialBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize, String APIKEY) {
+        super(longitude, latitude, wasteType, binSize, APIKEY);
     }
 
 //    public CommercialBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize, Organization organization) {

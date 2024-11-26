@@ -7,6 +7,7 @@ import com.g41.trashsmart_server.Services.SmartBinService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -99,5 +100,28 @@ public class SmartBinController {
     )
     public Long getFullSmartBins() {
         return smartBinService.getFullSmartBins();
+    }
+
+    @PutMapping("/key/{APIKEY}")
+    @Operation(
+            description = "Update the Smart Bin fill level",
+            summary = "Returns the updated data",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public ResponseEntity<SmartBin> updateSmartBin(
+            @PathVariable String APIKEY,
+            @RequestBody SmartBin updatedData) {
+
+        SmartBin updatedSmartBin = smartBinService.updateSmartBinData(APIKEY, updatedData);
+        return ResponseEntity.ok(updatedSmartBin);
     }
 }
