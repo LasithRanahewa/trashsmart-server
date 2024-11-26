@@ -20,9 +20,10 @@ public class Bid {
     @JoinColumn(name = "auction_id")
     private Auction auction;
 
+
     public Bid() {}
 
-    public Bid(Long id, Double bidAmount, LocalDateTime bidTime, RecyclingPlant recyclingPlant, Auction auction) {
+    public Bid(Double bidAmount, LocalDateTime bidTime, RecyclingPlant recyclingPlant, Auction auction) {
         this.bidAmount = bidAmount;
         this.bidTime = bidTime;
         this.recyclingPlant = recyclingPlant;
@@ -61,7 +62,6 @@ public class Bid {
         return auction;
     }
 
-    public void setAuction(Auction auction) {
-        this.auction = auction;
-    }
+    public void setAuction(Auction auction) { this.auction = auction; }
+
 }
