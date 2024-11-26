@@ -65,7 +65,7 @@ public class RecyclingPlantController {
 
 
     @Operation(
-            description = "Retrieve all active/logically-deleted recycling plants which are added to the system.",
+            description = "Retrieve all active recycling plants which are added to the system.",
             summary = "Get all active recycling plants.",
             responses = {
                     @ApiResponse(
@@ -163,8 +163,8 @@ public class RecyclingPlantController {
             }
     )
     @PutMapping(path = "/{plantId}")
-    public ResponseEntity<RecyclingPlantDTO> updateRecyclingPlant(@PathVariable Long plantId, @RequestBody RecyclingPlantDTO updateDTO) {
-        RecyclingPlantDTO recyclingPlantDTO = recyclingPlantService.updateRecyclingPlant(plantId, updateDTO);
-        return ResponseEntity.ok(recyclingPlantDTO);
+    public void updateRecyclingPlant(@PathVariable Long plantId, @RequestBody RecyclingPlant recyclingPlant) {
+        recyclingPlantService.updateRecyclingPlant(plantId, recyclingPlant);
     }
+
 }
