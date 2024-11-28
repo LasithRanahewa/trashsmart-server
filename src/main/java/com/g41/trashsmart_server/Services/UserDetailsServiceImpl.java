@@ -4,10 +4,8 @@ import com.g41.trashsmart_server.Models.Driver;
 import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Contractor;
 import com.g41.trashsmart_server.Models.Organization;
-import com.g41.trashsmart_server.Repositories.DriverRepository;
-import com.g41.trashsmart_server.Repositories.HouseholdUserRepository;
-import com.g41.trashsmart_server.Repositories.ContractorRepository;
-import com.g41.trashsmart_server.Repositories.OrganizationRepository;
+import com.g41.trashsmart_server.Models.RecyclingPlant;
+import com.g41.trashsmart_server.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +27,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private OrganizationRepository organizationRepository;
 
+    @Autowired
+    private RecyclingPlantRepository recyclingPlantRepository;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         HouseholdUser householdUser = householdUserRepository.findHouseholdUserByEmail(email).orElse(null);
@@ -49,6 +50,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Organization organization = organizationRepository.findOrganizationByEmail(email).orElse(null);
         if (organization != null) {
             return organization;
+        }
+
+        RecyclingPlant recyclingPlant = recyclingPlantRepository.findByEmail(email).orElse(null);
+        if (recyclingPlant != null) {
+            return recyclingPlant;
         }
 
 
