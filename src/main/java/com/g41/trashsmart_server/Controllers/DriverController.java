@@ -260,7 +260,7 @@ public class DriverController {
     }
 
     // Get dispatches given driver id
-    @GetMapping(path = "dispatches/{driver_id}/{dispatch_status}")
+    @GetMapping(path = "dispatches/{driver_id}")
     @Operation(
             description = "Update driver details",
             summary = "Driver details will be updated based on the object passed",
@@ -275,8 +275,7 @@ public class DriverController {
                     )
             }
     )
-    public List<Dispatch> getDriverDispatches(@PathVariable("driver_id") Long id,
-                                              @PathVariable("dispatch_status") DispatchStatus dispatchStatus) {
-        return driverService.getDriverDispatches(id, dispatchStatus);
+    public List<Dispatch> getDriverDispatches(@PathVariable("driver_id") Long id) {
+        return driverService.getDriverDispatches(id);
     }
 }
