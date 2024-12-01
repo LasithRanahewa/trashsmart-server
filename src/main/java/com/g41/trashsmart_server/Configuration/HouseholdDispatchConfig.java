@@ -1,5 +1,7 @@
 package com.g41.trashsmart_server.Configuration;
 
+import com.g41.trashsmart_server.Enums.Status;
+import com.g41.trashsmart_server.Enums.TruckStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
 import com.g41.trashsmart_server.Models.Driver;
 import com.g41.trashsmart_server.Models.GarbageTruck;
@@ -27,7 +29,11 @@ public class HouseholdDispatchConfig {
             DriverRepository driverRepository,
             GarbageTruckRepository garbageTruckRepository) {
         return args -> {
-            GarbageTruck garbageTruck = new GarbageTruck();
+            GarbageTruck garbageTruck = new GarbageTruck(
+                    "ABB1234",
+                    21980,
+                    3400
+            );
             Driver driver = new Driver(
                     "Kavisha",
                     "Wanigarathne",
@@ -40,6 +46,8 @@ public class HouseholdDispatchConfig {
                     "200168686836"
             );
 
+            garbageTruck.setTruckStatus(TruckStatus.COLLECTING);
+            driver.setStatus(Status.UNAVAILABLE);
             // Save the transient instances first
             garbageTruckRepository.save(garbageTruck);
             driverRepository.save(driver);
