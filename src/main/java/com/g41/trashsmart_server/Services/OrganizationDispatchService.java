@@ -1,13 +1,18 @@
 package com.g41.trashsmart_server.Services;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.g41.trashsmart_server.Enums.*;
 import com.g41.trashsmart_server.Models.*;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
 import com.g41.trashsmart_server.Repositories.GarbageTruckRepository;
 import com.g41.trashsmart_server.Repositories.OrganizationDispatchRepository;
 import com.g41.trashsmart_server.Repositories.WasteCollectionRequestRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -18,12 +23,6 @@ public class OrganizationDispatchService {
     private final WasteCollectionRequestRepository wasteCollectionRequestRepository;
     private final GarbageTruckRepository garbageTruckRepository;
     private final DriverRepository driverRepository;
-
-    @Value("${municipal.council.latitude}")
-    private double municipalLatitude;
-
-    @Value("${municipal.council.longitude}")
-    private double municipalLongitude;
 
     public OrganizationDispatchService(OrganizationDispatchRepository organizationDispatchRepository,
                                        WasteCollectionRequestRepository wasteCollectionRequestRepository,
@@ -69,10 +68,11 @@ public class OrganizationDispatchService {
     // Create dispatches based  on the waste type
     public Map<Integer, OrganizationDispatch> clusterWasteCollectionRequests(WasteType wasteType) {
         final int MAX_CLUSTERS = 10;
-        final int MIN_REQUESTS_PER_CLUSTER = 5;
+        final int MIN_REQUESTS_PER_CLUSTER = 3;
 
         List<WasteCollectionRequest> wasteCollectionRequests =
                 wasteCollectionRequestRepository.findByWCRStatusAndWasteType(WasteCollectionRequestStatus.NEW, wasteType);
+        System.out.println(wasteCollectionRequests);
         List<GarbageTruck> garbageTrucks = garbageTruckRepository.findByTruckStatus(TruckStatus.IDLE);
         List<Driver> drivers = driverRepository.findByStatus(Status.ACTIVE);
 
@@ -92,6 +92,9 @@ public class OrganizationDispatchService {
         do {
             assignRequestsToClusters(wasteCollectionRequests, clusters);
             clusterUpdated = updateClusterCentroids(clusters);
+            if(clusterUpdated) {
+                clearClusters(clusters);
+            }
         } while(clusterUpdated);
 
         return assignOrganizationDispatches(clusters, garbageTrucks, drivers, wasteType);
@@ -106,6 +109,13 @@ public class OrganizationDispatchService {
             clusters.add(cluster);
         }
         return clusters;
+    }
+
+    // Clear waste collection requests within clusters
+    private void clearClusters(List<Cluster> clusters) {
+        for (Cluster cluster: clusters) {
+            cluster.clearWasteCollectionRequests();
+        }
     }
 
     // Assign each request to the nearest centroid
@@ -132,6 +142,9 @@ public class OrganizationDispatchService {
     // Update cluster centroids
     private boolean updateClusterCentroids(List<Cluster> clusters) {
         boolean updated = false;
+        double epsilon = 1e-17; // Convergence threshold
+        double municipalLatitude = 6.915788733342365;
+        double municipalLongitude = 79.86372182720865;
 
         for (Cluster cluster : clusters) {
             if (cluster.getWasteCollectionRequests().isEmpty()) {
@@ -146,16 +159,21 @@ public class OrganizationDispatchService {
                 sumLongitude += wasteCollectionRequest.getLongitude();
             }
 
-            double newLatitude = sumLatitude / (cluster.getWasteCollectionRequests().size() + 1);
-            double newLongitude = sumLongitude / (cluster.getWasteCollectionRequests().size() + 1);
+            int totalPoints = cluster.getWasteCollectionRequests().size() + 1;
 
-            if (newLatitude != cluster.getLatitude() || newLongitude != cluster.getLongitude()) {
-                cluster.setLatitude(newLatitude);
-                cluster.setLongitude(newLongitude);
+            double newLatitude = sumLatitude / totalPoints;
+            double newLongitude = sumLongitude / totalPoints;
+
+            double latitudeDifference = Math.abs(newLatitude - cluster.getLatitude());
+            double longitudeDifference = Math.abs(newLongitude - cluster.getLongitude());
+
+            cluster.setLatitude(newLatitude);
+            cluster.setLongitude(newLongitude);
+
+            // Check if the new centroids differ significantly from the old ones
+            if (latitudeDifference >= epsilon || longitudeDifference >= epsilon) {
                 updated = true;
             }
-
-            cluster.clearWasteCollectionRequests();
         }
 
         return updated;
@@ -178,6 +196,11 @@ public class OrganizationDispatchService {
         Map<Integer, OrganizationDispatch> organizationDispatches = new HashMap<>();
         for (int i = 0; i < clusterList.size(); i++) {
             Cluster cluster = clusterList.get(i);
+
+            if (cluster.getWasteCollectionRequests().isEmpty()) {
+                continue;
+            }
+
             GarbageTruck garbageTruck = garbageTruckList.get(i);
             Driver driver = driverList.get(i);
             garbageTruck.setTruckStatus(TruckStatus.EN_ROUTE);
@@ -191,6 +214,12 @@ public class OrganizationDispatchService {
                     wasteType
             );
 
+            // Set the organizationDispatch in each WasteCollectionRequest
+            for (WasteCollectionRequest request : cluster.getWasteCollectionRequests()) {
+                request.setOrganizationDispatch(dispatch);
+            }
+
+            organizationDispatchRepository.save(dispatch);
             organizationDispatches.put(cluster.getId(), dispatch);
         }
 
@@ -213,5 +242,31 @@ public class OrganizationDispatchService {
         if (organizationDispatch.getDispatchStatus() != dispatchStatus) {
             organizationDispatch.setDispatchStatus(dispatchStatus);
         }
+    }
+
+    // Complete an Organization Dispatch
+    public void completeDispatch(Long dispatchId) {
+        OrganizationDispatch organizationDispatchToUpdate = organizationDispatchRepository.findById(dispatchId).orElseThrow(
+                () -> new IllegalStateException("Household User with id " + dispatchId + " does not exists")
+        );
+        organizationDispatchToUpdate.getDriver().setStatus(Status.ACTIVE);
+        organizationDispatchToUpdate.getGarbageTruck().setTruckStatus(TruckStatus.IDLE);
+        if (!organizationDispatchToUpdate.getWasteCollectionRequestList().isEmpty()) {
+            for (WasteCollectionRequest wasteCollectionRequest: organizationDispatchToUpdate.getWasteCollectionRequestList()) {
+                wasteCollectionRequest.setWasteCollectionRequestStatus(WasteCollectionRequestStatus.COLLECTED);
+            }
+        }
+        organizationDispatchToUpdate.setDispatchStatus(DispatchStatus.COMPLETED);
+        organizationDispatchRepository.save(organizationDispatchToUpdate);
+    }
+
+    // get waste collection requests of a dispatch
+    public List<WasteCollectionRequest> getWasteCollectionRequests(Long dispatchId) {
+        Optional<OrganizationDispatch> organizationDispatchOptional = organizationDispatchRepository.findById(dispatchId);
+        if (organizationDispatchOptional.isEmpty()) {
+            throw new IllegalStateException("Organization Dispatch with id " + dispatchId + " does not exist");
+        }
+        OrganizationDispatch organizationDispatch = organizationDispatchOptional.get();
+        return organizationDispatch.getWasteCollectionRequestList();
     }
 }

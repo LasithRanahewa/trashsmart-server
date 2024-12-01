@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Status;
 import jakarta.persistence.Entity;
@@ -27,6 +28,7 @@ public class Driver extends SystemUser implements UserDetails{
     private Integer totalActiveDays = 0;
     private Integer numberOfHolidays = 0;
     @OneToMany(mappedBy = "driver")
+    @JsonManagedReference(value = "driver-back-ref")
     private List<Dispatch> dispatches;
 
     public Driver() {
