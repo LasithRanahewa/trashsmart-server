@@ -20,4 +20,7 @@ public interface CleanerRepository extends JpaRepository<Cleaner, Long> {
 
     @Query("SELECT c FROM Cleaner c WHERE c.contactNo = :contactNo")
     Optional<Cleaner> findByContactNo(String contactNo);
+
+    @Query("SELECT c FROM Cleaner c WHERE c.id = :cleanerId")
+    Optional<Cleaner> findCleanerById(Long cleanerId);
 }

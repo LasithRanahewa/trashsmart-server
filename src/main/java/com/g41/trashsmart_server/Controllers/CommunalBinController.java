@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/v1/communal_bin")
@@ -203,5 +204,25 @@ public class CommunalBinController {
     public void updateCommunalBin(@PathVariable("CommunalBin_id") Long id,
                                     @RequestBody CommunalBin communalBin) {
         communalBinService.updateCommunalBin(id, communalBin);
+    }
+
+    @PutMapping(path = "assign/{communalBinId}")
+    @Operation(
+            description = "Assign cleaner to bin",
+            summary = "Cleaner will be assigned to a communal bin based on the object passed",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void assignCleaner(@PathVariable("communalBinId") Long id, @RequestBody Map<String, Long> requestBody) {
+        Long cleanerId = requestBody.get("cleaner_id");
+        communalBinService.assignCleaner(id, cleanerId);
     }
 }
