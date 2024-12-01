@@ -2,11 +2,15 @@ package com.g41.trashsmart_server.Services;
 
 import com.g41.trashsmart_server.DTO.CommunalBinDTO;
 import com.g41.trashsmart_server.DTO.CommunalBinDTOMapper;
+import com.g41.trashsmart_server.Models.Cleaner;
 import com.g41.trashsmart_server.Models.CommunalBin;
+import com.g41.trashsmart_server.Models.Organization;
+import com.g41.trashsmart_server.Repositories.CleanerRepository;
 import com.g41.trashsmart_server.Repositories.CommunalBinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,12 +19,14 @@ import java.util.stream.Collectors;
 public class CommunalBinService {
     private final CommunalBinRepository communalBinRepository;
     private final CommunalBinDTOMapper communalBinDTOMapper;
+    private final CleanerRepository cleanerRepository;
 
     @Autowired
     public CommunalBinService(CommunalBinRepository communalBinRepository,
-                                CommunalBinDTOMapper communalBinDTOMapper) {
+                              CommunalBinDTOMapper communalBinDTOMapper, CleanerRepository cleanerRepository) {
         this.communalBinRepository = communalBinRepository;
         this.communalBinDTOMapper = communalBinDTOMapper;
+        this.cleanerRepository = cleanerRepository;
     }
 
 
@@ -117,5 +123,32 @@ public class CommunalBinService {
             CommunalBinToUpdate.setBinStatus(CommunalBin.getBinStatus());
         }
         communalBinRepository.save(CommunalBinToUpdate);
+    }
+
+    public void assignCleaner(Long id, Long cleanerId) {
+        CommunalBin communalBinToUpdate = communalBinRepository.findCommunalBinById(id).orElseThrow(
+                () -> new IllegalStateException("Communal bin with id " + id + " does not exist")
+        );
+
+        List<Cleaner> existingCleaners = communalBinToUpdate.getCleaners();
+        Optional<Cleaner> cleanerOptional = cleanerRepository.findCleanerById(cleanerId);
+        if (cleanerOptional.isEmpty()) {
+            throw new IllegalStateException("Cleaner with id " + cleanerId + " does not exist");
+        }
+        Cleaner cleaner = cleanerOptional.get();
+
+        existingCleaners.add(cleaner);
+        communalBinToUpdate.setCleaners(existingCleaners);
+        communalBinRepository.save(communalBinToUpdate);
+
+        Optional<CommunalBin> communalBinOptional = communalBinRepository.findCommunalBinById(communalBinToUpdate.getId());
+        if (communalBinOptional.isEmpty()) {
+            throw new IllegalStateException("Communal bin with id " + communalBinToUpdate.getId() + " does not exist");
+        }
+        CommunalBin communalBin = communalBinOptional.get();
+
+        List<CommunalBin> existingCommunalBins = cleaner.getCommunalBins();
+        existingCommunalBins.add(communalBin);
+        cleanerRepository.save(cleaner);
     }
 }
