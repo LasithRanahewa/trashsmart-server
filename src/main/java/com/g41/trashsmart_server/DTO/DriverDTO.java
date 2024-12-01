@@ -4,11 +4,12 @@ import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
