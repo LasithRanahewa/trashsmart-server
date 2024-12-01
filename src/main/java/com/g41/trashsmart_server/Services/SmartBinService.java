@@ -101,4 +101,12 @@ public class SmartBinService {
         // Default fallback (shouldn't happen)
         return BinStatus.EMPTY;
     }
+    public SmartBin getSmartBinById(Long id) {
+        Optional<SmartBin> optionalSmartBin = smartBinRepository.findSmartBinById(id);
+        if (optionalSmartBin.isEmpty()) {
+            throw new IllegalArgumentException("SmartBin with ID " + id + " not found");
+        }
+        return optionalSmartBin.get();
+    }
+
 }

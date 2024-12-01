@@ -124,4 +124,24 @@ public class SmartBinController {
         SmartBin updatedSmartBin = smartBinService.updateSmartBinData(id, updatedData);
         return ResponseEntity.ok(updatedSmartBin);
     }
+    @GetMapping("/{id}")
+    @Operation(
+            description = "Get Specific bin details using id",
+            summary = "Returns the data of sepecific bin with a given id",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public ResponseEntity<SmartBin> getBinByID(@PathVariable Long id){
+        SmartBin smartBin = smartBinService.getSmartBinById(id);
+        return ResponseEntity.ok(smartBin);
+
+    }
 }
