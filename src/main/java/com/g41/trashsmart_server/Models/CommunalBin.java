@@ -6,6 +6,7 @@ import com.g41.trashsmart_server.Enums.WasteType;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,6 +14,7 @@ import java.util.List;
 public class CommunalBin extends SmartBin {
     private LocalDate installationDate;
     @ManyToMany(mappedBy = "communalBins")
+    @JsonBackReference
     private List<Cleaner> cleaners;
 
     public CommunalBin() {
