@@ -110,7 +110,7 @@ public class WasteCollectionRequestConfig {
                 Scale.MEDIUM,
                 OrgType.ARTS_AND_CULTURE
         );
-        // 6.879290499935319, 79.85983888464753
+        // 6.882078543103582, 79.85919978445263
         Organization laptoplk = new Organization(
                 "laptop.lk",
                 "laptop.lk Admin",
@@ -478,20 +478,20 @@ public class WasteCollectionRequestConfig {
             WasteCollectionRequest wcr_laptoplk_1 = new WasteCollectionRequest(
                     33.22,
                     WasteType.BIO_DEGRADABLE,
-                    6.879290499935319,
-                    79.85983888464753
+                    6.882078543103582,
+                    79.85919978445263
             );
             WasteCollectionRequest wcr_laptoplk_2 = new WasteCollectionRequest(
                     33.22,
                     WasteType.NON_BIO_DEGRADABLE,
-                    6.879290499935319,
-                    79.85983888464753
+                    6.882078543103582,
+                    79.85919978445263
             );
             WasteCollectionRequest wcr_laptoplk_3 = new WasteCollectionRequest(
                     33.22,
                     WasteType.RECYCLABLE,
-                    6.879290499935319,
-                    79.85983888464753
+                    6.882078543103582,
+                    79.85919978445263
             );
             wcr_laptoplk_1.setOrganization(laptoplkOptional.get());
             wcr_laptoplk_2.setOrganization(laptoplkOptional.get());
@@ -603,20 +603,20 @@ public class WasteCollectionRequestConfig {
             WasteCollectionRequest wcr_nhs_1 = new WasteCollectionRequest(
                     43.59,
                     WasteType.BIO_DEGRADABLE,
-                    6.920202538578425,
-                    79.85345037838276
+                    6.919167407627983,
+                    79.8679937858135
             );
             WasteCollectionRequest wcr_nhs_2 = new WasteCollectionRequest(
                     43.59,
                     WasteType.NON_BIO_DEGRADABLE,
-                    6.920202538578425,
-                    79.85345037838276
+                    6.919167407627983,
+                    79.8679937858135
             );
             WasteCollectionRequest wcr_nhs_3 = new WasteCollectionRequest(
                     43.59,
                     WasteType.RECYCLABLE,
-                    6.920202538578425,
-                    79.85345037838276
+                    6.919167407627983,
+                    79.8679937858135
             );
             wcr_nhs_1.setOrganization(nhsOptional.get());
             wcr_nhs_2.setOrganization(nhsOptional.get());

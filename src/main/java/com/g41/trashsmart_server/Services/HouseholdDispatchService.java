@@ -40,25 +40,39 @@ public class HouseholdDispatchService {
 
         dispatch.setDispatchStatus(status);
         dispatch.setDriver(driver);
+        dispatch.setGarbageTruck(garbageTruck);
         householdDispatchRepository.save(dispatch);
 
         return dispatch;
     }
 
-    public HouseholdDispatch createHouseholdDispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, WasteType wasteType, String route) {
-        Optional<Driver> activeDriver = driverRepository.findByStatus(Status.ACTIVE).stream().findFirst();
-        DispatchStatus status = activeDriver.isPresent() ? DispatchStatus.NEW : DispatchStatus.PENDING;
-        Driver driver = activeDriver.orElse(null);
-
-        HouseholdDispatch dispatch = new HouseholdDispatch(dateTime, garbageTruck, driver, wasteType, route);
-        dispatch.setDispatchStatus(status);
-        householdDispatchRepository.save(dispatch);
-
-        return dispatch;
-    }
+//    public HouseholdDispatch createHouseholdDispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, WasteType wasteType, String route) {
+//        Optional<Driver> activeDriver = driverRepository.findByStatus(Status.ACTIVE).stream().findFirst();
+//        DispatchStatus status = activeDriver.isPresent() ? DispatchStatus.NEW : DispatchStatus.PENDING;
+//        Driver driver = activeDriver.orElse(null);
+//
+//        HouseholdDispatch dispatch = new HouseholdDispatch(dateTime, garbageTruck, driver, wasteType, route);
+//        dispatch.setDispatchStatus(status);
+//        householdDispatchRepository.save(dispatch);
+//
+//        return dispatch;
+//    }
 
     public HouseholdDispatch updateHouseholdDispatch(HouseholdDispatch dispatch) {
         return householdDispatchRepository.save(dispatch);
+    }
+
+    public HouseholdDispatch getHouseholdDispatch(Long id) {
+        return householdDispatchRepository.findById(id).orElse(null);
+    }
+
+    public HouseholdDispatch updateHouseholdDispatchStatus(Long id, DispatchStatus status) {
+        HouseholdDispatch dispatch = householdDispatchRepository.findById(id).orElse(null);
+        if (dispatch != null) {
+            dispatch.setDispatchStatus(status);
+            householdDispatchRepository.save(dispatch);
+        }
+        return dispatch;
     }
 
     public void deleteHouseholdDispatch(Long id) {
@@ -73,6 +87,18 @@ public class HouseholdDispatchService {
             householdDispatchRepository.save(newDispatch);
         });
     }
+
+    @Scheduled(fixedRate = 60000)
+    public void updateDispatchStatus() {
+        LocalDateTime now = LocalDateTime.now();
+        householdDispatchRepository.findAll().forEach(dispatch -> {
+            if (dispatch.getDateTime().isBefore(now) && dispatch.getDispatchStatus() == DispatchStatus.NEW) {
+                dispatch.setDispatchStatus(DispatchStatus.DISPATCHED);
+                householdDispatchRepository.save(dispatch);
+            }
+        });
+    }
+
 
     public List<HouseholdDispatch> getAllHouseholdDispatches() {
         return householdDispatchRepository.findAll();

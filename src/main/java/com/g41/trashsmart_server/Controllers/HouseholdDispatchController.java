@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Controllers;
 
+import com.g41.trashsmart_server.Enums.DispatchStatus;
 import com.g41.trashsmart_server.Models.HouseholdDispatch;
 import com.g41.trashsmart_server.Services.HouseholdDispatchService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -99,4 +100,25 @@ public class HouseholdDispatchController {
     public void deleteHouseholdDispatch(@PathVariable Long id) {
         householdDispatchService.deleteHouseholdDispatch(id);
     }
+
+    // Update household dispatch status
+    @PutMapping(path = "update_status/{id}")
+    @Operation(
+            description = "Update household dispatch status",
+            summary = "Household dispatch status will be updated based on the status passed",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public HouseholdDispatch updateHouseholdDispatchStatus(@PathVariable Long id, @RequestBody DispatchStatus status) {
+        return householdDispatchService.updateHouseholdDispatchStatus(id, status);
+    }
 }
+
