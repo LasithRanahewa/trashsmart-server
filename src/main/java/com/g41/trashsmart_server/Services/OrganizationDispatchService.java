@@ -7,8 +7,12 @@ import com.g41.trashsmart_server.Repositories.DriverRepository;
 import com.g41.trashsmart_server.Repositories.GarbageTruckRepository;
 import com.g41.trashsmart_server.Repositories.OrganizationDispatchRepository;
 import com.g41.trashsmart_server.Repositories.WasteCollectionRequestRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -92,8 +96,6 @@ public class OrganizationDispatchService {
                 clearClusters(clusters);
             }
         } while(clusterUpdated);
-
-        System.out.println(clusters.get(0).getWasteCollectionRequests());
 
         return assignOrganizationDispatches(clusters, garbageTrucks, drivers, wasteType);
     }
@@ -212,6 +214,12 @@ public class OrganizationDispatchService {
                     wasteType
             );
 
+            // Set the organizationDispatch in each WasteCollectionRequest
+            for (WasteCollectionRequest request : cluster.getWasteCollectionRequests()) {
+                request.setOrganizationDispatch(dispatch);
+            }
+
+            organizationDispatchRepository.save(dispatch);
             organizationDispatches.put(cluster.getId(), dispatch);
         }
 
@@ -234,5 +242,31 @@ public class OrganizationDispatchService {
         if (organizationDispatch.getDispatchStatus() != dispatchStatus) {
             organizationDispatch.setDispatchStatus(dispatchStatus);
         }
+    }
+
+    // Complete an Organization Dispatch
+    public void completeDispatch(Long dispatchId) {
+        OrganizationDispatch organizationDispatchToUpdate = organizationDispatchRepository.findById(dispatchId).orElseThrow(
+                () -> new IllegalStateException("Household User with id " + dispatchId + " does not exists")
+        );
+        organizationDispatchToUpdate.getDriver().setStatus(Status.ACTIVE);
+        organizationDispatchToUpdate.getGarbageTruck().setTruckStatus(TruckStatus.IDLE);
+        if (!organizationDispatchToUpdate.getWasteCollectionRequestList().isEmpty()) {
+            for (WasteCollectionRequest wasteCollectionRequest: organizationDispatchToUpdate.getWasteCollectionRequestList()) {
+                wasteCollectionRequest.setWasteCollectionRequestStatus(WasteCollectionRequestStatus.COLLECTED);
+            }
+        }
+        organizationDispatchToUpdate.setDispatchStatus(DispatchStatus.COMPLETED);
+        organizationDispatchRepository.save(organizationDispatchToUpdate);
+    }
+
+    // get waste collection requests of a dispatch
+    public List<WasteCollectionRequest> getWasteCollectionRequests(Long dispatchId) {
+        Optional<OrganizationDispatch> organizationDispatchOptional = organizationDispatchRepository.findById(dispatchId);
+        if (organizationDispatchOptional.isEmpty()) {
+            throw new IllegalStateException("Organization Dispatch with id " + dispatchId + " does not exist");
+        }
+        OrganizationDispatch organizationDispatch = organizationDispatchOptional.get();
+        return organizationDispatch.getWasteCollectionRequestList();
     }
 }
