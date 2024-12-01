@@ -188,7 +188,7 @@ public class DriverService {
     }
 
     // Get dispatches given a driver id
-    public List<Dispatch> getDriverDispatches(Long driverId, DispatchStatus dispatchStatus) {
+    public List<Dispatch> getDriverDispatches(Long driverId) {
         // Retrieve the driver
         Driver driver = driverRepository.findById(driverId).orElseThrow(
                 () -> new IllegalStateException("Driver with id " + driverId + " does not exist")
@@ -197,7 +197,6 @@ public class DriverService {
         // Filter dispatches by date and status
         List<Dispatch> filteredDispatches = driver.getDispatches().stream()
                 .filter(dispatch -> dispatch.getDateTime().toLocalDate().equals(LocalDate.now()))
-                .filter(dispatch -> dispatchStatus == null || dispatch.getDispatchStatus() == dispatchStatus)
                 .collect(Collectors.toList());
 
         if (filteredDispatches.isEmpty()) {
