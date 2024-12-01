@@ -2,14 +2,19 @@ package com.g41.trashsmart_server.Services;
 
 import com.g41.trashsmart_server.DTO.DriverDTO;
 import com.g41.trashsmart_server.DTO.DriverDTOMapper;
+import com.g41.trashsmart_server.Enums.DispatchStatus;
 import com.g41.trashsmart_server.Enums.Role;
+import com.g41.trashsmart_server.Enums.Status;
+import com.g41.trashsmart_server.Models.Dispatch;
 import com.g41.trashsmart_server.Models.Driver;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -180,5 +185,25 @@ public class DriverService {
         }
 
         driverRepository.save(driverToUpdate);
+    }
+
+    // Get dispatches given a driver id
+    public List<Dispatch> getDriverDispatches(Long driverId, DispatchStatus dispatchStatus) {
+        // Retrieve the driver
+        Driver driver = driverRepository.findById(driverId).orElseThrow(
+                () -> new IllegalStateException("Driver with id " + driverId + " does not exist")
+        );
+
+        // Filter dispatches by date and status
+        List<Dispatch> filteredDispatches = driver.getDispatches().stream()
+                .filter(dispatch -> dispatch.getDateTime().toLocalDate().equals(LocalDate.now()))
+                .filter(dispatch -> dispatchStatus == null || dispatch.getDispatchStatus() == dispatchStatus)
+                .collect(Collectors.toList());
+
+        if (filteredDispatches.isEmpty()) {
+            throw new IllegalStateException("No dispatches found for driver with id " + driverId + " on the current date.");
+        }
+
+        return filteredDispatches;
     }
 }
