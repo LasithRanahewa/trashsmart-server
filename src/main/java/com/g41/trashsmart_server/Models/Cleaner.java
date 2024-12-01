@@ -1,5 +1,7 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.g41.trashsmart_server.Enums.Role;
 import com.g41.trashsmart_server.Enums.Status;
 import jakarta.persistence.*;
@@ -24,6 +26,7 @@ public class Cleaner extends SystemUser {
             joinColumns = @JoinColumn(name = "cleaner_id"),
             inverseJoinColumns = @JoinColumn(name = "bin_id")
     )
+    @JsonManagedReference
     private List<CommunalBin> communalBins;
 
     public Cleaner() {
