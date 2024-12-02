@@ -7,6 +7,7 @@ import com.g41.trashsmart_server.Enums.WasteType;
 import com.g41.trashsmart_server.Models.Driver;
 import com.g41.trashsmart_server.Models.GarbageTruck;
 import com.g41.trashsmart_server.Models.HouseholdDispatch;
+import com.g41.trashsmart_server.Models.OrganizationDispatch;
 import com.g41.trashsmart_server.Repositories.DriverRepository;
 import com.g41.trashsmart_server.Repositories.GarbageTruckRepository;
 import com.g41.trashsmart_server.Repositories.HouseholdDispatchRepository;
@@ -104,4 +105,8 @@ public class HouseholdDispatchService {
         return householdDispatchRepository.findAll();
     }
 
+    // get dispatches based on driver id and status
+    public List<HouseholdDispatch> getHouseholdDispatchByDriverStatus(Long driver_id, DispatchStatus dispatchStatus) {
+        return householdDispatchRepository.getHouseholdDispatchByDriverStatus(driver_id, dispatchStatus);
+    }
 }
