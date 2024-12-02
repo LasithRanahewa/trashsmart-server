@@ -11,10 +11,14 @@ import java.util.List;
 
 @Repository
 public interface WasteCollectionRequestRepository extends JpaRepository<WasteCollectionRequest, Long> {
-    // Retrieve all the waste collection requests opened by a given organization
+    // Retrieve all the waste collection requests opened by a given organization with status
     @Query("SELECT wcr FROM WasteCollectionRequest wcr WHERE wcr.organization.id = :organizationId AND wcr.wasteCollectionRequestStatus = :wasteCollectionRequestStatus")
     List<WasteCollectionRequest> findByOrganizationId(Long organizationId,
                                                       WasteCollectionRequestStatus wasteCollectionRequestStatus);
+
+    // Retrieve all the waste collection requests opened by a given organization
+    @Query("SELECT wcr FROM WasteCollectionRequest wcr WHERE wcr.organization.id = :organizationId")
+    List<WasteCollectionRequest> findByOrganizationIdWOStatus(Long organizationId);
 
     // Retrieve all the waste collection requests by the given Request status and waste type
     @Query( "SELECT wcr FROM WasteCollectionRequest wcr WHERE wcr.wasteCollectionRequestStatus = :wasteCollectionRequestStatus AND wcr.wasteType = :wasteType")
