@@ -24,4 +24,12 @@ public class StatisticsService {
         this.organizationRepository = organizationRepository;
         this.recyclingPlantRepository = recyclingPlantRepository;
     }
+
+    // Get the total number of users in the system
+    public long getTotalUsers() {
+        return (
+                cleanerRepository.count() + contractorRepository.count() + driverRepository.count() +
+                householdUserRepository.count() + organizationRepository.count() + recyclingPlantRepository.count()
+        );
+    }
 }
