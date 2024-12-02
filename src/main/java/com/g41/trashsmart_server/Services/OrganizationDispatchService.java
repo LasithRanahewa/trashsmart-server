@@ -269,4 +269,9 @@ public class OrganizationDispatchService {
         OrganizationDispatch organizationDispatch = organizationDispatchOptional.get();
         return organizationDispatch.getWasteCollectionRequestList();
     }
+
+    // get dispatches based on driver id and status
+    public List<OrganizationDispatch> getOrgDispatchByDriverStatus(Long driver_id, DispatchStatus dispatchStatus) {
+        return organizationDispatchRepository.getOrgDispatchByDriverStatus(driver_id, dispatchStatus);
+    }
 }
