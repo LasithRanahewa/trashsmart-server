@@ -25,6 +25,8 @@ public class Organization extends BusinessUser implements UserDetails {
     private OrgType orgType;
     private LocalDate contractStartDate = LocalDate.now();
     private LocalDate contractEndDate;
+    private Double latitude;
+    private Double longitude;
     @OneToMany(mappedBy = "organization")
     @JsonManagedReference
     private List<CommercialBin> commercialBins;
@@ -37,11 +39,13 @@ public class Organization extends BusinessUser implements UserDetails {
     }
 
     public Organization(String firstName, String lastName, String email, String password, String contactNo,
-                        String address, String profileURL, Scale scale, OrgType orgType) {
+                        String address, String profileURL, Scale scale, OrgType orgType, Double latitude, Double longitude) {
         super(firstName, lastName, email, password, contactNo, address, profileURL, LocalDateTime.now());
         this.scale = scale;
         this.orgType = orgType;
         this.setRole(Role.ORGANIZATION);
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     // Getters and Setters
@@ -117,6 +121,21 @@ public class Organization extends BusinessUser implements UserDetails {
         this.wasteCollectionRequests = wasteCollectionRequests;
     }
 
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
