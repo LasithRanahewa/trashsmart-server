@@ -37,15 +37,70 @@ public class DriverConfig {
                     "Ravija",
                     "Salpitikorala",
                     passwordEncoder.encode("password123"),
-                    "0712990638",
-                    "35, Reid Avenue, Colombo 07",
+                    "0712990639",
+                    "36, Reid Avenue, Colombo 07",
                     "ravija@gmail.com",
                     "www.google.com",
                     LocalDate.of(1995, 12, 12),
-                    "200168686830"
+                    "200168686831"
             );
 
-            driverRepository.saveAll(List.of(Rusara, Ravija));
+            Driver Masha = new Driver(
+                    "Masha",
+                    "Wickramasinghe",
+                    passwordEncoder.encode("password123"),
+                    "0712990640",
+                    "37, Reid Avenue, Colombo 07",
+                    "masha@gmail.com",
+                    "www.google.com",
+                    LocalDate.of(1995, 12, 12),
+                    "200168686832"
+            );
+
+            Driver Lasith = new Driver(
+                    "Lasith",
+                    "Ranahewa",
+                    passwordEncoder.encode("password123"),
+                    "0712990641",
+                    "38, Reid Avenue, Colombo 07",
+                    "lasith@gmail.com",
+                    "www.google.com",
+                    LocalDate.of(1995, 12, 12),
+                    "200168686833"
+            );
+
+            Driver Dasun = new Driver(
+                    "Dasun",
+                    "Srikantha",
+                    passwordEncoder.encode("password123"),
+                    "0712990642",
+                    "39, Reid Avenue, Colombo 07",
+                    "dasun@gmail.com",
+                    "www.google.com",
+                    LocalDate.of(1995, 12, 12),
+                    "200168686834"
+            );
+
+            Driver Lakruwan = new Driver(
+                    "Lakruwan",
+                    "Kasun",
+                    passwordEncoder.encode("password123"),
+                    "0712990643",
+                    "35, Reid Avenue, Colombo 07",
+                    "lakruwan@gmail.com",
+                    "www.google.com",
+                    LocalDate.of(1995, 12, 12),
+                    "200168686835"
+            );
+
+            driverRepository.saveAll(List.of(
+                    Rusara,
+                    Ravija,
+                    Masha,
+                    Lasith,
+                    Dasun,
+                    Lakruwan
+            ));
         };
     }
 }

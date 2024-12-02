@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.g41.trashsmart_server.Enums.DispatchStatus;
 import com.g41.trashsmart_server.Enums.DispatchType;
 import com.g41.trashsmart_server.Enums.WasteType;
@@ -18,9 +19,11 @@ public abstract class Dispatch {
     private DispatchStatus dispatchStatus = DispatchStatus.NEW;
     @ManyToOne
     @JoinColumn(name = "truck_id")
+    @JsonBackReference(value = "garbageTruck-back-ref")
     private GarbageTruck garbageTruck;
     @ManyToOne
     @JoinColumn(name = "driver_id")
+    @JsonBackReference(value = "driver-back-ref")
     private Driver driver;
     private DispatchType dispatchType;
     private WasteType wasteType;

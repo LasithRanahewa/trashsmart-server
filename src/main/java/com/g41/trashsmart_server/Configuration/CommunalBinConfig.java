@@ -25,6 +25,7 @@ public class CommunalBinConfig {
                     BinSize.MEGA,
                     LocalDate.of(2024,8,10)
             );
+            Bin001.setFillLevel(80.0);
             CommunalBin Bin002 = new CommunalBin(
                     6.927079,
                     79.861244,
@@ -32,6 +33,7 @@ public class CommunalBinConfig {
                     BinSize.MEGA,
                     LocalDate.of(2024,10,15)
             );
+            Bin002.setFillLevel(45.0);
             communalBinRepository.saveAll(List.of(Bin001, Bin002));
         };
     }
