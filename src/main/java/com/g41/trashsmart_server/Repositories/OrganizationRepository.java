@@ -33,4 +33,7 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
     // Select all the organizations registered with the system
     @Query("SELECT org FROM Organization org")
     List<Organization> findAllOrganizationsUnFiltered();
+
+    // count the number of organizations
+    long count();
 }

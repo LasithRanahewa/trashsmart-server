@@ -22,4 +22,6 @@ public interface RecyclingPlantRepository extends JpaRepository<RecyclingPlant, 
     @Query("SELECT r FROM RecyclingPlant r WHERE r.deleted = :deleted")
     List<RecyclingPlant> findRecyclingPlantsFiltered(boolean deleted);
 
+    // count the number of recycling plants
+    long count();
 }
