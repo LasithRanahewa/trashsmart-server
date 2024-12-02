@@ -22,4 +22,8 @@ public interface OrganizationDispatchRepository extends JpaRepository<Organizati
     // Get organization dispatches by waste type
     @Query("SELECT org_dispatch FROM OrganizationDispatch org_dispatch WHERE wasteType = :wasteType")
     List<OrganizationDispatch> findByWasteType(WasteType wasteType);
+
+    // Get dispatches based on driver id and status
+    @Query("SELECT org_dispatch FROM OrganizationDispatch org_dispatch WHERE driver.id = :driver_id AND dispatchStatus = :dispatchStatus")
+    List<OrganizationDispatch> getOrgDispatchByDriverStatus(Long driver_id, DispatchStatus dispatchStatus);
 }
