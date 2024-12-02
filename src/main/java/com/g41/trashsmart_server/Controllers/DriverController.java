@@ -4,7 +4,9 @@ import com.g41.trashsmart_server.Configuration.JwtUtils;
 import com.g41.trashsmart_server.DTO.AuthenticationResponse;
 import com.g41.trashsmart_server.DTO.DriverDTO;
 import com.g41.trashsmart_server.DTO.DriverDTOMapper;
+import com.g41.trashsmart_server.Enums.DispatchStatus;
 import com.g41.trashsmart_server.Enums.Role;
+import com.g41.trashsmart_server.Models.Dispatch;
 import com.g41.trashsmart_server.Models.Driver;
 import com.g41.trashsmart_server.Services.DriverService;
 import com.g41.trashsmart_server.Services.UserDetailsServiceImpl;
@@ -255,5 +257,25 @@ public class DriverController {
     public void updateDriver(@PathVariable("driver_id") Long id,
                                     @RequestBody Driver driver) {
         driverService.updateDriver(id, driver);
+    }
+
+    // Get dispatches given driver id
+    @GetMapping(path = "dispatches/{driver_id}")
+    @Operation(
+            description = "Update driver details",
+            summary = "Driver details will be updated based on the object passed",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public List<Dispatch> getDriverDispatches(@PathVariable("driver_id") Long id) {
+        return driverService.getDriverDispatches(id);
     }
 }

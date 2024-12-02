@@ -3,6 +3,7 @@ package com.g41.trashsmart_server.Controllers;
 import com.g41.trashsmart_server.Enums.DispatchStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
 import com.g41.trashsmart_server.Models.OrganizationDispatch;
+import com.g41.trashsmart_server.Models.WasteCollectionRequest;
 import com.g41.trashsmart_server.Services.OrganizationDispatchService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -43,7 +44,7 @@ public class OrganizationDispatchController {
     }
 
     // Get all the dispatches based on the DispatchStatus
-    @GetMapping(path = "{dispatch_status}")
+    @GetMapping(path = "dispatch_status/{dispatch_status}")
     @Operation(
             description = "Get all the dispatches based on status",
             summary = "Get all the dispatches in the system based on the given status in the GET request",
@@ -65,7 +66,7 @@ public class OrganizationDispatchController {
     }
 
     // Get all the dispatches based on the WasteType
-    @GetMapping(path = "{waste_type}")
+    @GetMapping(path = "waste_type/{waste_type}")
     @Operation(
             description = "Get all the dispatches based on waste type",
             summary = "Get all the dispatches in the system based on the given waste type in the GET request",
@@ -87,7 +88,7 @@ public class OrganizationDispatchController {
     }
 
     // Get all the dispatches based on the DispatchStatus and WasteType
-    @GetMapping(path = "{dispatch_status}/{waste_type}")
+    @GetMapping(path = "status_wasteType/{dispatch_status}/{waste_type}")
     @Operation(
             description = "Get all the dispatches based on status and waste type",
             summary = "Get all the dispatches in the system based on the given status and waste ype in the GET request",
@@ -170,5 +171,45 @@ public class OrganizationDispatchController {
             @RequestBody DispatchStatus dispatchStatus
     ) {
         organizationDispatchService.updateOrganizationDispatchStatus(id, dispatchStatus);
+    }
+
+    // complete a dispatch
+    @PostMapping(path = "finish_dispatch/{id}")
+    @Operation(
+            description = "Complete an organization dispatch",
+            summary = "Complete an organization dispatch given ",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void completeDispatch(@PathVariable("id") Long id) {
+        organizationDispatchService.completeDispatch(id);
+    }
+
+    // get waste collection requests of a dispatch
+    @GetMapping(path = "wcr/{id}")
+    @Operation(
+            description = "Get waste collection requests of a dispatch",
+            summary = "Return all the waste collection requests of a dispatch given its id",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public List<WasteCollectionRequest> getWasteCollectionRequests(@PathVariable("id") Long id) {
+        return organizationDispatchService.getWasteCollectionRequests(id);
     }
 }

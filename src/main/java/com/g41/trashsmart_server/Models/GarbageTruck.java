@@ -1,5 +1,6 @@
 package com.g41.trashsmart_server.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.g41.trashsmart_server.Enums.TruckStatus;
 import jakarta.persistence.*;
 
@@ -17,6 +18,7 @@ public class GarbageTruck {
     private Boolean deleted = false;
     private TruckStatus truckStatus = TruckStatus.IDLE;
     @OneToMany(mappedBy = "garbageTruck")
+    @JsonManagedReference(value = "garbageTruck-back-ref")
     private List<Dispatch> dispatches;
 
     public GarbageTruck() {

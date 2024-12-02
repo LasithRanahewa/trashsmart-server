@@ -87,7 +87,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 //                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/v1/auth/**", "api/v1/household_user/register", "api/v1/driver/register", "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**" ).permitAll()
+                        .requestMatchers("api/v1/auth/**", "api/v1/household_user/register", "api/v1/driver/register", "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**" , "api/v1/smart_bin/update/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

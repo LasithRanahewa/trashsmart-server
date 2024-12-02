@@ -15,7 +15,19 @@ public class HouseholdDispatch extends Dispatch {
         this.setDispatchType(DispatchType.HOUSEHOLD);
     }
 
-    public HouseholdDispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, Driver driver, WasteType wasteType) {
+    private String route;
+
+    public HouseholdDispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, Driver driver, WasteType wasteType, String route) {
         super(dateTime, garbageTruck, driver, DispatchType.HOUSEHOLD, wasteType);
+        this.route = route;
+    }
+
+    public HouseholdDispatch(LocalDateTime dateTime, GarbageTruck garbageTruck, WasteType wasteType, String route) {
+        super(dateTime, garbageTruck, null, DispatchType.HOUSEHOLD, wasteType);
+        this.route = route;
+    }
+
+    public String getRoute() {
+        return route;
     }
 }
