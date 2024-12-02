@@ -29,4 +29,7 @@ public interface HouseholdUserRepository extends JpaRepository<HouseholdUser, Lo
     // Select all the household users registered with the system
     @Query("SELECT hu FROM HouseholdUser hu")
     List<HouseholdUser> findAllHouseholdUsersUnFiltered();
+
+    // count the number of household users
+    long count();
 }
