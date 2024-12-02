@@ -2,6 +2,7 @@ package com.g41.trashsmart_server.Controllers;
 
 import com.g41.trashsmart_server.Services.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,5 +14,10 @@ public class StatisticsController {
     @Autowired
     public StatisticsController(StatisticsService statisticsService) {
         this.statisticsService = statisticsService;
+    }
+
+    @GetMapping(path = "total_users")
+    public long getTotalUsers() {
+        return statisticsService.getTotalUsers();
     }
 }
