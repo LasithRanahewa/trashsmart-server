@@ -212,4 +212,25 @@ public class OrganizationDispatchController {
     public List<WasteCollectionRequest> getWasteCollectionRequests(@PathVariable("id") Long id) {
         return organizationDispatchService.getWasteCollectionRequests(id);
     }
+
+    // get dispatches based on driver id and status
+    @GetMapping(path = "driver/{driver_id}/{dispatch_status}")
+    @Operation(
+            description = "Get dispatches based on driver id and status",
+            summary = "Return all the dispatches of a driver given their id and dispatch status",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public List<OrganizationDispatch> getOrgDispatchByDriverStatus(@PathVariable("driver_id") Long driver_id,
+                                                                   @PathVariable("dispatch_status") DispatchStatus dispatchStatus) {
+        return organizationDispatchService.getOrgDispatchByDriverStatus(driver_id, dispatchStatus);
+    }
 }
