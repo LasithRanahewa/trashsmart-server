@@ -38,11 +38,11 @@ public class WasteCollectionRequestController {
         return wasteCollectionRequestService.getAllRequests();
     }
 
-    // Retrieve all the waste collection requests opened by a given organization
+    // Retrieve all the waste collection requests opened by a given organization with status
     @GetMapping(path = "organization/{org_id}/{status}")
     @Operation(
-            description = "Retrieve all the waste collection requests opened by a given organization",
-            summary = "All the waste collection requests of the given organization will be retrieved",
+            description = "Retrieve all the waste collection requests opened by a given organization with status",
+            summary = "All the waste collection requests of the given organization and status will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -57,6 +57,26 @@ public class WasteCollectionRequestController {
     public List<WasteCollectionRequest> getAllRequestsByOrganization(@PathVariable("org_id") Long id,
                                                                      @PathVariable("status") Integer status) {
         return wasteCollectionRequestService.getAllRequestsByOrganization(id, status);
+    }
+
+    // Retrieve all the waste collection requests opened by a given organization
+    @GetMapping(path = "organization/{org_id}")
+    @Operation(
+            description = "Retrieve all the waste collection requests opened by a given organization ",
+            summary = "All the waste collection requests of the given organization will be retrieved",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public List<WasteCollectionRequest> getAllRequestsByOrganizationWOStatus(@PathVariable("org_id") Long id) {
+        return wasteCollectionRequestService.getAllRequestsByOrganizationWOStatus(id);
     }
 
     // Retrieve specific by id

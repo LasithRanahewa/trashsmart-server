@@ -38,6 +38,11 @@ public class WasteCollectionRequestService {
         return wasteCollectionRequestRepository.findByOrganizationId(organizationId, wasteCollectionRequestStatus);
     }
 
+    // Retrieve all the waste collection requests opened by a given organization
+    public List<WasteCollectionRequest> getAllRequestsByOrganizationWOStatus(Long id) {
+        return wasteCollectionRequestRepository.findByOrganizationIdWOStatus(id);
+    }
+
     // Retrieve specific by id
     public WasteCollectionRequest getRequest(Long id) {
         Optional<WasteCollectionRequest> wasteCollectionRequestOptional = wasteCollectionRequestRepository.findById(id);
