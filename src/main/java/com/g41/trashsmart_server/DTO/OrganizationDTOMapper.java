@@ -25,6 +25,8 @@ public class OrganizationDTOMapper implements Function<Organization, Organizatio
                 organization.getOrgType(),
                 organization.getContractStartDate(),
                 organization.getContractEndDate(),
+                organization.getLatitude(),
+                organization.getLongitude(),
                 organization.getCommercialBins(),
                 organization.getWasteCollectionRequests()
         );

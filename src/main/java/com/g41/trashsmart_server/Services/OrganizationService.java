@@ -181,6 +181,14 @@ public class OrganizationService {
                 !organizationToUpdate.getContractEndDate().equals(organization.getContractEndDate())) {
             organizationToUpdate.setContractEndDate(organization.getContractEndDate());
         }
+        if (organization.getLatitude() != null &&
+                !organizationToUpdate.getLatitude().equals(organization.getLatitude())) {
+            organizationToUpdate.setLatitude(organization.getLatitude());
+        }
+        if (organization.getLongitude() != null &&
+                !organizationToUpdate.getLongitude().equals(organization.getLongitude())) {
+            organizationToUpdate.setLongitude(organization.getLongitude());
+        }
         if (organization.getCommercialBins() != null && !organization.getCommercialBins().isEmpty() &&
                 !organizationToUpdate.getCommercialBins().equals(organization.getCommercialBins())) {
             organizationToUpdate.setCommercialBins(organization.getCommercialBins());

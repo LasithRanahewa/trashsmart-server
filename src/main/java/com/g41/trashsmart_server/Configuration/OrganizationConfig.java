@@ -28,7 +28,9 @@ public class OrganizationConfig {
                     "35, Reid Avenue, Colombo 07",
                     "www.google.com",
                     Scale.SMALL,
-                    OrgType.EDUCATION
+                    OrgType.EDUCATION,
+                    6.902256504201074,
+                    79.86115034382995
             );
             Organization fos = new Organization(
                     "FOS",
@@ -39,7 +41,9 @@ public class OrganizationConfig {
                     "50, Reid Avenue, Colombo 07",
                     "www.facebook.com",
                     Scale.MEDIUM,
-                    OrgType.EDUCATION
+                    OrgType.EDUCATION,
+                    6.901910343977649,
+                    79.86021961730209
             );
 
             organizationRepository.saveAll(List.of(ucsc, fos));
