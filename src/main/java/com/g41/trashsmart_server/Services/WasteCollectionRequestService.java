@@ -1,11 +1,14 @@
 package com.g41.trashsmart_server.Services;
 
 import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
+import com.g41.trashsmart_server.Models.CommercialBin;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Models.WasteCollectionRequest;
+import com.g41.trashsmart_server.Repositories.CommercialBinRepository;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import com.g41.trashsmart_server.Repositories.WasteCollectionRequestRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +17,14 @@ import java.util.Optional;
 public class WasteCollectionRequestService {
     private final WasteCollectionRequestRepository wasteCollectionRequestRepository;
     private final OrganizationRepository organizationRepository;
+    private final CommercialBinRepository commercialBinRepository;
 
     public WasteCollectionRequestService(WasteCollectionRequestRepository wasteCollectionRequestRepository,
-                                         OrganizationRepository organizationRepository) {
+                                         OrganizationRepository organizationRepository,
+                                         CommercialBinRepository commercialBinRepository) {
         this.wasteCollectionRequestRepository = wasteCollectionRequestRepository;
         this.organizationRepository = organizationRepository;
+        this.commercialBinRepository = commercialBinRepository;
     }
 
     // Retrieve all waste collection requests
@@ -114,5 +120,21 @@ public class WasteCollectionRequestService {
             );
         }
         wasteCollectionRequestRepository.save(wasteCollectionRequestToUpdate);
+    }
+
+    // Create a new Waste Collection Request using a commercial bin
+    public void createWCRUsingBin(Long bin_id) {
+        Optional<CommercialBin> commercialBinOptional = commercialBinRepository.findById(bin_id);
+        if (commercialBinOptional.isEmpty()) {
+            throw new IllegalStateException("Bin with id " + bin_id + " does not exist");
+        }
+        CommercialBin commercialBin = commercialBinOptional.get();
+        WasteCollectionRequest wasteCollectionRequest = new WasteCollectionRequest(
+                commercialBin.getFillLevel() * 50,
+                commercialBin.getWasteType(),
+                commercialBin.getLatitude(),
+                commercialBin.getLongitude()
+        );
+        wasteCollectionRequestRepository.save(wasteCollectionRequest);
     }
 }
