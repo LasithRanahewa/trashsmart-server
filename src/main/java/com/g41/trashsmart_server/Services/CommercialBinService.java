@@ -2,6 +2,7 @@ package com.g41.trashsmart_server.Services;
 
 import com.g41.trashsmart_server.DTO.CommercialBinDTO;
 import com.g41.trashsmart_server.DTO.CommercialBinDTOMapper;
+import com.g41.trashsmart_server.Enums.BinStatus;
 import com.g41.trashsmart_server.Models.CommercialBin;
 import com.g41.trashsmart_server.Models.CommunalBin;
 import com.g41.trashsmart_server.Models.HouseholdUser;
@@ -11,6 +12,7 @@ import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,7 +25,7 @@ public class CommercialBinService {
 
     @Autowired
     public CommercialBinService(CommercialBinRepository commercialBinRepository,
-                               CommercialBinDTOMapper commercialBinDTOMapper, OrganizationRepository organizationRepository) {
+                                CommercialBinDTOMapper commercialBinDTOMapper, OrganizationRepository organizationRepository) {
         this.commercialBinRepository = commercialBinRepository;
         this.commercialBinDTOMapper = commercialBinDTOMapper;
         this.organizationRepository = organizationRepository;
@@ -70,7 +72,7 @@ public class CommercialBinService {
     public CommercialBinDTO getSpecificCommercialBin(Long id) {
         Optional<CommercialBin> CommercialBinOptional = commercialBinRepository.findCommercialBinById(id, false);
 
-        if(CommercialBinOptional.isEmpty()) {
+        if (CommercialBinOptional.isEmpty()) {
             throw new IllegalStateException("Commercial bin with id " + id + " does not exist");
         }
         return commercialBinDTOMapper.apply(CommercialBinOptional.get());
@@ -90,7 +92,7 @@ public class CommercialBinService {
     // Logically delete a commercial bin from the system
     public void deleteCommercialBin(Long id) {
         Optional<CommercialBin> CommercialBinOptional = commercialBinRepository.findById(id);
-        if(CommercialBinOptional.isEmpty()) {
+        if (CommercialBinOptional.isEmpty()) {
             throw new IllegalStateException("Garbage truck with id " + id + " does not exist");
         }
         CommercialBin CommercialBinToDelete = CommercialBinOptional.get();
@@ -102,7 +104,7 @@ public class CommercialBinService {
     // Permanently delete a commercial bin from the system
     public void deletePermanentCommercialBin(Long id) {
         boolean exists = commercialBinRepository.existsById(id);
-        if(!exists) {
+        if (!exists) {
             throw new IllegalStateException("Commercial bin with id " + id + " does not exist");
         }
         commercialBinRepository.deleteById(id);
@@ -121,11 +123,11 @@ public class CommercialBinService {
                 !CommercialBinToUpdate.getLatitude().equals(CommercialBin.getLatitude())) {
             CommercialBinToUpdate.setLatitude(CommercialBin.getLatitude());
         }
-        if(CommercialBin.getWasteType() != null  &&
+        if (CommercialBin.getWasteType() != null &&
                 !CommercialBinToUpdate.getWasteType().equals(CommercialBin.getWasteType())) {
             CommercialBinToUpdate.setWasteType(CommercialBin.getWasteType());
         }
-        if(!CommercialBinToUpdate.getBinStatus().equals(CommercialBin.getBinStatus())) {
+        if (!CommercialBinToUpdate.getBinStatus().equals(CommercialBin.getBinStatus())) {
             CommercialBinToUpdate.setBinStatus(CommercialBin.getBinStatus());
         }
         commercialBinRepository.save(CommercialBinToUpdate);
@@ -136,7 +138,7 @@ public class CommercialBinService {
         Optional<CommercialBin> commercialBinOptional = commercialBinRepository.findCommercialBinByAPIKey(
                 commercialBin.getApiKey()
         );
-        if(commercialBinOptional.isPresent()) {
+        if (commercialBinOptional.isPresent()) {
             throw new IllegalStateException("API Key Taken");
         }
         commercialBinRepository.save(commercialBin);
@@ -145,11 +147,11 @@ public class CommercialBinService {
     // Assign a commercial bin to an organization
     public void assignCommercialBin(Long org_id, String apiKey) {
         Optional<CommercialBin> commercialBinOptional = commercialBinRepository.findCommercialBinByAPIKey(apiKey);
-        if(commercialBinOptional.isEmpty()) {
+        if (commercialBinOptional.isEmpty()) {
             throw new IllegalStateException("Commercial Bin with API key " + apiKey + " does not exist");
         }
         Optional<Organization> organizationOptional = organizationRepository.findById(org_id);
-        if(organizationOptional.isEmpty()) {
+        if (organizationOptional.isEmpty()) {
             throw new IllegalStateException("Organization with ID " + org_id + " does not exist");
         }
         CommercialBin commercialBin = commercialBinOptional.get();
@@ -160,5 +162,42 @@ public class CommercialBinService {
         commercialBin.setOrganization(organization);
 
         commercialBinRepository.save(commercialBin);
+    }
+
+    public CommercialBin updatefilllevel(String apiKey, CommercialBin updatedData) {
+        Optional<CommercialBin> optionalCommercialBin = commercialBinRepository.findCommercialBinByAPIKey(apiKey);
+        if (optionalCommercialBin.isEmpty()) {
+            throw new IllegalStateException("No bin with API Key");
+        }
+        CommercialBin exsistingcommercialbin = optionalCommercialBin.get();
+        if (updatedData.getFillLevel() != null) {
+            exsistingcommercialbin.setFillLevel(updatedData.getFillLevel());
+            exsistingcommercialbin.setBinStatus(determineBinStatus(updatedData.getFillLevel())); // Optional logic
+        }
+        exsistingcommercialbin.setLastCollectionDate(LocalDate.now()); // Automatically update
+        return commercialBinRepository.save(exsistingcommercialbin);
+    }
+
+    private BinStatus determineBinStatus(Double fillLevel) {
+        // Ensure fillLevel is within 0-100% range
+        if (fillLevel == null || fillLevel < 0) {
+            fillLevel = 0.0;
+        } else if (fillLevel > 100) {
+            fillLevel = 100.0;
+        }
+
+        // Logic to determine bin status based on fill level
+        if (fillLevel == 0) {
+            return BinStatus.EMPTY;
+        } else if (fillLevel > 0 && fillLevel <= 50) {
+            return BinStatus.NORMAL;
+        } else if (fillLevel > 50 && fillLevel < 100) {
+            return BinStatus.ALMOST_FULL;
+        } else if (fillLevel == 100) {
+            return BinStatus.FULL;
+        }
+
+        // Default fallback (shouldn't happen)
+        return BinStatus.EMPTY;
     }
 }
