@@ -38,4 +38,8 @@ public interface CommercialBinRepository extends JpaRepository<CommercialBin, Lo
     // Select commercial bin by api key
     @Query("SELECT com_bin FROM CommercialBin com_bin WHERE com_bin.apiKey = :apiKey")
     Optional<CommercialBin> findCommercialBinByAPIKey(String apiKey);
+
+    // Select commercial bins given organization id
+    @Query("SELECT com_bin FROM CommercialBin com_bin WHERE com_bin.organization.id = :org_id")
+    List<CommercialBin> findCommercialBinByOrganizationID(Long org_id);
 }
