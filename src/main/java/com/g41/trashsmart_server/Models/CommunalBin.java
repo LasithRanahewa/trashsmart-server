@@ -20,10 +20,8 @@ public class CommunalBin extends SmartBin {
     public CommunalBin() {
     }
 
-    public CommunalBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize,
-                       LocalDate installationDate) {
-        super(longitude, latitude, wasteType, binSize);
-//        this.installationDate = installationDate;
+    public CommunalBin(Double latitude, Double longitude, WasteType wasteType, BinSize binSize) {
+        super(latitude, longitude, wasteType, binSize);
         this.installationDate = LocalDate.now();
     }
 

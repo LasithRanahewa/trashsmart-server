@@ -119,6 +119,26 @@ public class WasteCollectionRequestController {
         wasteCollectionRequestService.createRequest(wasteCollectionRequest, id);
     }
 
+    // Create a new waste collection request, no location given
+    @PostMapping(path = "no_location/{org_id}")
+    @Operation(
+            description = "Create a new waste collection request, location given",
+            summary = "New waste collection request is created. Organization id has to be given. Organization location is fetched from the database",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void createRequestNoLocation(@RequestBody WasteCollectionRequest wasteCollectionRequest, @PathVariable("org_id") Long id) {
+        wasteCollectionRequestService.createRequestNoLocation(wasteCollectionRequest, id);
+    }
+
     // Delete a waste collection request
     @DeleteMapping(path = "{id}")
     @Operation(

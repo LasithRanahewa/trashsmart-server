@@ -2,11 +2,13 @@ package com.g41.trashsmart_server.Controllers;
 
 import com.g41.trashsmart_server.DTO.CommercialBinDTO;
 import com.g41.trashsmart_server.Models.CommercialBin;
+import com.g41.trashsmart_server.Models.SmartBin;
 import com.g41.trashsmart_server.Services.CommercialBinService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -202,5 +204,88 @@ public class CommercialBinController {
     public void updateCommercialBin(@PathVariable("CommercialBin_id") Long id,
                                    @RequestBody CommercialBin commercialBin) {
         commercialBinService.updateCommercialBin(id, commercialBin);
+    }
+
+    // Create a new commercial bin for contractor
+    @PostMapping(path = "create")
+    @Operation(
+            description = "Create a new commercial bin",
+            summary = "A new commercial bin will be created",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void createCommercialBin(@RequestBody CommercialBin commercialBin) {
+        commercialBinService.createCommercialBin(commercialBin);
+    }
+
+    // assign a commercial bin to an organization
+    @PostMapping(path = "organization/{org_id}/api_key/{api_key}")
+    @Operation(
+            description = "Create a new commercial bin using organization details",
+            summary = "a new commercial bin will be created using organization location and api key information",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void assignCommercialBin(@PathVariable("org_id") Long org_id, @PathVariable("api_key") String apiKey) {
+        commercialBinService.assignCommercialBin(org_id, apiKey);
+    }
+
+    @PutMapping("/update/{APIKEY}")
+    @Operation(
+            description = "Update the Commercial Bin fill level",
+            summary = "Returns the updated data",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public ResponseEntity<CommercialBin> updateSmartBin(
+            @PathVariable String APIKEY,
+            @RequestBody CommercialBin updatedData) {
+
+        CommercialBin updatedSmartBin = commercialBinService.updatefilllevel(APIKEY,updatedData);
+        return ResponseEntity.ok(updatedSmartBin);
+    }
+
+    // Get all the commercial bins of an organization
+    @GetMapping(path = "organization/{org_id}")
+    @Operation(
+            description = "Get all the commercial bins of an organization",
+            summary = "Returns a list of commercial bins assigned to an organization",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public List<CommercialBin> getOrganizationCommercialBins(@PathVariable("org_id") Long org_id) {
+        return commercialBinService.getOrganizationCommercialBins(org_id);
     }
 }
