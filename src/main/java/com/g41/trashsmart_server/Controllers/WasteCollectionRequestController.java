@@ -178,4 +178,24 @@ public class WasteCollectionRequestController {
     public void updateRequest(@PathVariable("id") Long id, @RequestBody WasteCollectionRequest wasteCollectionRequest) {
         wasteCollectionRequestService.updateRequest(id, wasteCollectionRequest);
     }
+
+    // Create a new Waste Collection Request using a commercial bin
+    @PostMapping(path = "bin/{bin_id}")
+    @Operation(
+            description = "Create a new Waste Collection Request using a commercial bin",
+            summary = "Create a new Waste Collection Request using a commercial bin",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void createWCRUsingBin(@PathVariable("bin_id") Long bin_id) {
+        wasteCollectionRequestService.createWCRUsingBin(bin_id);
+    }
 }
