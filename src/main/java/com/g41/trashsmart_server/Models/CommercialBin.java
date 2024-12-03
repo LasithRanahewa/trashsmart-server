@@ -15,12 +15,14 @@ public class CommercialBin extends SmartBin{
     @JoinColumn(name = "organization_id")
     @JsonBackReference
     private Organization organization;
+    private String apiKey;
 
     public CommercialBin() {
     }
 
-    public CommercialBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize) {
-        super(longitude, latitude, wasteType, binSize);
+    public CommercialBin(Double latitude, Double longitude, WasteType wasteType, BinSize binSize, String apiKey) {
+        super(latitude, longitude, wasteType, binSize);
+        this.apiKey = apiKey;
     }
 
 //    public CommercialBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize, Organization organization) {
@@ -42,5 +44,13 @@ public class CommercialBin extends SmartBin{
 
     public void setOrganization(Organization organization) {
         this.organization = organization;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 }
