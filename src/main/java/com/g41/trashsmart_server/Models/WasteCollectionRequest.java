@@ -42,6 +42,11 @@ public class WasteCollectionRequest {
         this.latitude = latitude;
     }
 
+    public WasteCollectionRequest(Double accumulatedVolume, WasteType wasteType) {
+        this.accumulatedVolume = accumulatedVolume;
+        this.wasteType = wasteType;
+    }
+
     public Long getId() {
         return id;
     }
