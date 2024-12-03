@@ -203,4 +203,44 @@ public class CommercialBinController {
                                    @RequestBody CommercialBin commercialBin) {
         commercialBinService.updateCommercialBin(id, commercialBin);
     }
+
+    // Create a new commercial bin for contractor
+    @PostMapping(path = "create")
+    @Operation(
+            description = "Create a new commercial bin",
+            summary = "A new commercial bin will be created",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void createCommercialBin(@RequestBody CommercialBin commercialBin) {
+        commercialBinService.createCommercialBin(commercialBin);
+    }
+
+    // assign a commercial bin to an organization
+    @PostMapping(path = "organization/{org_id}/api_key/{api_key}")
+    @Operation(
+            description = "Create a new commercial bin using organization details",
+            summary = "a new commercial bin will be created using organization location and api key information",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void assignCommercialBin(@PathVariable("org_id") Long org_id, @PathVariable("api_key") String apiKey) {
+        commercialBinService.assignCommercialBin(org_id, apiKey);
+    }
 }
