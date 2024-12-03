@@ -34,4 +34,5 @@ public class CommercialBinDTO {
     private Suburb suburb;
     private LocalDate purchaseDate;
     private Organization organization;
+    private String apiKey;
 }
