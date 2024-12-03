@@ -26,4 +26,28 @@ public class StatisticsController {
     public long getTotalCollections() {
         return statisticsService.getTotalDispatches();
     }
+
+    // Get total waste last week
+    @GetMapping("last_week_total_waste")
+    public Integer getLastWeekTotalWasteVolume() {
+        return statisticsService.getLastWeekTotalWasteVolume().intValue();
+    }
+
+    // Number of WCRs last week
+    @GetMapping("last_week_request_count")
+    public Long getLastWeekWasteRequestCount() {
+        return statisticsService.getLastWeekWasteRequestCount();
+    }
+
+    // Endpoint for total accumulated waste
+    @GetMapping("total_accumulated_waste")
+    public Integer getTotalAccumulatedWaste() {
+        return statisticsService.getTotalAccumulatedWaste().intValue();
+    }
+
+    // Endpoint for total accumulated recyclable waste
+    @GetMapping("total_accumulated_recyclable_waste")
+    public Integer getTotalAccumulatedRecyclableWaste() {
+        return statisticsService.getTotalAccumulatedRecyclableWaste().intValue();
+    }
 }
