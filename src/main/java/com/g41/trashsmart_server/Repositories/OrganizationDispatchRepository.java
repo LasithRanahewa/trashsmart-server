@@ -26,4 +26,7 @@ public interface OrganizationDispatchRepository extends JpaRepository<Organizati
     // Get dispatches based on driver id and status
     @Query("SELECT org_dispatch FROM OrganizationDispatch org_dispatch WHERE driver.id = :driver_id AND dispatchStatus = :dispatchStatus")
     List<OrganizationDispatch> getOrgDispatchByDriverStatus(Long driver_id, DispatchStatus dispatchStatus);
+
+    // Number of total organization dispatches
+    long count();
 }
