@@ -25,6 +25,12 @@ public class CommercialBin extends SmartBin{
         this.apiKey = apiKey;
     }
 
+    // For contractor
+    public CommercialBin(WasteType wasteType, BinSize binSize, String apiKey) {
+        super(null, null, wasteType, binSize);
+        this.apiKey = apiKey;
+    }
+
 //    public CommercialBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize, Organization organization) {
 //        super(longitude, latitude, wasteType, binSize);
 //        this.organization = organization;
