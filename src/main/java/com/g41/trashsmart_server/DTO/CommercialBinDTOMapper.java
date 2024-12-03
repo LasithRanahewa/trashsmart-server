@@ -23,7 +23,8 @@ public class CommercialBinDTOMapper implements Function<CommercialBin, Commercia
                 commercialBin.getMaintenanceRequests(),
                 commercialBin.getSuburb(),
                 commercialBin.getPurchaseDate(),
-                commercialBin.getOrganization()
+                commercialBin.getOrganization(),
+                commercialBin.getApiKey()
         );
     }
 }
