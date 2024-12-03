@@ -12,17 +12,22 @@ public class StatisticsService {
     private final HouseholdUserRepository householdUserRepository;
     private final OrganizationRepository organizationRepository;
     private final RecyclingPlantRepository recyclingPlantRepository;
+    private final HouseholdDispatchRepository householdDispatchRepository;
+    private final OrganizationDispatchRepository organizationDispatchRepository;
 
     @Autowired
     public StatisticsService(CleanerRepository cleanerRepository, ContractorRepository contractorRepository,
                              DriverRepository driverRepository, HouseholdUserRepository householdUserRepository,
-                             OrganizationRepository organizationRepository, RecyclingPlantRepository recyclingPlantRepository) {
+                             OrganizationRepository organizationRepository, RecyclingPlantRepository recyclingPlantRepository,
+                             HouseholdDispatchRepository householdDispatchRepository, OrganizationDispatchRepository organizationDispatchRepository) {
         this.cleanerRepository = cleanerRepository;
         this.contractorRepository = contractorRepository;
         this.driverRepository = driverRepository;
         this.householdUserRepository = householdUserRepository;
         this.organizationRepository = organizationRepository;
         this.recyclingPlantRepository = recyclingPlantRepository;
+        this.householdDispatchRepository = householdDispatchRepository;
+        this.organizationDispatchRepository = organizationDispatchRepository;
     }
 
     // Get the total number of users in the system
@@ -31,5 +36,10 @@ public class StatisticsService {
                 cleanerRepository.count() + contractorRepository.count() + driverRepository.count() +
                 householdUserRepository.count() + organizationRepository.count() + recyclingPlantRepository.count()
         );
+    }
+
+    // Get the total number of dispatches in the system
+    public long getTotalDispatches() {
+        return (householdDispatchRepository.count() + organizationDispatchRepository.count());
     }
 }
