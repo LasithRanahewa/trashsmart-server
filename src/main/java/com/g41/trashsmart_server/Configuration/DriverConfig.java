@@ -28,7 +28,7 @@ public class DriverConfig {
                     "0712990638",
                     "35, Reid Avenue, Colombo 07",
                     "rusara.wimalasena123@gmail.com",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1995, 12, 12),
                     "200168686830"
             );
@@ -40,7 +40,7 @@ public class DriverConfig {
                     "0712990639",
                     "36, Reid Avenue, Colombo 07",
                     "ravija@gmail.com",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1995, 12, 12),
                     "200168686831"
             );
@@ -52,7 +52,7 @@ public class DriverConfig {
                     "0712990640",
                     "37, Reid Avenue, Colombo 07",
                     "masha@gmail.com",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1995, 12, 12),
                     "200168686832"
             );
@@ -64,7 +64,7 @@ public class DriverConfig {
                     "0712990641",
                     "38, Reid Avenue, Colombo 07",
                     "lasith@gmail.com",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1995, 12, 12),
                     "200168686833"
             );
@@ -76,7 +76,7 @@ public class DriverConfig {
                     "0712990642",
                     "39, Reid Avenue, Colombo 07",
                     "dasun@gmail.com",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1995, 12, 12),
                     "200168686834"
             );
@@ -88,7 +88,7 @@ public class DriverConfig {
                     "0712990643",
                     "35, Reid Avenue, Colombo 07",
                     "lakruwan@gmail.com",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1995, 12, 12),
                     "200168686835"
             );
@@ -100,7 +100,7 @@ public class DriverConfig {
                     "0771234567",
                     "12, Galle Road, Colombo 03",
                     "tharindu.perera@gmail.com",
-                    "www.tharindu.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1990, 5, 18),
                     "891234567V"
             );
@@ -112,7 +112,7 @@ public class DriverConfig {
                     "0712349876",
                     "45, Kandy Road, Kegalle",
                     "nimal.wije@yahoo.com",
-                    "www.nimalwije.lk",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1988, 11, 23),
                     "880112345X"
             );
@@ -124,7 +124,7 @@ public class DriverConfig {
                     "0789012345",
                     "67, Mahinda Place, Gampaha",
                     "kavindu.fernando@hotmail.com",
-                    "www.kavinduf.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1992, 7, 10),
                     "920710234V"
             );
@@ -136,7 +136,7 @@ public class DriverConfig {
                     "0769876543",
                     "21, Temple Road, Ratnapura",
                     "saman.desilva@gmail.com",
-                    "www.saman.lk",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1985, 9, 15),
                     "850915678X"
             );
@@ -148,7 +148,7 @@ public class DriverConfig {
                     "0756785432",
                     "33, Lake Road, Nugegoda",
                     "chathura.jaya@hotmail.com",
-                    "www.chathurajaya.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1993, 3, 30),
                     "930330123V"
             );
@@ -160,7 +160,7 @@ public class DriverConfig {
                     "0743456789",
                     "98, Flower Road, Colombo 07",
                     "harsha.gun@gmail.com",
-                    "www.harsha.lk",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1997, 1, 5),
                     "970105678X"
             );
@@ -172,7 +172,7 @@ public class DriverConfig {
                     "0774321987",
                     "50, High Level Road, Maharagama",
                     "amali.kumari@gmail.com",
-                    "www.amalikumari.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1996, 4, 20),
                     "960420123V"
             );
@@ -184,7 +184,7 @@ public class DriverConfig {
                     "0788765432",
                     "72, Peradeniya Road, Kandy",
                     "nuwan.dias@yahoo.com",
-                    "www.nuwandias.lk",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1991, 8, 8),
                     "910808765V"
             );
@@ -196,7 +196,7 @@ public class DriverConfig {
                     "0713456721",
                     "17, Beach Road, Negombo",
                     "dilini.w@yahoo.com",
-                    "www.dilini.lk",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1989, 6, 25),
                     "890625123V"
             );
@@ -208,7 +208,7 @@ public class DriverConfig {
                     "0765439876",
                     "5, Templers Road, Mount Lavinia",
                     "mahesh.b@gmail.com",
-                    "www.maheshb.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1994, 2, 14),
                     "940214567X"
             );
@@ -220,7 +220,7 @@ public class DriverConfig {
                     "0743216789",
                     "81, Galle Face Road, Colombo 01",
                     "ruwan.ratnayake@gmail.com",
-                    "www.ruwanr.lk",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1998, 10, 18),
                     "981018345V"
             );
@@ -232,7 +232,7 @@ public class DriverConfig {
                     "0751234567",
                     "39, Dharmapala Mawatha, Colombo 07",
                     "nadeeka.e@gmail.com",
-                    "www.nadeekae.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1993, 12, 9),
                     "931209678X"
             );
