@@ -58,7 +58,7 @@ public class HouseholdDispatchConfig {
                     "0712990644",
                     "55, Reid Avenue, Colombo 07",
                     "kavisha@gmail.com",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1995, 12, 12),
                     "200168686836"
             );
@@ -69,7 +69,7 @@ public class HouseholdDispatchConfig {
                     "0761234567",
                     "15, Flower Road, Colombo 07",
                     "samantha.perera@example.com",
-                    "www.example.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1985, 7, 12),
                     "19857623457"
             );
@@ -81,7 +81,7 @@ public class HouseholdDispatchConfig {
                     "0719876543",
                     "48, Duplication Road, Colombo 04",
                     "anjali.dias@example.com",
-                    "www.example2.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1992, 3, 21),
                     "19927654389"
             );
@@ -93,7 +93,7 @@ public class HouseholdDispatchConfig {
                     "0776543210",
                     "32, Park Road, Colombo 05",
                     "ruwan.silva@example.com",
-                    "www.example3.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     LocalDate.of(1989, 9, 15),
                     "19907654328"
             );
