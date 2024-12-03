@@ -45,21 +45,8 @@ public class OrganizationConfig {
                     6.901910343977649,
                     79.86021961730209
             );
-            Organization foa = new Organization(
-                    "FOA",
-                    "FOA Admin",
-                    "foa@cmb.ac.lk",
-                    "password@12345678",
-                    "0712990638",
-                    "35, Reid Avenue, Colombo 07",
-                    "www.google.com",
-                    Scale.SMALL,
-                    OrgType.EDUCATION,
-                    6.901655107547004,
-                    79.86182154331027
-            );
 
-            organizationRepository.saveAll(List.of(ucsc, fos, foa));
+            organizationRepository.saveAll(List.of(ucsc, fos));
         };
     }
 }
