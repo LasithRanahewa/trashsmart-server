@@ -52,7 +52,7 @@ public class HouseholdDispatchConfig {
             garbageTruckRepository.save(garbageTruck);
             driverRepository.save(driver);
 
-            String route = "https://www.google.com/maps/dir/?api=1&origin=40.748817,-73.985428&destination=40.748817,-73.985428&waypoints=40.748817,-73.985428|40.748817,-73.985428";
+            String route = "https://www.google.com/maps/dir/?api=1&origin=6.927079,79.861244&destination=6.8649,79.8997&waypoints=6.9325,79.8445|6.8966,79.8587";
 
             HouseholdDispatch hd1 = new HouseholdDispatch(
                     LocalDateTime.now(),
