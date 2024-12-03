@@ -63,6 +63,19 @@ public class WasteCollectionRequestService {
         wasteCollectionRequestRepository.save(wasteCollectionRequest);
     }
 
+    // Create a new waste collection request, no location given
+    public void createRequestNoLocation(WasteCollectionRequest wasteCollectionRequest, Long organizationId) {
+        Optional<Organization> organizationOptional = organizationRepository.findById(organizationId);
+        if (organizationOptional.isEmpty()) {
+            throw new IllegalStateException("Organization with id " + organizationId + " does not exist");
+        }
+        Organization organization = organizationOptional.get();
+        wasteCollectionRequest.setOrganization(organization);
+        wasteCollectionRequest.setLatitude(organization.getLatitude());
+        wasteCollectionRequest.setLongitude(organization.getLongitude());
+        wasteCollectionRequestRepository.save(wasteCollectionRequest);
+    }
+
     // Delete a waste collection request
     public void deleteRequest(Long id) {
         Optional<WasteCollectionRequest> wasteCollectionRequestOptional = wasteCollectionRequestRepository.findById(id);

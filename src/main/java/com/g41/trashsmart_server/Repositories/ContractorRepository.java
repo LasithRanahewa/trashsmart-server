@@ -29,4 +29,7 @@ public interface ContractorRepository extends JpaRepository<Contractor, Long> {
     // Select all the contractors registered with the system
     @Query("SELECT c FROM Contractor c")
     List<Contractor> findAllContractorsUnFiltered();
+
+    // count the number of contractors
+    long count();
 }

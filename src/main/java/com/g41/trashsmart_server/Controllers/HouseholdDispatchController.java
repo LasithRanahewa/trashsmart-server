@@ -2,6 +2,7 @@ package com.g41.trashsmart_server.Controllers;
 
 import com.g41.trashsmart_server.Enums.DispatchStatus;
 import com.g41.trashsmart_server.Models.HouseholdDispatch;
+import com.g41.trashsmart_server.Models.OrganizationDispatch;
 import com.g41.trashsmart_server.Services.HouseholdDispatchService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -38,6 +39,26 @@ public class HouseholdDispatchController {
     )
     public List<HouseholdDispatch> getAllHouseholdDispatches() {
         return householdDispatchService.getAllHouseholdDispatches();
+    }
+
+    // Get dispatch using id
+    @GetMapping(path = "{dispatch_id}")
+    @Operation(
+            description = "Get a dispatch based on id",
+            summary = "Get a dispatch based on the given id if it's in the system",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public HouseholdDispatch getHouseholdDispatchById(@PathVariable("dispatch_id") Long id) {
+        return householdDispatchService.getHouseholdDispatch(id);
     }
 
     // Create a new household dispatch
