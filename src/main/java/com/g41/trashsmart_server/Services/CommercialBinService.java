@@ -11,6 +11,7 @@ import com.g41.trashsmart_server.Repositories.CommercialBinRepository;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -199,5 +200,10 @@ public class CommercialBinService {
 
         // Default fallback (shouldn't happen)
         return BinStatus.EMPTY;
+    }
+
+    // Get all the commercial bins of an organization
+    public List<CommercialBin> getOrganizationCommercialBins(Long org_id) {
+        return commercialBinRepository.findCommercialBinByOrganizationID(org_id);
     }
 }

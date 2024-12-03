@@ -268,4 +268,24 @@ public class CommercialBinController {
         CommercialBin updatedSmartBin = commercialBinService.updatefilllevel(APIKEY,updatedData);
         return ResponseEntity.ok(updatedSmartBin);
     }
+
+    // Get all the commercial bins of an organization
+    @GetMapping(path = "organization/{org_id}")
+    @Operation(
+            description = "Get all the commercial bins of an organization",
+            summary = "Returns a list of commercial bins assigned to an organization",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public List<CommercialBin> getOrganizationCommercialBins(@PathVariable("org_id") Long org_id) {
+        return commercialBinService.getOrganizationCommercialBins(org_id);
+    }
 }
