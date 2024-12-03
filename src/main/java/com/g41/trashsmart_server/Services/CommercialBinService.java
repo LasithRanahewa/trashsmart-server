@@ -4,6 +4,7 @@ import com.g41.trashsmart_server.DTO.CommercialBinDTO;
 import com.g41.trashsmart_server.DTO.CommercialBinDTOMapper;
 import com.g41.trashsmart_server.Models.CommercialBin;
 import com.g41.trashsmart_server.Models.CommunalBin;
+import com.g41.trashsmart_server.Models.HouseholdUser;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Repositories.CommercialBinRepository;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
@@ -128,5 +129,36 @@ public class CommercialBinService {
             CommercialBinToUpdate.setBinStatus(CommercialBin.getBinStatus());
         }
         commercialBinRepository.save(CommercialBinToUpdate);
+    }
+
+    // Create a new commercial bin for contractor
+    public void createCommercialBin(CommercialBin commercialBin) {
+        Optional<CommercialBin> commercialBinOptional = commercialBinRepository.findCommercialBinByAPIKey(
+                commercialBin.getApiKey()
+        );
+        if(commercialBinOptional.isPresent()) {
+            throw new IllegalStateException("API Key Taken");
+        }
+        commercialBinRepository.save(commercialBin);
+    }
+
+    // Assign a commercial bin to an organization
+    public void assignCommercialBin(Long org_id, String apiKey) {
+        Optional<CommercialBin> commercialBinOptional = commercialBinRepository.findCommercialBinByAPIKey(apiKey);
+        if(commercialBinOptional.isEmpty()) {
+            throw new IllegalStateException("Commercial Bin with API key " + apiKey + " does not exist");
+        }
+        Optional<Organization> organizationOptional = organizationRepository.findById(org_id);
+        if(organizationOptional.isEmpty()) {
+            throw new IllegalStateException("Organization with ID " + org_id + " does not exist");
+        }
+        CommercialBin commercialBin = commercialBinOptional.get();
+        Organization organization = organizationOptional.get();
+
+        commercialBin.setLatitude(organization.getLatitude());
+        commercialBin.setLongitude(organization.getLongitude());
+        commercialBin.setOrganization(organization);
+
+        commercialBinRepository.save(commercialBin);
     }
 }
