@@ -26,7 +26,7 @@ public class RecyclingPlantConfig {
                     passwordEncoder.encode("password123"),
                     "0779791446",
                     "Hansagir rd, Gampaha",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     "2024/Plant/01"
             );
             RecyclingPlant plant2 = new RecyclingPlant(
@@ -36,7 +36,7 @@ public class RecyclingPlantConfig {
                     passwordEncoder.encode("password123"),
                     "0779791446",
                     "Hansagir rd, Gampaha",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     "2024/Plant/02"
             );
             RecyclingPlant plant3 = new RecyclingPlant(
@@ -46,7 +46,7 @@ public class RecyclingPlantConfig {
                     passwordEncoder.encode("password123"),
                     "0779791446",
                     "Hansagir rd, Gampaha",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     "2024/Plant/03"
             );
 
