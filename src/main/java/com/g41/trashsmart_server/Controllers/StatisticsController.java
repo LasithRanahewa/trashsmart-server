@@ -20,4 +20,10 @@ public class StatisticsController {
     public long getTotalUsers() {
         return statisticsService.getTotalUsers();
     }
+
+    // Get total dispatches
+    @GetMapping(path = "total_collections")
+    public long getTotalCollections() {
+        return statisticsService.getTotalDispatches();
+    }
 }
