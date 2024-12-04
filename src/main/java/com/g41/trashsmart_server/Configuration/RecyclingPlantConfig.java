@@ -69,8 +69,18 @@ public class RecyclingPlantConfig {
                     "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     "2024/Plant/05"
             );
+            RecyclingPlant plant6 = new RecyclingPlant(
+                    "Sustainergy Recycling",
+                    "Pahasara Jayasuriya",
+                    "sustainergy_recycling@gmail.com",
+                    passwordEncoder.encode("password123"),
+                    "0779791446",
+                    "Hansagir rd, Gampaha",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                    "2024/Plant/06"
+            );
 
-            recyclingPlantRepository.saveAll(List.of(plant1, plant2, plant3, plant4, plant5));
+            recyclingPlantRepository.saveAll(List.of(plant1, plant2, plant3, plant4, plant5, plant6));
         };
     }
 }
