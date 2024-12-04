@@ -51,8 +51,36 @@ public class AuctionConfig {
                     LocalDateTime.parse("2024-12-05T11:59:11.332Z", formatter),
                     LocalDateTime.parse("2024-12-25T11:59:11.332Z", formatter)
             );
+            Auction glassAuction = new Auction(
+                    AuctionWasteType.GLASS,
+                    2000.0,
+                    20000.0,
+                    LocalDateTime.parse("2024-12-03T11:59:11.332Z", formatter),
+                    LocalDateTime.parse("2024-12-25T11:59:11.332Z", formatter)
+            );
+            Auction woodAuction = new Auction(
+                    AuctionWasteType.WOOD,
+                    5000.0,
+                    10000.0,
+                    LocalDateTime.parse("2024-11-05T11:59:11.332Z", formatter),
+                    LocalDateTime.parse("2024-11-25T11:59:11.332Z", formatter)
+            );
+            Auction metalAuction2 = new Auction(
+                    AuctionWasteType.METAL,
+                    1500.0,
+                    15000.0,
+                    LocalDateTime.parse("2024-11-01T11:59:11.332Z", formatter),
+                    LocalDateTime.parse("2024-11-15T11:59:11.332Z", formatter)
+            );
+            Auction polytheneAuction2 = new Auction(
+                    AuctionWasteType.METAL,
+                    7000.0,
+                    75000.0,
+                    LocalDateTime.parse("2024-11-25T11:59:11.332Z", formatter),
+                    LocalDateTime.parse("2024-12-25T11:59:11.332Z", formatter)
+            );
 
-            auctionRepository.saveAll(List.of(plasticAuction, polytheneAuction, metalAuction));
+            auctionRepository.saveAll(List.of(plasticAuction, polytheneAuction, metalAuction, woodAuction, glassAuction, polytheneAuction2, metalAuction2));
         };
     }
 }
