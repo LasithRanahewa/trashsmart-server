@@ -18,4 +18,11 @@ public interface HouseholdDispatchRepository extends JpaRepository<HouseholdDisp
 
     @Query("SELECT hd FROM HouseholdDispatch hd WHERE hd.wasteType = :wasteType")
     List<HouseholdDispatch> findByWasteType(WasteType wasteType);
+
+    // Get household dispatches by driver id and dispatch status
+    @Query("SELECT hd from HouseholdDispatch hd WHERE hd.driver.id = :driver_id AND hd.dispatchStatus = :dispatchStatus")
+    List<HouseholdDispatch> getHouseholdDispatchByDriverStatus(Long driver_id, DispatchStatus dispatchStatus);
+
+    // Number of total household dispatches
+    long count();
 }

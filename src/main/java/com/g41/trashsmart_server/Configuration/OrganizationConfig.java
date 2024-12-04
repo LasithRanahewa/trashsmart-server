@@ -26,9 +26,11 @@ public class OrganizationConfig {
                     passwordEncoder.encode("password123"),
                     "0712990638",
                     "35, Reid Avenue, Colombo 07",
-                    "www.google.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     Scale.SMALL,
-                    OrgType.EDUCATION
+                    OrgType.EDUCATION,
+                    6.902256504201074,
+                    79.86115034382995
             );
             Organization fos = new Organization(
                     "FOS",
@@ -37,9 +39,11 @@ public class OrganizationConfig {
                     passwordEncoder.encode("password123"),
                     "0712990639",
                     "50, Reid Avenue, Colombo 07",
-                    "www.facebook.com",
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     Scale.MEDIUM,
-                    OrgType.EDUCATION
+                    OrgType.EDUCATION,
+                    6.901910343977649,
+                    79.86021961730209
             );
 
             organizationRepository.saveAll(List.of(ucsc, fos));

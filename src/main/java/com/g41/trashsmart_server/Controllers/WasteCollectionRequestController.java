@@ -38,11 +38,11 @@ public class WasteCollectionRequestController {
         return wasteCollectionRequestService.getAllRequests();
     }
 
-    // Retrieve all the waste collection requests opened by a given organization
+    // Retrieve all the waste collection requests opened by a given organization with status
     @GetMapping(path = "organization/{org_id}/{status}")
     @Operation(
-            description = "Retrieve all the waste collection requests opened by a given organization",
-            summary = "All the waste collection requests of the given organization will be retrieved",
+            description = "Retrieve all the waste collection requests opened by a given organization with status",
+            summary = "All the waste collection requests of the given organization and status will be retrieved",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -57,6 +57,26 @@ public class WasteCollectionRequestController {
     public List<WasteCollectionRequest> getAllRequestsByOrganization(@PathVariable("org_id") Long id,
                                                                      @PathVariable("status") Integer status) {
         return wasteCollectionRequestService.getAllRequestsByOrganization(id, status);
+    }
+
+    // Retrieve all the waste collection requests opened by a given organization
+    @GetMapping(path = "organization/{org_id}")
+    @Operation(
+            description = "Retrieve all the waste collection requests opened by a given organization ",
+            summary = "All the waste collection requests of the given organization will be retrieved",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public List<WasteCollectionRequest> getAllRequestsByOrganizationWOStatus(@PathVariable("org_id") Long id) {
+        return wasteCollectionRequestService.getAllRequestsByOrganizationWOStatus(id);
     }
 
     // Retrieve specific by id
@@ -99,6 +119,26 @@ public class WasteCollectionRequestController {
         wasteCollectionRequestService.createRequest(wasteCollectionRequest, id);
     }
 
+    // Create a new waste collection request, no location given
+    @PostMapping(path = "no_location/{org_id}")
+    @Operation(
+            description = "Create a new waste collection request, location given",
+            summary = "New waste collection request is created. Organization id has to be given. Organization location is fetched from the database",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void createRequestNoLocation(@RequestBody WasteCollectionRequest wasteCollectionRequest, @PathVariable("org_id") Long id) {
+        wasteCollectionRequestService.createRequestNoLocation(wasteCollectionRequest, id);
+    }
+
     // Delete a waste collection request
     @DeleteMapping(path = "{id}")
     @Operation(
@@ -137,5 +177,25 @@ public class WasteCollectionRequestController {
     )
     public void updateRequest(@PathVariable("id") Long id, @RequestBody WasteCollectionRequest wasteCollectionRequest) {
         wasteCollectionRequestService.updateRequest(id, wasteCollectionRequest);
+    }
+
+    // Create a new Waste Collection Request using a commercial bin
+    @PostMapping(path = "bin/{bin_id}")
+    @Operation(
+            description = "Create a new Waste Collection Request using a commercial bin",
+            summary = "Create a new Waste Collection Request using a commercial bin",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized / Invalid Token",
+                            responseCode = "403"
+                    )
+            }
+    )
+    public void createWCRUsingBin(@PathVariable("bin_id") Long bin_id) {
+        wasteCollectionRequestService.createWCRUsingBin(bin_id);
     }
 }
