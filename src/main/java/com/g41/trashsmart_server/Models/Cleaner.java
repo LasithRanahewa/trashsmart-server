@@ -26,7 +26,7 @@ public class Cleaner extends SystemUser {
             joinColumns = @JoinColumn(name = "cleaner_id"),
             inverseJoinColumns = @JoinColumn(name = "bin_id")
     )
-    @JsonManagedReference
+//    @JsonManagedReference
     private List<CommunalBin> communalBins;
 
     public Cleaner() {

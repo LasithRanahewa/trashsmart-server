@@ -1,11 +1,14 @@
 package com.g41.trashsmart_server.Services;
 
 import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
+import com.g41.trashsmart_server.Models.CommercialBin;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Models.WasteCollectionRequest;
+import com.g41.trashsmart_server.Repositories.CommercialBinRepository;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import com.g41.trashsmart_server.Repositories.WasteCollectionRequestRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +17,14 @@ import java.util.Optional;
 public class WasteCollectionRequestService {
     private final WasteCollectionRequestRepository wasteCollectionRequestRepository;
     private final OrganizationRepository organizationRepository;
+    private final CommercialBinRepository commercialBinRepository;
 
     public WasteCollectionRequestService(WasteCollectionRequestRepository wasteCollectionRequestRepository,
-                                         OrganizationRepository organizationRepository) {
+                                         OrganizationRepository organizationRepository,
+                                         CommercialBinRepository commercialBinRepository) {
         this.wasteCollectionRequestRepository = wasteCollectionRequestRepository;
         this.organizationRepository = organizationRepository;
+        this.commercialBinRepository = commercialBinRepository;
     }
 
     // Retrieve all waste collection requests
@@ -38,6 +44,11 @@ public class WasteCollectionRequestService {
         return wasteCollectionRequestRepository.findByOrganizationId(organizationId, wasteCollectionRequestStatus);
     }
 
+    // Retrieve all the waste collection requests opened by a given organization
+    public List<WasteCollectionRequest> getAllRequestsByOrganizationWOStatus(Long id) {
+        return wasteCollectionRequestRepository.findByOrganizationIdWOStatus(id);
+    }
+
     // Retrieve specific by id
     public WasteCollectionRequest getRequest(Long id) {
         Optional<WasteCollectionRequest> wasteCollectionRequestOptional = wasteCollectionRequestRepository.findById(id);
@@ -55,6 +66,19 @@ public class WasteCollectionRequestService {
         }
         Organization organization = organizationOptional.get();
         wasteCollectionRequest.setOrganization(organization);
+        wasteCollectionRequestRepository.save(wasteCollectionRequest);
+    }
+
+    // Create a new waste collection request, no location given
+    public void createRequestNoLocation(WasteCollectionRequest wasteCollectionRequest, Long organizationId) {
+        Optional<Organization> organizationOptional = organizationRepository.findById(organizationId);
+        if (organizationOptional.isEmpty()) {
+            throw new IllegalStateException("Organization with id " + organizationId + " does not exist");
+        }
+        Organization organization = organizationOptional.get();
+        wasteCollectionRequest.setOrganization(organization);
+        wasteCollectionRequest.setLatitude(organization.getLatitude());
+        wasteCollectionRequest.setLongitude(organization.getLongitude());
         wasteCollectionRequestRepository.save(wasteCollectionRequest);
     }
 
@@ -96,5 +120,21 @@ public class WasteCollectionRequestService {
             );
         }
         wasteCollectionRequestRepository.save(wasteCollectionRequestToUpdate);
+    }
+
+    // Create a new Waste Collection Request using a commercial bin
+    public void createWCRUsingBin(Long bin_id) {
+        Optional<CommercialBin> commercialBinOptional = commercialBinRepository.findById(bin_id);
+        if (commercialBinOptional.isEmpty()) {
+            throw new IllegalStateException("Bin with id " + bin_id + " does not exist");
+        }
+        CommercialBin commercialBin = commercialBinOptional.get();
+        WasteCollectionRequest wasteCollectionRequest = new WasteCollectionRequest(
+                commercialBin.getFillLevel() * 50,
+                commercialBin.getWasteType(),
+                commercialBin.getLatitude(),
+                commercialBin.getLongitude()
+        );
+        wasteCollectionRequestRepository.save(wasteCollectionRequest);
     }
 }

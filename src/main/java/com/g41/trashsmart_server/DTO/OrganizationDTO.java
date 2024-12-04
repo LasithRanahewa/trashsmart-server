@@ -31,6 +31,8 @@ public class OrganizationDTO {
     private OrgType orgType;
     private LocalDate contractStartDate;
     private LocalDate contractEndDate;
+    private Double latitude;
+    private Double longitude;
     private List<CommercialBin> commercialBins;
     private List<WasteCollectionRequest> wasteCollectionRequests;
 }

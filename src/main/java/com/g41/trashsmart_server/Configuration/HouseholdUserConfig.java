@@ -26,7 +26,7 @@ public class HouseholdUserConfig {
                     passwordEncoder.encode("password123"),
                     "0712990638",
                     "35, Reid Avenue, Colombo 07",
-                    "www.google.com"
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
             );
             HouseholdUser lasith = new HouseholdUser(
                     "Lasith",
@@ -35,7 +35,7 @@ public class HouseholdUserConfig {
                     passwordEncoder.encode("password@12345678"),
                     "0712990639",
                     "50, Reid Avenue, Colombo 07",
-                    "www.facebook.com"
+                    "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
             );
 
             householdUserRepository.saveAll(List.of(rusara, lasith));

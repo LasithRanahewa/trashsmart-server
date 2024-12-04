@@ -16,8 +16,8 @@ public class SmartBin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double longitude;
     private Double latitude;
+    private Double longitude;
     private LocalDate lastMaintenanceDate = LocalDate.now();
     private Double fillLevel = 0.0;
     private BinStatus binStatus = BinStatus.EMPTY;
@@ -35,9 +35,9 @@ public class SmartBin {
     public SmartBin() {
     }
 
-    public SmartBin(Double longitude, Double latitude, WasteType wasteType, BinSize binSize) {
-        this.longitude = longitude;
+    public SmartBin(Double latitude, Double longitude, WasteType wasteType, BinSize binSize) {
         this.latitude = latitude;
+        this.longitude = longitude;
         this.wasteType = wasteType;
         this.binSize = binSize;
     }
