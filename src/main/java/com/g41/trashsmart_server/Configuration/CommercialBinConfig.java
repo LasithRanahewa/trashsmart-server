@@ -33,23 +33,49 @@ public class CommercialBinConfig {
                     passwordEncoder.encode("password123"),
                     "0712990639",
                     "50, Reid Avenue, Colombo 07",
-                    "www.facebook.com",
+                    "www.facebook.com/FON",
                     Scale.MEDIUM,
                     OrgType.EDUCATION,
-                    6.8688460742715725,
-                    79.92756809703607
+                    6.868846,
+                    79.927568
             );
 
-            organizationRepository.saveAll(List.of(fon));
+            Organization sltc = new Organization(
+                    "SLTC",
+                    "SLTC Admin",
+                    "admin@sltc.lk",
+                    passwordEncoder.encode("securePass123"),
+                    "0701234567",
+                    "SLTC Campus, Padukka",
+                    "www.sltc.ac.lk",
+                    Scale.LARGE,
+                    OrgType.EDUCATION,
+                    6.825847,
+                    80.041227
+            );
 
+            Organization zoo = new Organization(
+                    "Dehiwala Zoo",
+                    "Zoo Admin",
+                    "info@zoo.lk",
+                    passwordEncoder.encode("zoo1234"),
+                    "0112345678",
+                    "Dehiwala Zoo, Colombo",
+                    "www.zoo.lk",
+                    Scale.LARGE,
+                    OrgType.TOURISM_AND_HOSPITALITY,
+                    6.851549,
+                    79.876450
+            );
+
+            organizationRepository.saveAll(List.of(fon, sltc, zoo));
+
+            // Creating bins for FON
             Optional<Organization> fonOptional = organizationRepository.findOrganizationByEmail("fon@cmb.ac.lk");
-
-            if (fonOptional.isPresent()) {
-                Organization organization = fonOptional.get();
-
+            fonOptional.ifPresent(organization -> {
                 CommercialBin Bin001 = new CommercialBin(
-                        fon.getLatitude(),
-                        fon.getLongitude(),
+                        organization.getLatitude(),
+                        organization.getLongitude(),
                         WasteType.NON_BIO_DEGRADABLE,
                         BinSize.MEGA,
                         "TSB001"
@@ -57,17 +83,64 @@ public class CommercialBinConfig {
                 Bin001.setOrganization(organization);
 
                 CommercialBin Bin002 = new CommercialBin(
-                        fon.getLatitude(),
-                        fon.getLongitude(),
+                        organization.getLatitude(),
+                        organization.getLongitude(),
                         WasteType.BIO_DEGRADABLE,
                         BinSize.MEDIUM,
                         "TSB002"
                 );
                 Bin002.setOrganization(organization);
+
                 commercialBinRepository.saveAll(List.of(Bin001, Bin002));
-            } else {
-                System.out.println("Organization not found!");
-            }
+            });
+
+            // Creating bins for SLTC
+            Optional<Organization> sltcOptional = organizationRepository.findOrganizationByEmail("admin@sltc.lk");
+            sltcOptional.ifPresent(organization -> {
+                CommercialBin Bin003 = new CommercialBin(
+                        organization.getLatitude(),
+                        organization.getLongitude(),
+                        WasteType.NON_BIO_DEGRADABLE,
+                        BinSize.GENERAL,
+                        "TSB003"
+                );
+                Bin003.setOrganization(organization);
+
+                CommercialBin Bin004 = new CommercialBin(
+                        organization.getLatitude(),
+                        organization.getLongitude(),
+                        WasteType.BIO_DEGRADABLE,
+                        BinSize.MEGA,
+                        "TSB004"
+                );
+                Bin004.setOrganization(organization);
+
+                commercialBinRepository.saveAll(List.of(Bin003, Bin004));
+            });
+
+            // Creating bins for Dehiwala Zoo
+            Optional<Organization> zooOptional = organizationRepository.findOrganizationByEmail("info@zoo.lk");
+            zooOptional.ifPresent(organization -> {
+                CommercialBin Bin005 = new CommercialBin(
+                        organization.getLatitude(),
+                        organization.getLongitude(),
+                        WasteType.NON_BIO_DEGRADABLE,
+                        BinSize.MEDIUM,
+                        "TSB005"
+                );
+                Bin005.setOrganization(organization);
+
+                CommercialBin Bin006 = new CommercialBin(
+                        organization.getLatitude(),
+                        organization.getLongitude(),
+                        WasteType.BIO_DEGRADABLE,
+                        BinSize.MEDIUM,
+                        "TSB006"
+                );
+                Bin006.setOrganization(organization);
+
+                commercialBinRepository.saveAll(List.of(Bin005, Bin006));
+            });
         };
     }
 }
