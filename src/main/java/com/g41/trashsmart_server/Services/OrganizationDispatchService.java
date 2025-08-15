@@ -60,8 +60,8 @@ public class OrganizationDispatchService {
         // optional: tune these values or read from config
         opts.setMaxClusters(10);
         opts.setAvgTruckCapacityLiters(garbageTruckRepository.findAverageTruckCapacity());
-        opts.setDbscanEpsKm(0.5);
-        opts.setDbscanMinSamples(3);
+        opts.setDbscanEpsKm(0.2);
+        opts.setDbscanMinSamples(2);
         // BIAS centroid to municipal council (optional)
         opts.setMunicipalLatitude(6.915788733342365);
         opts.setMunicipalLongitude(79.86372182720865);
