@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class StatisticsService {
@@ -167,37 +164,4 @@ public class StatisticsService {
 //    public long getActiveRecyclingPlants() {
 //        return recyclingPlantRepository.getActiveCount();
 //    }
-
-    // Monthly accumulated recyclable waste
-    public List<Map<String, Object>> getMonthlyAccumulatedRecyclableWaste() {
-        LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minusMonths(12);
-        List<Object[]> rawData = wasteCollectionRequestRepository.getMonthlyAccumulatedRecyclableWaste(WasteType.RECYCLABLE, startDate, endDate);
-        return rawData.stream()
-                .map(data -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("month", ((String) data[0]).trim());
-                    map.put("year", data[1]);
-                    map.put("volume", data[2] != null ? ((Number) data[2]).doubleValue() : 0.0);
-                    return map;
-                })
-                .collect(Collectors.toList());
-    }
-
-    // Monthly accumulated  waste
-    public List<Map<String, Object>> getMonthlyAccumulatedWaste() {
-        LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minusMonths(12);
-        List<Object[]> rawData = wasteCollectionRequestRepository.getMonthlyAccumulatedWaste(startDate, endDate);
-
-        return rawData.stream()
-                .map(data -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("month", ((String) data[0]).trim());
-                    map.put("year", data[1]);
-                    map.put("volume", data[2] != null ? ((Number) data[2]).doubleValue() : 0.0);
-                    return map;
-                })
-                .collect(Collectors.toList());
-    }
 }

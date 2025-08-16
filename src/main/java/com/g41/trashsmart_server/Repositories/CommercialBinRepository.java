@@ -5,8 +5,11 @@ import com.g41.trashsmart_server.Models.CommercialBin;
 import com.g41.trashsmart_server.Models.Organization;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 //import javax.swing.text.html.Option;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,4 +45,8 @@ public interface CommercialBinRepository extends JpaRepository<CommercialBin, Lo
     // Select commercial bins given organization id
     @Query("SELECT com_bin FROM CommercialBin com_bin WHERE com_bin.organization.id = :org_id")
     List<CommercialBin> findCommercialBinByOrganizationID(Long org_id);
+
+    // Select new commercial bin purchases over last week
+    @Query("SELECT COUNT(com_bin) FROM CommercialBin com_bin WHERE com_bin.purchaseDate >= :startDate AND com_bin.purchaseDate <= :endDate")
+    long findNewPurchases(LocalDate startDate, LocalDate endDate);
 }

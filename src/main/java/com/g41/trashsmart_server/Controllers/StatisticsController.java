@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/v1/statistics")
@@ -124,17 +122,5 @@ public class StatisticsController {
 //    }
 
     //live
-
-    // Endpoint for total monthly accumulated recyclable waste
-    @GetMapping("/monthly_recyclable_waste")
-    public List<Map<String, Object>> getMonthlyAccumulatedRecyclableWaste() {
-        return statisticsService.getMonthlyAccumulatedRecyclableWaste();
-    }
-
-    // Endpoint for total monthly accumulated  waste
-    @GetMapping("/monthly_waste")
-    public List<Map<String, Object>> getMonthlyAccumulatedWaste() {
-        return statisticsService.getMonthlyAccumulatedWaste();
-    }
 
 }
