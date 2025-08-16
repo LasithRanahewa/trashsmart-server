@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class FastApiConfig {
     @Bean
-    public WebClient fastApiWebClient(@Value("${FAST_API_URL:http://localhost:8000/api}") String fastApiUrl) {
+    public WebClient fastApiWebClient(@Value("${fast.api.url}") String fastApiUrl) {
         return WebClient.builder()
                 .baseUrl(fastApiUrl)
                 .build();
