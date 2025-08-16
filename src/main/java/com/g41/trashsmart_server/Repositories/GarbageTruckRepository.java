@@ -42,4 +42,9 @@ public interface GarbageTruckRepository extends JpaRepository<GarbageTruck, Long
     // Retrieve all the garbage trucks by status
     @Query("SELECT truck FROM GarbageTruck truck WHERE truck.truckStatus = :truckStatus")
     List<GarbageTruck> findByTruckStatus(TruckStatus truckStatus);
+
+    // Get Garbage Truck Average Capacity
+    @Query("SELECT AVG(truck.maxVolume) FROM GarbageTruck truck")
+    Double findAverageTruckCapacity();
+
 }
