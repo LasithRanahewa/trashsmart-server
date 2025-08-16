@@ -1,9 +1,6 @@
 package com.g41.trashsmart_server.Configuration;
 
-import com.g41.trashsmart_server.Enums.BinSize;
-import com.g41.trashsmart_server.Enums.OrgType;
-import com.g41.trashsmart_server.Enums.Scale;
-import com.g41.trashsmart_server.Enums.WasteType;
+import com.g41.trashsmart_server.Enums.*;
 import com.g41.trashsmart_server.Models.CommercialBin;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Repositories.CommercialBinRepository;
@@ -105,6 +102,7 @@ public class CommercialBinConfig {
                         "TSB003"
                 );
                 Bin003.setOrganization(organization);
+                Bin003.setBinStatus(BinStatus.ALMOST_FULL);
 
                 CommercialBin Bin004 = new CommercialBin(
                         organization.getLatitude(),
@@ -114,6 +112,7 @@ public class CommercialBinConfig {
                         "TSB004"
                 );
                 Bin004.setOrganization(organization);
+                Bin004.setBinStatus(BinStatus.EMPTY);
 
                 commercialBinRepository.saveAll(List.of(Bin003, Bin004));
             });
@@ -129,6 +128,7 @@ public class CommercialBinConfig {
                         "TSB005"
                 );
                 Bin005.setOrganization(organization);
+                Bin005.setBinStatus(BinStatus.NORMAL);
 
                 CommercialBin Bin006 = new CommercialBin(
                         organization.getLatitude(),
@@ -138,6 +138,8 @@ public class CommercialBinConfig {
                         "TSB006"
                 );
                 Bin006.setOrganization(organization);
+                Bin006.setFillLevel(75.0);
+                Bin006.setBinStatus(BinStatus.ALMOST_FULL);
 
                 commercialBinRepository.saveAll(List.of(Bin005, Bin006));
             });

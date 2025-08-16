@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 //import javax.swing.text.html.Option;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,4 +30,8 @@ public interface CommunalBinRepository extends JpaRepository<CommunalBin, Long>{
     // Select all the communal bins registered with the system
     @Query("SELECT communalbin FROM CommunalBin communalbin")
     List<CommunalBin> findAllCommunalBinsUnFiltered();
+
+    // Select new communal bin establishments over last week
+    @Query("SELECT COUNT(communalbin) FROM CommunalBin communalbin WHERE communalbin.installationDate >= :startDate AND communalbin.installationDate <= :endDate")
+    long findNewEstablishments(LocalDate startDate, LocalDate endDate);
 }

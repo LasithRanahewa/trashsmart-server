@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,4 +25,12 @@ public interface RecyclingPlantRepository extends JpaRepository<RecyclingPlant, 
 
     // count the number of recycling plants
     long count();
+
+    // Select new registrations over last week
+    @Query("SELECT COUNT(r) FROM RecyclingPlant r WHERE r.createdTimeStamp >= :startDate AND r.createdTimeStamp <= :endDate")
+    long getNewRegistrations(LocalDate startDate, LocalDate endDate);
+
+    // Select active count
+//    @Query("SELECT COUNT(r) FROM RecyclingPlant r WHERE r.isAccountNonExpired() = true")
+//    long getActiveCount();
 }

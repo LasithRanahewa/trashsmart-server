@@ -1,6 +1,7 @@
 package com.g41.trashsmart_server.Configuration;
 
 import com.g41.trashsmart_server.Enums.BinSize;
+import com.g41.trashsmart_server.Enums.BinStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
 import com.g41.trashsmart_server.Models.CommunalBin;
 import com.g41.trashsmart_server.Repositories.CommunalBinRepository;
@@ -22,6 +23,7 @@ public class CommunalBinConfig {
                     BinSize.MEGA
             );
             Bin001.setFillLevel(80.0);
+            Bin001.setBinStatus(BinStatus.ALMOST_FULL);
 
             CommunalBin Bin002 = new CommunalBin(
                     6.934507, // Colombo Fort Railway Station
@@ -30,6 +32,7 @@ public class CommunalBinConfig {
                     BinSize.MEDIUM
             );
             Bin002.setFillLevel(45.0);
+            Bin002.setBinStatus(BinStatus.NORMAL);
 
             CommunalBin Bin003 = new CommunalBin(
                     6.912184, // Independence Square
@@ -38,6 +41,7 @@ public class CommunalBinConfig {
                     BinSize.MEDIUM
             );
             Bin003.setFillLevel(60.0);
+            Bin003.setBinStatus(BinStatus.NORMAL);
 
             CommunalBin Bin004 = new CommunalBin(
                     6.865491, // Dehiwala Zoo
@@ -46,6 +50,7 @@ public class CommunalBinConfig {
                     BinSize.GENERAL
             );
             Bin004.setFillLevel(30.0);
+            Bin004.setBinStatus(BinStatus.NORMAL);
 
             CommunalBin Bin005 = new CommunalBin(
                     6.795667, // Mount Lavinia Beach
@@ -54,6 +59,7 @@ public class CommunalBinConfig {
                     BinSize.MEGA
             );
             Bin005.setFillLevel(50.0);
+            Bin005.setBinStatus(BinStatus.NORMAL);
 
             CommunalBin Bin006 = new CommunalBin(
                     6.917619, // Viharamahadevi Park
@@ -62,6 +68,7 @@ public class CommunalBinConfig {
                     BinSize.GENERAL
             );
             Bin006.setFillLevel(70.0);
+            Bin006.setBinStatus(BinStatus.NORMAL);
 
             CommunalBin Bin007 = new CommunalBin(
                     6.902082, // Bambalapitiya
@@ -70,6 +77,7 @@ public class CommunalBinConfig {
                     BinSize.MEDIUM
             );
             Bin007.setFillLevel(40.0);
+            Bin007.setBinStatus(BinStatus.NORMAL);
 
             CommunalBin Bin008 = new CommunalBin(
                     6.956758, // Pettah Market
@@ -78,6 +86,7 @@ public class CommunalBinConfig {
                     BinSize.GENERAL
             );
             Bin008.setFillLevel(90.0);
+            Bin008.setBinStatus(BinStatus.ALMOST_FULL);
 
             communalBinRepository.saveAll(List.of(Bin001, Bin002, Bin003, Bin004, Bin005, Bin006, Bin007, Bin008));
         };
