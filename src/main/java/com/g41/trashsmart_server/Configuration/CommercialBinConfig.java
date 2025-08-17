@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,6 +79,7 @@ public class CommercialBinConfig {
                         "TSB001"
                 );
                 Bin001.setOrganization(organization);
+                Bin001.setPurchaseDate(LocalDate.of(2025, 4, 15));
 
                 CommercialBin Bin002 = new CommercialBin(
                         organization.getLatitude(),
@@ -87,6 +89,7 @@ public class CommercialBinConfig {
                         "TSB002"
                 );
                 Bin002.setOrganization(organization);
+                Bin002.setPurchaseDate(LocalDate.of(2025, 8, 15));
 
                 commercialBinRepository.saveAll(List.of(Bin001, Bin002));
             });
@@ -112,7 +115,8 @@ public class CommercialBinConfig {
                         "TSB004"
                 );
                 Bin004.setOrganization(organization);
-                Bin004.setBinStatus(BinStatus.EMPTY);
+                Bin004.setBinStatus(BinStatus.FULL);
+                Bin004.setPurchaseDate(LocalDate.of(2025, 7, 15));
 
                 commercialBinRepository.saveAll(List.of(Bin003, Bin004));
             });
@@ -129,6 +133,7 @@ public class CommercialBinConfig {
                 );
                 Bin005.setOrganization(organization);
                 Bin005.setBinStatus(BinStatus.NORMAL);
+                Bin005.setPurchaseDate(LocalDate.of(2025, 8, 15));
 
                 CommercialBin Bin006 = new CommercialBin(
                         organization.getLatitude(),

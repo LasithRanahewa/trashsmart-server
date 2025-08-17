@@ -137,4 +137,15 @@ public class StatisticsController {
         return statisticsService.getMonthlyAccumulatedWaste();
     }
 
+    // Endpoint for total monthly commercial bin purchase count
+    @GetMapping("/monthly_commercial_bins")
+    public List<Map<String, Object>> getMonthlyCommercialBins() {
+        return statisticsService.getMonthlyCommercialBinPurchases();
+    }
+
+    // Endpoint for total monthly communal bin purchase count
+    @GetMapping("/monthly_communal_bins")
+    public List<Map<String, Object>> getMonthlyCommunalBins() {
+        return statisticsService.getMonthlyCommunalBinPurchases();
+    }
 }

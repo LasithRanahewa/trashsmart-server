@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Configuration
@@ -24,6 +25,7 @@ public class CommunalBinConfig {
             );
             Bin001.setFillLevel(80.0);
             Bin001.setBinStatus(BinStatus.ALMOST_FULL);
+            Bin001.setInstallationDate(LocalDate.of(2025, 8, 15));
 
             CommunalBin Bin002 = new CommunalBin(
                     6.934507, // Colombo Fort Railway Station
@@ -33,6 +35,7 @@ public class CommunalBinConfig {
             );
             Bin002.setFillLevel(45.0);
             Bin002.setBinStatus(BinStatus.NORMAL);
+            Bin002.setInstallationDate(LocalDate.of(2025, 7, 15));
 
             CommunalBin Bin003 = new CommunalBin(
                     6.912184, // Independence Square
@@ -42,6 +45,7 @@ public class CommunalBinConfig {
             );
             Bin003.setFillLevel(60.0);
             Bin003.setBinStatus(BinStatus.NORMAL);
+            Bin003.setInstallationDate(LocalDate.of(2025, 7, 15));
 
             CommunalBin Bin004 = new CommunalBin(
                     6.865491, // Dehiwala Zoo
@@ -50,7 +54,8 @@ public class CommunalBinConfig {
                     BinSize.GENERAL
             );
             Bin004.setFillLevel(30.0);
-            Bin004.setBinStatus(BinStatus.NORMAL);
+            Bin004.setBinStatus(BinStatus.FULL);
+            Bin004.setInstallationDate(LocalDate.of(2025, 5, 15));
 
             CommunalBin Bin005 = new CommunalBin(
                     6.795667, // Mount Lavinia Beach
@@ -60,6 +65,7 @@ public class CommunalBinConfig {
             );
             Bin005.setFillLevel(50.0);
             Bin005.setBinStatus(BinStatus.NORMAL);
+            Bin005.setInstallationDate(LocalDate.of(2025, 1, 15));
 
             CommunalBin Bin006 = new CommunalBin(
                     6.917619, // Viharamahadevi Park
