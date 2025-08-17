@@ -49,4 +49,19 @@ public interface CommercialBinRepository extends JpaRepository<CommercialBin, Lo
     // Select new commercial bin purchases over last week
     @Query("SELECT COUNT(com_bin) FROM CommercialBin com_bin WHERE com_bin.purchaseDate >= :startDate AND com_bin.purchaseDate <= :endDate")
     long findNewPurchases(LocalDate startDate, LocalDate endDate);
+
+    // Select new commercial bin purchases over the past year
+    @Query("SELECT TO_CHAR(com_bin.purchaseDate, 'FMMonth'), " +
+            "       EXTRACT(YEAR FROM com_bin.purchaseDate), " +
+            "       COUNT(com_bin) " +
+            "FROM CommercialBin com_bin " +
+            "WHERE com_bin.purchaseDate >= :startDate " +
+            "AND com_bin.purchaseDate < :endDate " +
+            "GROUP BY EXTRACT(YEAR FROM com_bin.purchaseDate), " +
+            "         EXTRACT(MONTH FROM com_bin.purchaseDate), " +
+            "         TO_CHAR(com_bin.purchaseDate, 'FMMonth') " +
+            "ORDER BY EXTRACT(YEAR FROM com_bin.purchaseDate), EXTRACT(MONTH FROM com_bin.purchaseDate)")
+    List<Object[]> getMonthlyNewBinPurchases(@Param("startDate") LocalDate startDate,
+                                             @Param("endDate") LocalDate endDate);
+
 }

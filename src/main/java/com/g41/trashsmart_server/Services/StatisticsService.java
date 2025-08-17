@@ -200,4 +200,38 @@ public class StatisticsService {
                 })
                 .collect(Collectors.toList());
     }
+
+    // Monthly commercial bin purchase count
+    public List<Map<String, Object>> getMonthlyCommercialBinPurchases() {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusMonths(12);
+        List<Object[]> rawData = commercialBinRepository.getMonthlyNewBinPurchases(startDate, endDate);
+
+        return rawData.stream()
+                .map(data -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("month", ((String) data[0]).trim());
+                    map.put("year", data[1]);
+                    map.put("count", data[2] != null ? ((Number) data[2]).doubleValue() : 0.0);
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+
+    // Monthly communal bin purchase count
+    public List<Map<String, Object>> getMonthlyCommunalBinPurchases() {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusMonths(12);
+        List<Object[]> rawData = communalBinRepository.getMonthlyNewBinPurchases(startDate, endDate);
+
+        return rawData.stream()
+                .map(data -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("month", ((String) data[0]).trim());
+                    map.put("year", data[1]);
+                    map.put("count", data[2] != null ? ((Number) data[2]).doubleValue() : 0.0);
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
 }
