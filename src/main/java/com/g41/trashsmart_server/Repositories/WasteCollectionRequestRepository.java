@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,4 +43,34 @@ public interface WasteCollectionRequestRepository extends JpaRepository<WasteCol
     // Total accumulated recyclable waste
     @Query("SELECT COALESCE(SUM(w.accumulatedVolume), 0) FROM WasteCollectionRequest w WHERE w.wasteType = :wasteType")
     Double getTotalAccumulatedRecyclableWaste(WasteType wasteType);
+
+    // Get monthly recyclable waste
+    @Query("SELECT TO_CHAR(w.createdTimeStamp, 'FMMonth'), " +
+            "       EXTRACT(YEAR FROM w.createdTimeStamp), " +
+            "       COALESCE(SUM(w.accumulatedVolume), 0) " +
+            "FROM WasteCollectionRequest w " +
+            "WHERE w.wasteType = :wasteType " +
+            "AND w.createdTimeStamp >= :startDate " +
+            "AND w.createdTimeStamp < :endDate " +
+            "GROUP BY EXTRACT(YEAR FROM w.createdTimeStamp), " +
+            "         EXTRACT(MONTH FROM w.createdTimeStamp), " +
+            "         TO_CHAR(w.createdTimeStamp, 'FMMonth') " +
+            "ORDER BY EXTRACT(YEAR FROM w.createdTimeStamp), EXTRACT(MONTH FROM w.createdTimeStamp)")
+    List<Object[]> getMonthlyAccumulatedRecyclableWaste(@Param("wasteType") WasteType wasteType, @Param("startDate") LocalDateTime startDate,
+                                                        @Param("endDate") LocalDateTime endDate);
+
+    // Get monthly waste between startDate and endDate
+    @Query("SELECT TO_CHAR(w.createdTimeStamp, 'FMMonth'), " +
+            "       EXTRACT(YEAR FROM w.createdTimeStamp), " +
+            "       COALESCE(SUM(w.accumulatedVolume), 0) " +
+            "FROM WasteCollectionRequest w " +
+            "WHERE w.createdTimeStamp >= :startDate " +
+            "AND w.createdTimeStamp < :endDate " +
+            "GROUP BY EXTRACT(YEAR FROM w.createdTimeStamp), " +
+            "         EXTRACT(MONTH FROM w.createdTimeStamp), " +
+            "         TO_CHAR(w.createdTimeStamp, 'FMMonth') " +
+            "ORDER BY EXTRACT(YEAR FROM w.createdTimeStamp), EXTRACT(MONTH FROM w.createdTimeStamp)")
+    List<Object[]> getMonthlyAccumulatedWaste(@Param("startDate") LocalDateTime startDate,
+                                              @Param("endDate") LocalDateTime endDate);
+
 }

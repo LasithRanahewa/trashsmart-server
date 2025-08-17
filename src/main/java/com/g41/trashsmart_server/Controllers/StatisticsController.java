@@ -1,10 +1,15 @@
 package com.g41.trashsmart_server.Controllers;
 
+import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Services.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/v1/statistics")
@@ -50,4 +55,86 @@ public class StatisticsController {
     public Integer getTotalAccumulatedRecyclableWaste() {
         return statisticsService.getTotalAccumulatedRecyclableWaste().intValue();
     }
+
+    // Get organization count
+    @GetMapping(path = "total_organizations")
+    public long getTotalOrganizations() {
+        return statisticsService.getTotalOrganizations();
+    }
+
+    // Get new organization registration count
+    @GetMapping(path = "total_new_organizations")
+    public long getTotalNewOrganizations() {
+        return statisticsService.getTotalNewOrganizations();
+    }
+
+    // Get active organization count
+    @GetMapping(path = "total_active_organizations")
+    public long getActiveOrganizations() {
+        return statisticsService.getActiveOrganizations();
+    }
+
+    // Get organizations weekly collection request count
+    @GetMapping(path = "org_weekly_wcr_count")
+    public long getLastWeekOrgWasteRequestCount() {
+        return statisticsService.getLastWeekOrgWasteRequestCount();
+    }
+
+    // Get total bin count
+    @GetMapping(path = "total_bins")
+    public long getTotalBins() {
+        return statisticsService.getTotalBins();
+    }
+
+    // Get currently full bin count
+    @GetMapping(path = "total_full_bins")
+    public long getFullBins() {
+        return statisticsService.getFullBins();
+    }
+
+    // Get new commercial bin purchase count
+    @GetMapping(path = "total_commercial_bin_purchase_count")
+    public long getCommercialBinPurchaseCount() {
+        return statisticsService.getCommercialBinPurchaseCount();
+    }
+
+    // Get new communal bin establishment count
+    @GetMapping(path = "total_communal_bin_est_count")
+    public long getCommunalBinEstCount() {
+        return statisticsService.getCommunalBinEstCount();
+    }
+
+    // Get top 10 organizations
+    @GetMapping(path = "top_ten_organizations")
+    public List<Organization> getTopTenOrganizations() {
+        return statisticsService.getTopTenOrganizations();
+    }
+
+    // Get new recycling plant registration count
+    @GetMapping(path = "total_new_recycling_plants")
+    public long getTotalNewRecyclingPlants() {
+        return 2;
+//        return statisticsService.getTotalNewRecyclingPlants();
+    }
+
+    // Get active organization count
+//    @GetMapping(path = "total_active_recycling_plants")
+//    public long getActiveRecyclingPlants() {
+//        return statisticsService.getActiveRecyclingPlants();
+//    }
+
+    //live
+
+    // Endpoint for total monthly accumulated recyclable waste
+    @GetMapping("/monthly_recyclable_waste")
+    public List<Map<String, Object>> getMonthlyAccumulatedRecyclableWaste() {
+        return statisticsService.getMonthlyAccumulatedRecyclableWaste();
+    }
+
+    // Endpoint for total monthly accumulated  waste
+    @GetMapping("/monthly_waste")
+    public List<Map<String, Object>> getMonthlyAccumulatedWaste() {
+        return statisticsService.getMonthlyAccumulatedWaste();
+    }
+
 }
