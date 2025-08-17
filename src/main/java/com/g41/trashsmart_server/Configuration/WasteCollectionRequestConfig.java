@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -322,12 +323,14 @@ public class WasteCollectionRequestConfig {
                     6.901655107547004,
                     79.86182154331027
             );
+            wcr_foa_1.setCreatedTimeStamp(LocalDateTime.of(2025, 3, 15, 14, 30, 0));
             WasteCollectionRequest wcr_foa_2 = new WasteCollectionRequest(
                     62.35,
                     WasteType.NON_BIO_DEGRADABLE,
                     6.901655107547004,
                     79.86182154331027
             );
+            wcr_foa_2.setCreatedTimeStamp(LocalDateTime.of(2025, 4, 15, 14, 30, 0));
             WasteCollectionRequest wcr_foa_3 = new WasteCollectionRequest(
                     62.35,
                     WasteType.RECYCLABLE,
@@ -359,6 +362,7 @@ public class WasteCollectionRequestConfig {
                     6.901786908082538,
                     79.8590790478905
             );
+            wcr_foa_3.setCreatedTimeStamp(LocalDateTime.of(2025, 5, 15, 14, 30, 0));
             wcr_fol_1.setOrganization(folOptional.get());
             wcr_fol_2.setOrganization(folOptional.get());
             wcr_fol_3.setOrganization(folOptional.get());
@@ -372,12 +376,14 @@ public class WasteCollectionRequestConfig {
                     6.902647660013757,
                     79.85882185713773
             );
+            wcr_thurstan_1.setCreatedTimeStamp(LocalDateTime.of(2025, 7, 15, 14, 30, 0));
             WasteCollectionRequest wcr_thurstan_2 = new WasteCollectionRequest(
                     45.34,
                     WasteType.NON_BIO_DEGRADABLE,
                     6.902647660013757,
                     79.85882185713773
             );
+            wcr_thurstan_2.setCreatedTimeStamp(LocalDateTime.of(2025, 7, 15, 14, 30, 0));
             WasteCollectionRequest wcr_thurstan_3 = new WasteCollectionRequest(
                     45.34,
                     WasteType.RECYCLABLE,
