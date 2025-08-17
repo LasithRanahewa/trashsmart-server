@@ -23,4 +23,6 @@ src/.DS_Store
 src/main/.DS_Store
 docker-compose.yml
 .vscode
+.DS_Store
+.idea/
 
