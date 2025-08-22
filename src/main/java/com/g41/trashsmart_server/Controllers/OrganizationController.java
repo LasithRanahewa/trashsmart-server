@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/v1/organization")
@@ -200,4 +201,12 @@ public class OrganizationController {
                                     @RequestBody Organization organization) {
         organizationService.updateOrganization(id, organization);
     }
+
+    // Weekly collection request count
+    // Collection history
+
+    // Smart bin list
+    // WCR history
+
+    // Contact information
 }

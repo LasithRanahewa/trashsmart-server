@@ -136,5 +136,10 @@ public class WasteCollectionRequestService {
                 commercialBin.getLongitude()
         );
         wasteCollectionRequestRepository.save(wasteCollectionRequest);
+
+        Organization organization = commercialBin.getOrganization();
+        organization.setTotalWaste((int)(organization.getTotalWaste() + wasteCollectionRequest.getAccumulatedVolume()));
+
+        this.organizationRepository.save(organization);
     }
 }

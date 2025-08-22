@@ -106,6 +106,7 @@ public class CommercialBinConfig {
                 );
                 Bin003.setOrganization(organization);
                 Bin003.setBinStatus(BinStatus.ALMOST_FULL);
+                Bin003.setFillLevel(80.0);
 
                 CommercialBin Bin004 = new CommercialBin(
                         organization.getLatitude(),

@@ -32,6 +32,7 @@ public class OrganizationConfig {
                     6.902256504201074,
                     79.86115034382995
             );
+            ucsc.setTotalWaste(125);
             Organization fos = new Organization(
                     "FOS",
                     "FOS Admin",
@@ -45,6 +46,7 @@ public class OrganizationConfig {
                     6.901910343977649,
                     79.86021961730209
             );
+            fos.setTotalWaste(87);
 
             organizationRepository.saveAll(List.of(ucsc, fos));
         };
