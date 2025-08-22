@@ -14,13 +14,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Configuration
 public class WasteCollectionRequestConfig {
     @Autowired
     private PasswordEncoder passwordEncoder;
+    Random random = new Random(52);
 
     @Bean
     CommandLineRunner wasteCollectionRequestCommandLineRunner(
@@ -323,14 +326,12 @@ public class WasteCollectionRequestConfig {
                     6.901655107547004,
                     79.86182154331027
             );
-            wcr_foa_1.setCreatedTimeStamp(LocalDateTime.of(2025, 3, 15, 14, 30, 0));
             WasteCollectionRequest wcr_foa_2 = new WasteCollectionRequest(
                     62.35,
                     WasteType.NON_BIO_DEGRADABLE,
                     6.901655107547004,
                     79.86182154331027
             );
-            wcr_foa_2.setCreatedTimeStamp(LocalDateTime.of(2025, 4, 15, 14, 30, 0));
             WasteCollectionRequest wcr_foa_3 = new WasteCollectionRequest(
                     62.35,
                     WasteType.RECYCLABLE,
@@ -362,7 +363,6 @@ public class WasteCollectionRequestConfig {
                     6.901786908082538,
                     79.8590790478905
             );
-            wcr_foa_3.setCreatedTimeStamp(LocalDateTime.of(2025, 5, 15, 14, 30, 0));
             wcr_fol_1.setOrganization(folOptional.get());
             wcr_fol_2.setOrganization(folOptional.get());
             wcr_fol_3.setOrganization(folOptional.get());
@@ -376,14 +376,12 @@ public class WasteCollectionRequestConfig {
                     6.902647660013757,
                     79.85882185713773
             );
-            wcr_thurstan_1.setCreatedTimeStamp(LocalDateTime.of(2025, 7, 15, 14, 30, 0));
             WasteCollectionRequest wcr_thurstan_2 = new WasteCollectionRequest(
                     45.34,
                     WasteType.NON_BIO_DEGRADABLE,
                     6.902647660013757,
                     79.85882185713773
             );
-            wcr_thurstan_2.setCreatedTimeStamp(LocalDateTime.of(2025, 7, 15, 14, 30, 0));
             WasteCollectionRequest wcr_thurstan_3 = new WasteCollectionRequest(
                     45.34,
                     WasteType.RECYCLABLE,
@@ -418,6 +416,8 @@ public class WasteCollectionRequestConfig {
             wcr_laksala_1.setOrganization(laksalaOptional.get());
             wcr_laksala_2.setOrganization(laksalaOptional.get());
             wcr_laksala_3.setOrganization(laksalaOptional.get());
+//            Double accumulatedVolume = wcr_laksala_1.getAccumulatedVolume();
+//            laksalaOptional.get().setTotalWaste(accumulatedVolume.intValue());
 
             if (arcadeOptional.isEmpty()) {
                 throw new IllegalStateException("No Organization");
@@ -769,6 +769,61 @@ public class WasteCollectionRequestConfig {
             wcr_pro_2.setOrganization(povertyReliefOptional.get());
             wcr_pro_3.setOrganization(povertyReliefOptional.get());
 
+            List<WasteCollectionRequest> records = Arrays.asList(
+                    wcr_foa_1, wcr_foa_2, wcr_foa_3,
+                    wcr_fol_1, wcr_fol_2, wcr_fol_3,
+                    wcr_thurstan_1, wcr_thurstan_2, wcr_thurstan_3,
+                    wcr_laksala_1, wcr_laksala_2, wcr_laksala_3,
+                    wcr_arcade_1, wcr_arcade_2, wcr_arcade_3,
+                    wcr_icbt_1, wcr_icbt_2, wcr_icbt_3,
+                    wcr_havelock_1, wcr_havelock_2, wcr_havelock_3,
+                    wcr_savoy_1, wcr_savoy_2, wcr_savoy_3,
+                    wcr_laptoplk_1, wcr_laptoplk_2, wcr_laptoplk_3,
+                    wcr_ndb_1, wcr_ndb_2, wcr_ndb_3,
+                    wcr_slithm_1, wcr_slithm_2, wcr_slithm_3,
+                    wcr_hci_1, wcr_hci_2, wcr_hci_3,
+                    wcr_nawaloka_1, wcr_nawaloka_2, wcr_nawaloka_3,
+                    wcr_nhs_1, wcr_nhs_2, wcr_nhs_3,
+                    wcr_eagle_1, wcr_eagle_2, wcr_eagle_3,
+                    wcr_sisili_1, wcr_sisili_2, wcr_sisili_3,
+                    wcr_slsea_1, wcr_slsea_2, wcr_slsea_3,
+                    wcr_pro_1, wcr_pro_2, wcr_pro_3
+            );
+
+//            for (WasteCollectionRequest record : records) {
+//                int year = 2024 + random.nextInt(2);
+//                int month = 1 + random.nextInt(12);
+//                int day = 1 + random.nextInt(28);
+//                int hour = random.nextInt(24);
+//                int minute = random.nextInt(60);
+//                int second = random.nextInt(60);
+//
+//                record.setCreatedTimeStamp(LocalDateTime.of(year, month, day, hour, minute, second));
+//            }
+
+            for (int month = 1; month <= 12 && month <= records.size(); month++) {
+                WasteCollectionRequest record = records.get(month - 1);
+
+                int year = 2024 + random.nextInt(2);
+                int day = 1 + random.nextInt(28);
+                int hour = random.nextInt(24);
+                int minute = random.nextInt(60);
+                int second = random.nextInt(60);
+
+                record.setCreatedTimeStamp(LocalDateTime.of(year, month, day, hour, minute, second));
+            }
+
+            for (int i = 12; i < records.size(); i++) {
+                int year = 2024 + random.nextInt(2);
+                int month = 1 + random.nextInt(12);
+                int day = 1 + random.nextInt(28);
+                int hour = random.nextInt(24);
+                int minute = random.nextInt(60);
+                int second = random.nextInt(60);
+
+                records.get(i).setCreatedTimeStamp(LocalDateTime.of(year, month, day, hour, minute, second));
+            }
+
             wasteCollectionRequestRepository.saveAll(List.of(
                     wcr_foa_1,
                     wcr_foa_2,
@@ -825,6 +880,12 @@ public class WasteCollectionRequestConfig {
                     wcr_pro_2,
                     wcr_pro_3
             ));
+
+            for (WasteCollectionRequest record : records) {
+                Organization org = record.getOrganization();
+                org.setTotalWaste((int)(org.getTotalWaste() + record.getAccumulatedVolume()));
+                organizationRepository.save(org);
+            }
         };
     }
 }

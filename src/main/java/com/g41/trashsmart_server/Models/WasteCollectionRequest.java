@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
