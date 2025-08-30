@@ -125,9 +125,7 @@ public class Auction {
         this.minimumBidAmount = minimumBidAmount;
     }
 
-    public Double getCurrentBid() {
-        return currentBid;
-    }
+    public Double getCurrentBid() { return currentBid != null ? currentBid : minimumBidAmount; }
 
     public void setCurrentBid(Double currentBid) {
         this.currentBid = currentBid;
