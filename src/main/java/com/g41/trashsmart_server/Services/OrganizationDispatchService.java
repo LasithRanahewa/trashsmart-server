@@ -65,7 +65,7 @@ public class OrganizationDispatchService {
         // BIAS centroid to municipal council (optional)
         opts.setMunicipalLatitude(6.915788733342365);
         opts.setMunicipalLongitude(79.86372182720865);
-        opts.setIncludeMunicipalInCentroid(true);
+        opts.setIncludeMunicipalInCentroid(false);
 
         // Call FastAPI
         FastApiClient.ClusterResponseDTO response = fastApiClient.clusterRequests(reqPayloads, opts);

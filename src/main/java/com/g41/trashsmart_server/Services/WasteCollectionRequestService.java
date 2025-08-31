@@ -10,6 +10,9 @@ import com.g41.trashsmart_server.Repositories.WasteCollectionRequestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -137,8 +140,18 @@ public class WasteCollectionRequestService {
         );
         wasteCollectionRequestRepository.save(wasteCollectionRequest);
 
+        // Update total waste
         Organization organization = commercialBin.getOrganization();
         organization.setTotalWaste((int)(organization.getTotalWaste() + wasteCollectionRequest.getAccumulatedVolume()));
+
+        // Update weekly waste
+        wasteCollectionRequest.setOrganization(organization);
+        wasteCollectionRequestRepository.save(wasteCollectionRequest);
+        LocalDateTime startOfWeek = LocalDate.now().with(DayOfWeek.MONDAY).atStartOfDay();
+        LocalDateTime endOfWeek = startOfWeek.plusDays(6).withHour(23).withMinute(59).withSecond(59);
+        int wcrThisWeek = wasteCollectionRequestRepository
+                .getWeeklyAccumulatedWasteByOrganization(organization, startOfWeek, endOfWeek);
+        organization.setWeeklyWaste(wcrThisWeek);
 
         this.organizationRepository.save(organization);
     }
