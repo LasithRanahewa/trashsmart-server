@@ -2,6 +2,7 @@ package com.g41.trashsmart_server.Repositories;
 
 import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
+import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Models.WasteCollectionRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -73,4 +74,10 @@ public interface WasteCollectionRequestRepository extends JpaRepository<WasteCol
     List<Object[]> getMonthlyAccumulatedWaste(@Param("startDate") LocalDateTime startDate,
                                               @Param("endDate") LocalDateTime endDate);
 
+    // Get weekly waste of an organization
+    @Query("SELECT COALESCE(SUM(w.accumulatedVolume), 0) FROM WasteCollectionRequest w " +
+            "WHERE w.organization = :organization AND w.createdTimeStamp BETWEEN :start AND :end")
+    int getWeeklyAccumulatedWasteByOrganization(@Param("organization") Organization organization,
+                                                   @Param("start") LocalDateTime start,
+                                                   @Param("end") LocalDateTime end);
 }
