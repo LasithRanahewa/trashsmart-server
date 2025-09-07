@@ -202,7 +202,78 @@ public class OrganizationController {
         organizationService.updateOrganization(id, organization);
     }
 
-    // Weekly collection request count
+    // Get total bin count
+    @GetMapping(path = "total_bins/{organization_id}")
+    public long getTotalBins(@PathVariable("organization_id") Long id) {
+        return organizationService.getTotalBins(id);
+    }
+
+    // Get total full bin count
+    @GetMapping(path = "total_full_bins/{organization_id}")
+    public long getTotalFullBins(@PathVariable("organization_id") Long id) {
+        return organizationService.getTotalFullBins(id);
+    }
+
+    // Get total collection count
+    @GetMapping(path = "total_collections/{organization_id}")
+    public long getTotalCollections(@PathVariable("organization_id") Long id) {
+        return organizationService.getTotalCollections(id);
+    }
+
+    // Get weekly waste volume
+    @GetMapping("last_week_total_waste/{organization_id}")
+    public Integer getLastWeekTotalWasteVolume(@PathVariable("organization_id") Long id) {
+        return organizationService.getLastWeekTotalWasteVolume(id).intValue();
+    }
+
+    // Number of WCRs last week
+    @GetMapping("last_week_request_count/{organization_id}")
+    public Long getLastWeekWasteRequestCount(@PathVariable("organization_id") Long id) {
+        return organizationService.getLastWeekWasteRequestCount(id);
+    }
+
+    // Endpoint for total accumulated waste
+    @GetMapping("total_accumulated_waste/{organization_id}")
+    public Integer getTotalAccumulatedWaste(@PathVariable("organization_id") Long id) {
+        return organizationService.getTotalAccumulatedWaste(id).intValue();
+    }
+
+    // Endpoint for total accumulated recyclable waste
+    @GetMapping("total_accumulated_recyclable_waste/{organization_id}")
+    public Integer getTotalAccumulatedRecyclableWaste(@PathVariable("organization_id") Long id) {
+        return organizationService.getTotalAccumulatedRecyclableWaste(id).intValue();
+    }
+
+    // Endpoint for total monthly accumulated recyclable waste
+    @GetMapping("/monthly_recyclable_waste/{organization_id}")
+    public List<Map<String, Object>> getMonthlyAccumulatedRecyclableWaste(@PathVariable("organization_id") Long id) {
+        return organizationService.getMonthlyAccumulatedRecyclableWaste(id);
+    }
+
+    // Endpoint for total monthly accumulated  waste
+    @GetMapping("/monthly_waste/{organization_id}")
+    public List<Map<String, Object>> getMonthlyAccumulatedWaste(@PathVariable("organization_id") Long id) {
+        return organizationService.getMonthlyAccumulatedWaste(id);
+    }
+
+    // Endpoint for total maintenance count
+    @GetMapping("/total_maintenances/{organization_id}")
+    public long getMaintenanceCount(@PathVariable("organization_id") Long id) {
+        return organizationService.getMaintenanceCount(id);
+    }
+
+    // Get new commercial bin purchase count
+    @GetMapping(path = "total_commercial_bin_purchase_count/{organization_id}")
+    public long getCommercialBinPurchaseCount(@PathVariable("organization_id") Long id) {
+        return organizationService.getCommercialBinPurchaseCount(id);
+    }
+
+    // Endpoint for total monthly commercial bin purchase count
+    @GetMapping("/monthly_commercial_bins/{organization_id}")
+    public List<Map<String, Object>> getMonthlyCommercialBins(@PathVariable("organization_id") Long id) {
+        return organizationService.getMonthlyCommercialBinPurchases(id);
+    }
+
     // Collection history
 
     // Smart bin list
