@@ -4,12 +4,21 @@ import com.g41.trashsmart_server.Configuration.SMTPGmailSenderService;
 import com.g41.trashsmart_server.Configuration.SecurityConfig;
 import com.g41.trashsmart_server.DTO.OrganizationDTO;
 import com.g41.trashsmart_server.DTO.OrganizationDTOMapper;
+import com.g41.trashsmart_server.Enums.BinStatus;
+import com.g41.trashsmart_server.Enums.DispatchStatus;
+import com.g41.trashsmart_server.Enums.WasteType;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -198,5 +207,109 @@ public class OrganizationService {
             organizationToUpdate.setWasteCollectionRequests(organization.getWasteCollectionRequests());
         }
         organizationRepository.save(organizationToUpdate);
+    }
+
+    // Get the total number of bins
+    public long getTotalBins(@PathVariable("organization_id") Long id) {
+        return organizationRepository.findTotalBinCount(id);
+    }
+
+    // Get the total number of full bins
+    public long getTotalFullBins(@PathVariable("organization_id") Long id) {
+        return organizationRepository.findTotalFullBinCount(id, BinStatus.FULL);
+    }
+
+    // Get the total collection count
+    public long getTotalCollections(@PathVariable("organization_id") Long id) {
+        return organizationRepository.findCompletedDispatchesByOrgId(id, DispatchStatus.COMPLETED);
+    }
+
+    // Get the total waste last week
+    public Double getLastWeekTotalWasteVolume(@PathVariable("organization_id") Long id) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusWeeks(1);
+
+        return organizationRepository.getTotalWasteVolumeForLastWeek(startDate, endDate, id);
+    }
+
+    // Number of WCRs last week
+    public Long getLastWeekWasteRequestCount(@PathVariable("organization_id") Long id) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusWeeks(1);
+
+        return organizationRepository.getCountOfWasteRequestsForLastWeek(startDate, endDate, id);
+    }
+
+    // Total accumulated waste (all types)
+    public Double getTotalAccumulatedWaste(@PathVariable("organization_id") Long id) {
+        return organizationRepository.getTotalAccumulatedWaste(id);
+    }
+
+    // Total accumulated recyclable waste
+    public Double getTotalAccumulatedRecyclableWaste(@PathVariable("organization_id") Long id) {
+        return organizationRepository.getTotalAccumulatedRecyclableWaste(WasteType.RECYCLABLE, id);
+    }
+
+    // Monthly accumulated recyclable waste
+    public List<Map<String, Object>> getMonthlyAccumulatedRecyclableWaste(@PathVariable("organization_id") Long id) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusMonths(12);
+        List<Object[]> rawData = organizationRepository.getMonthlyAccumulatedRecyclableWaste(WasteType.RECYCLABLE, startDate, endDate, id);
+        return rawData.stream()
+                .map(data -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("month", ((String) data[0]).trim());
+                    map.put("year", data[1]);
+                    map.put("volume", data[2] != null ? ((Number) data[2]).doubleValue() : 0.0);
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+
+    // Monthly accumulated  waste
+    public List<Map<String, Object>> getMonthlyAccumulatedWaste(@PathVariable("organization_id") Long id) {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusMonths(12);
+        List<Object[]> rawData = organizationRepository.getMonthlyAccumulatedWaste(startDate, endDate, id);
+
+        return rawData.stream()
+                .map(data -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("month", ((String) data[0]).trim());
+                    map.put("year", data[1]);
+                    map.put("volume", data[2] != null ? ((Number) data[2]).doubleValue() : 0.0);
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+
+    // Total maintenance request count
+    public long getMaintenanceCount(@PathVariable("organization_id") Long id) {
+        return organizationRepository.countMaintenanceRequestsByOrgId(id);
+    }
+
+    // Get commercial bin purchase count over last month
+    public long getCommercialBinPurchaseCount(@PathVariable("organization_id") Long id) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusYears(1);
+
+        return organizationRepository.findNewPurchases(startDate, endDate, id);
+    }
+
+    // Monthly commercial bin purchase count
+    public List<Map<String, Object>> getMonthlyCommercialBinPurchases(@PathVariable("organization_id") Long id) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusMonths(12);
+        List<Object[]> rawData = organizationRepository.getMonthlyNewBinPurchases(startDate, endDate, id);
+
+        return rawData.stream()
+                .map(data -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("month", ((String) data[0]).trim());
+                    map.put("year", data[1]);
+                    map.put("count", data[2] != null ? ((Number) data[2]).doubleValue() : 0.0);
+                    return map;
+                })
+                .collect(Collectors.toList());
     }
 }

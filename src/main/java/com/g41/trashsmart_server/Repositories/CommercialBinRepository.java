@@ -56,7 +56,7 @@ public interface CommercialBinRepository extends JpaRepository<CommercialBin, Lo
             "       COUNT(com_bin) " +
             "FROM CommercialBin com_bin " +
             "WHERE com_bin.purchaseDate >= :startDate " +
-            "AND com_bin.purchaseDate < :endDate " +
+            "AND com_bin.purchaseDate <= :endDate " +
             "GROUP BY EXTRACT(YEAR FROM com_bin.purchaseDate), " +
             "         EXTRACT(MONTH FROM com_bin.purchaseDate), " +
             "         TO_CHAR(com_bin.purchaseDate, 'FMMonth') " +
