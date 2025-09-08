@@ -24,8 +24,8 @@ public class RecyclingPlantConfig {
                     "Lasith Ranahewa",
                     "green_eco@gmail.com",
                     passwordEncoder.encode("password123"),
-                    "0779791446",
-                    "Hansagir rd, Gampaha",
+                    "077 123 4567",
+                    "No. 45, Galle Road, Colombo 03",
                     "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     "2024/Plant/01"
             );
@@ -34,8 +34,8 @@ public class RecyclingPlantConfig {
                     "Ravija Salpitikorala",
                     "happy_leaf@gmail.com",
                     passwordEncoder.encode("password123"),
-                    "0779791446",
-                    "Hansagir rd, Gampaha",
+                    "071 234 5678",
+                    "No. 12, Temple Road, Kandy",
                     "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     "2024/Plant/02"
             );
@@ -44,8 +44,8 @@ public class RecyclingPlantConfig {
                     "Lakruwan Kasun",
                     "renew_earth_center@gmail.com",
                     passwordEncoder.encode("password123"),
-                    "0779791446",
-                    "Hansagir rd, Gampaha",
+                    "075 987 6543",
+                    "No. 89, Station Road, Negombo",
                     "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     "2024/Plant/03"
             );
@@ -54,8 +54,8 @@ public class RecyclingPlantConfig {
                     "Masha Wicky",
                     "planet_reclaim@gmail.com",
                     passwordEncoder.encode("password123"),
-                    "0779791446",
-                    "Hansagir rd, Gampaha",
+                    "076 555 1122",
+                    "No. 210, Main Street, Jaffna",
                     "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     "2024/Plant/04"
             );
@@ -64,8 +64,8 @@ public class RecyclingPlantConfig {
                     "Rusara Wimalasena",
                     "evergreen_recovery@gmail.com",
                     passwordEncoder.encode("password123"),
-                    "0779791446",
-                    "Hansagir rd, Gampaha",
+                    "072 678 9012",
+                    "No. 34/5, Hospital Road, Galle",
                     "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     "2024/Plant/05"
             );
@@ -74,8 +74,8 @@ public class RecyclingPlantConfig {
                     "Pahasara Jayasuriya",
                     "sustainergy_recycling@gmail.com",
                     passwordEncoder.encode("password123"),
-                    "0779791446",
-                    "Hansagir rd, Gampaha",
+                    "074 345 6789",
+                    "No. 18, High Level Road, Maharagama",
                     "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                     "2024/Plant/06"
             );
