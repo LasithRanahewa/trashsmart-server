@@ -7,7 +7,8 @@ import com.g41.trashsmart_server.DTO.OrganizationDTOMapper;
 import com.g41.trashsmart_server.Enums.BinStatus;
 import com.g41.trashsmart_server.Enums.DispatchStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
-import com.g41.trashsmart_server.Models.Organization;
+import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
+import com.g41.trashsmart_server.Models.*;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -311,5 +309,83 @@ public class OrganizationService {
                     return map;
                 })
                 .collect(Collectors.toList());
+    }
+
+    // Get all collections
+    public List<Map<String, Object>> getRequests(Long orgId) {
+        List<WasteCollectionRequest> orgWCRs = organizationRepository.findByOrganizationAndStatuses(orgId);
+
+        return orgWCRs.stream().map(wcr -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("request_id", String.format("WCR-%03d", wcr.getId()));
+            map.put("request_date", wcr.getCreatedTimeStamp().toString());
+            map.put("volume", wcr.getAccumulatedVolume() + " MT");
+            map.put("type", wcr.getWasteType().toString());
+            map.put("status", wcr.getWasteCollectionRequestStatus().toString());
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+    public List<Map<String, Object>> getCollections(Long orgId) {
+        List<WasteCollectionRequest> orgWCRs = organizationRepository.findByOrganizationAndStatuses(orgId);
+
+        Set<WasteCollectionRequestStatus> allowedStatuses = Set.of(
+                WasteCollectionRequestStatus.COLLECTED,
+                WasteCollectionRequestStatus.MISSED,
+                WasteCollectionRequestStatus.COLLECTING
+        );
+
+        return orgWCRs.stream()
+                .filter(wcr -> allowedStatuses.contains(wcr.getWasteCollectionRequestStatus()))
+                .map(wcr -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("request_date", wcr.getCreatedTimeStamp().toString());
+                    map.put("volume", wcr.getAccumulatedVolume() + " MT");
+
+                    String type = wcr.getWasteType().toString()
+                            .replaceAll("_", " ")
+                            .toLowerCase();
+                    type = Arrays.stream(type.split(" "))
+                            .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1))
+                            .collect(Collectors.joining(" "));
+                    map.put("type", type);
+
+                    map.put("status", wcr.getWasteCollectionRequestStatus().toString());
+                    if (wcr.getOrganizationDispatch() != null) {
+                        map.put("dispatch_date", wcr.getOrganizationDispatch().getDateTime().toLocalDate());
+                        map.put("dispatch_time", wcr.getOrganizationDispatch().getDateTime().toLocalTime());
+                    } else {
+                        map.put("dispatch_date", "TBA");
+                        map.put("dispatch_time", "TBA");
+                    }
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+
+    // Get all bins
+    public List<Map<String, Object>> getBins(Long orgId) {
+        List<CommercialBin> orgBins = organizationRepository.findOrganizationBins(orgId);
+
+        return orgBins.stream().map(bin -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("bin_id", String.format("SB-%03d", bin.getId()));
+            map.put("type", bin.getWasteType().toString());
+            map.put("size", bin.getBinSize());
+            map.put("purchase_date", bin.getPurchaseDate());
+            if (bin.getLastMaintenanceDate() != null) {
+                map.put("maintenance_date", bin.getLastMaintenanceDate());
+            } else {
+                map.put("maintenance_date", "N/A");
+            }
+            List<MaintenanceRequest> requests = bin.getMaintenanceRequests();
+            if (requests != null && !requests.isEmpty()) {
+                map.put("other_notes", requests.get(requests.size() - 1).getOtherNotes());
+            } else {
+                map.put("other_notes", "N/A");
+            }
+
+            return map;
+        }).collect(Collectors.toList());
     }
 }
