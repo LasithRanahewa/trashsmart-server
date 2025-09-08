@@ -1,10 +1,12 @@
 package com.g41.trashsmart_server.Repositories;
 
 import com.g41.trashsmart_server.Enums.BinStatus;
+import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Models.OrganizationDispatch;
 import com.g41.trashsmart_server.Enums.DispatchStatus;
+import com.g41.trashsmart_server.Models.WasteCollectionRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -143,4 +145,11 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
     List<Object[]> getMonthlyNewBinPurchases(@Param("startDate") LocalDate startDate,
                                              @Param("endDate") LocalDate endDate,
                                              @Param("org_id") Long org_id);
+
+    // List of collections
+    @Query("SELECT w FROM WasteCollectionRequest w WHERE w.organization.id = :orgId AND w.wasteCollectionRequestStatus IN :statuses")
+    List<WasteCollectionRequest> findByOrganizationAndStatuses(
+            @Param("orgId") Long orgId,
+            @Param("statuses") List<WasteCollectionRequestStatus> statuses
+    );
 }

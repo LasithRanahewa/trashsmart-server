@@ -2,6 +2,7 @@ package com.g41.trashsmart_server.Controllers;
 
 import com.g41.trashsmart_server.DTO.OrganizationDTO;
 import com.g41.trashsmart_server.Models.Organization;
+import com.g41.trashsmart_server.Models.OrganizationDispatch;
 import com.g41.trashsmart_server.Services.OrganizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -275,6 +276,10 @@ public class OrganizationController {
     }
 
     // Collection history
+    @GetMapping(path = "/fetch_collections/{organization_id}")
+    public List<Map<String, Object>> getCollections(@PathVariable("organization_id") Long id) {
+        return organizationService.getCollections(id);
+    }
 
     // Smart bin list
     // WCR history

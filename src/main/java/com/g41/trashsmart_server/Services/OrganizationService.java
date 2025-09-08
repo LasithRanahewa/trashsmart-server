@@ -7,7 +7,10 @@ import com.g41.trashsmart_server.DTO.OrganizationDTOMapper;
 import com.g41.trashsmart_server.Enums.BinStatus;
 import com.g41.trashsmart_server.Enums.DispatchStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
+import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
 import com.g41.trashsmart_server.Models.Organization;
+import com.g41.trashsmart_server.Models.OrganizationDispatch;
+import com.g41.trashsmart_server.Models.WasteCollectionRequest;
 import com.g41.trashsmart_server.Repositories.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -311,5 +314,32 @@ public class OrganizationService {
                     return map;
                 })
                 .collect(Collectors.toList());
+    }
+
+    // Get all collections
+    public List<Map<String, Object>> getCollections(Long orgId) {
+        List<WasteCollectionRequestStatus> statuses = List.of(
+                WasteCollectionRequestStatus.COLLECTED,
+                WasteCollectionRequestStatus.MISSED,
+                WasteCollectionRequestStatus.COLLECTING
+        );
+
+        List<WasteCollectionRequest> orgWCRs = organizationRepository.findByOrganizationAndStatuses(orgId, statuses);
+
+        return orgWCRs.stream().map(wcr -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("request_date", wcr.getCreatedTimeStamp().toString());
+            map.put("volume", wcr.getAccumulatedVolume());
+            map.put("type", wcr.getWasteType().toString());
+            map.put("status", wcr.getWasteCollectionRequestStatus().toString());
+            if (wcr.getOrganizationDispatch() != null) {
+                map.put("dispatch_date", wcr.getOrganizationDispatch().getDateTime().toLocalDate());
+                map.put("dispatch_time", wcr.getOrganizationDispatch().getDateTime().toLocalTime());
+            } else {
+                map.put("dispatch_date", "TBA");
+                map.put("dispatch_time", "TBA");
+            }
+            return map;
+        }).collect(Collectors.toList());
     }
 }

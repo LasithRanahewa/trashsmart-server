@@ -2,6 +2,7 @@ package com.g41.trashsmart_server.Configuration;
 
 import com.g41.trashsmart_server.Enums.OrgType;
 import com.g41.trashsmart_server.Enums.Scale;
+import com.g41.trashsmart_server.Enums.WasteCollectionRequestStatus;
 import com.g41.trashsmart_server.Enums.WasteType;
 import com.g41.trashsmart_server.Models.Organization;
 import com.g41.trashsmart_server.Models.WasteCollectionRequest;
@@ -341,6 +342,9 @@ public class WasteCollectionRequestConfig {
             wcr_foa_1.setOrganization(foaOptional.get());
             wcr_foa_2.setOrganization(foaOptional.get());
             wcr_foa_3.setOrganization(foaOptional.get());
+            wcr_foa_3.setWasteCollectionRequestStatus(WasteCollectionRequestStatus.COLLECTING);
+            wcr_foa_1.setWasteCollectionRequestStatus(WasteCollectionRequestStatus.COLLECTED);
+            wcr_foa_2.setWasteCollectionRequestStatus(WasteCollectionRequestStatus.MISSED);
 
             if (folOptional.isEmpty()) {
                 throw new IllegalStateException("No Organization");
