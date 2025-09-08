@@ -282,7 +282,16 @@ public class OrganizationController {
     }
 
     // Smart bin list
-    // WCR history
+    @GetMapping(path = "/fetch_bins/{organization_id}")
+    public List<Map<String, Object>> getBins(@PathVariable("organization_id") Long id) {
+        return organizationService.getBins(id);
+    }
+
+    // Request history
+    @GetMapping(path = "/fetch_requests/{organization_id}")
+    public List<Map<String, Object>> getRequests(@PathVariable("organization_id") Long id) {
+        return organizationService.getRequests(id);
+    }
 
     // Contact information
 }
