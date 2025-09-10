@@ -276,6 +276,19 @@ public class WasteCollectionRequestConfig {
                 6.892402180165025,
                 79.87060984815436
         );
+        Organization nsbm = new Organization(
+                "National School of Business Management",
+                "NSBM Admin",
+                "nsbm@gmail.com",
+                passwordEncoder.encode("password123"),
+                "0712990639",
+                "NSBM, Pitipana - Thalagala Rd, Homagama",
+                "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                Scale.LARGE,
+                OrgType.EDUCATION,
+                6.821499532788766,
+                80.04158362957607
+        );
 
         organizationRepository.saveAll(List.of(
                 foa,
@@ -295,7 +308,8 @@ public class WasteCollectionRequestConfig {
                 eagle,
                 sisili,
                 slsea,
-                povertyRelief
+                povertyRelief,
+                nsbm
         ));
 
         Optional<Organization> foaOptional = organizationRepository.findOrganizationByEmail("foa@cmb.ac.lk");
@@ -316,6 +330,7 @@ public class WasteCollectionRequestConfig {
         Optional<Organization> sisiliOptional = organizationRepository.findOrganizationByEmail("info@sisili.lk");
         Optional<Organization> slseaOptional = organizationRepository.findOrganizationByEmail("info@slsea.lk");
         Optional<Organization> povertyReliefOptional = organizationRepository.findOrganizationByEmail("info@ceppef.lk");
+        Optional<Organization> nsbmOptional = organizationRepository.findOrganizationByEmail("nsbm@gmail.com");
 
         return args -> {
             if (foaOptional.isEmpty()) {
@@ -773,6 +788,73 @@ public class WasteCollectionRequestConfig {
             wcr_pro_2.setOrganization(povertyReliefOptional.get());
             wcr_pro_3.setOrganization(povertyReliefOptional.get());
 
+            if (nsbmOptional.isEmpty()) {
+                throw new IllegalStateException("No Organization");
+            }
+            WasteCollectionRequest wcr_nsbm_1 = new WasteCollectionRequest(
+                    100.4,
+                    WasteType.BIO_DEGRADABLE,
+                    6.821499532788766,
+                    80.04158362957607
+            );
+            WasteCollectionRequest wcr_nsbm_2 = new WasteCollectionRequest(
+                    63.67,
+                    WasteType.NON_BIO_DEGRADABLE,
+                    6.821499532788766,
+                    80.04158362957607
+            );
+            WasteCollectionRequest wcr_nsbm_3 = new WasteCollectionRequest(
+                    50.5,
+                    WasteType.RECYCLABLE,
+                    6.821499532788766,
+                    80.04158362957607
+            );
+            WasteCollectionRequest wcr_nsbm_4 = new WasteCollectionRequest(
+                    70.8,
+                    WasteType.BIO_DEGRADABLE,
+                    6.821499532788766,
+                    80.04158362957607
+            );
+            WasteCollectionRequest wcr_nsbm_5 = new WasteCollectionRequest(
+                    59.14,
+                    WasteType.NON_BIO_DEGRADABLE,
+                    6.821499532788766,
+                    80.04158362957607
+            );
+            WasteCollectionRequest wcr_nsbm_6 = new WasteCollectionRequest(
+                    60.8,
+                    WasteType.RECYCLABLE,
+                    6.821499532788766,
+                    80.04158362957607
+            );
+            WasteCollectionRequest wcr_nsbm_7 = new WasteCollectionRequest(
+                    70.8,
+                    WasteType.BIO_DEGRADABLE,
+                    6.821499532788766,
+                    80.04158362957607
+            );
+            WasteCollectionRequest wcr_nsbm_8 = new WasteCollectionRequest(
+                    80.5,
+                    WasteType.NON_BIO_DEGRADABLE,
+                    6.821499532788766,
+                    80.04158362957607
+            );
+            WasteCollectionRequest wcr_nsbm_9 = new WasteCollectionRequest(
+                    76.0,
+                    WasteType.RECYCLABLE,
+                    6.821499532788766,
+                    80.04158362957607
+            );
+            wcr_nsbm_1.setOrganization(nsbmOptional.get());
+            wcr_nsbm_2.setOrganization(nsbmOptional.get());
+            wcr_nsbm_3.setOrganization(nsbmOptional.get());
+            wcr_nsbm_4.setOrganization(nsbmOptional.get());
+            wcr_nsbm_5.setOrganization(nsbmOptional.get());
+            wcr_nsbm_6.setOrganization(nsbmOptional.get());
+            wcr_nsbm_7.setOrganization(nsbmOptional.get());
+            wcr_nsbm_8.setOrganization(nsbmOptional.get());
+            wcr_nsbm_9.setOrganization(nsbmOptional.get());
+
             List<WasteCollectionRequest> records = Arrays.asList(
                     wcr_foa_1, wcr_foa_2, wcr_foa_3,
                     wcr_fol_1, wcr_fol_2, wcr_fol_3,
@@ -792,6 +874,16 @@ public class WasteCollectionRequestConfig {
                     wcr_sisili_1, wcr_sisili_2, wcr_sisili_3,
                     wcr_slsea_1, wcr_slsea_2, wcr_slsea_3,
                     wcr_pro_1, wcr_pro_2, wcr_pro_3
+            );
+
+            List<WasteCollectionRequest> nsbm_records = Arrays.asList(
+                    wcr_nsbm_1, wcr_nsbm_2,
+                    wcr_nsbm_4, wcr_nsbm_5,
+                    wcr_nsbm_7, wcr_nsbm_8
+            );
+
+            List<WasteCollectionRequest> nsbm_r_records = Arrays.asList(
+                    wcr_nsbm_3, wcr_nsbm_6, wcr_nsbm_9
             );
 
 //            for (WasteCollectionRequest record : records) {
@@ -826,6 +918,32 @@ public class WasteCollectionRequestConfig {
                 int second = random.nextInt(60);
 
                 records.get(i).setCreatedTimeStamp(LocalDateTime.of(year, month, day, hour, minute, second));
+            }
+
+            // The list has 6 elements. We want to assign months April (4) to September (9).
+            for (int i = 0; i < nsbm_records.size(); i++) {
+                WasteCollectionRequest nsbm_record = nsbm_records.get(i);
+                int month = 3 + i;
+
+                int year = 2025;
+                int day = 1 + random.nextInt(28);
+                int hour = random.nextInt(24);
+                int minute = random.nextInt(60);
+                int second = random.nextInt(60);
+
+                nsbm_record.setCreatedTimeStamp(LocalDateTime.of(year, month, day, hour, minute, second));
+            }
+
+            for (int i = 0; i < nsbm_r_records.size(); i++) {
+                WasteCollectionRequest nsbm_record = nsbm_r_records.get(i);
+                int month = 6 + i;
+                int year = 2025;
+                int day = 1 + random.nextInt(28);
+                int hour = random.nextInt(24);
+                int minute = random.nextInt(60);
+                int second = random.nextInt(60);
+
+                nsbm_record.setCreatedTimeStamp(LocalDateTime.of(year, month, day, hour, minute, second));
             }
 
             wasteCollectionRequestRepository.saveAll(List.of(
@@ -882,7 +1000,16 @@ public class WasteCollectionRequestConfig {
                     wcr_slsea_3,
                     wcr_pro_1,
                     wcr_pro_2,
-                    wcr_pro_3
+                    wcr_pro_3,
+                    wcr_nsbm_1,
+                    wcr_nsbm_2,
+                    wcr_nsbm_3,
+                    wcr_nsbm_4,
+                    wcr_nsbm_5,
+                    wcr_nsbm_6,
+                    wcr_nsbm_7,
+                    wcr_nsbm_8,
+                    wcr_nsbm_9
             ));
 
             for (WasteCollectionRequest record : records) {
