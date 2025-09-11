@@ -1017,6 +1017,16 @@ public class WasteCollectionRequestConfig {
                 org.setTotalWaste((int)(org.getTotalWaste() + record.getAccumulatedVolume()));
                 organizationRepository.save(org);
             }
+            for (WasteCollectionRequest record : nsbm_records) {
+                Organization org = record.getOrganization();
+                org.setTotalWaste((int)(org.getTotalWaste() + record.getAccumulatedVolume()));
+                organizationRepository.save(org);
+            }
+            for (WasteCollectionRequest record : nsbm_r_records) {
+                Organization org = record.getOrganization();
+                org.setTotalWaste((int)(org.getTotalWaste() + record.getAccumulatedVolume()));
+                organizationRepository.save(org);
+            }
         };
     }
 }
